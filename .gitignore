@@ -1,0 +1,31 @@
+# --- General ---
+*.env*                  # Ignore ALL .env files
+*.log
+*.suo
+*.user
+*.cache
+.DS_Store
+docker-compose.override.yml
+
+# --- .NET ---
+**/.vs/
+**/bin/
+**/obj/
+**/.vs/
+**/TestResults/
+*.userprefs
+*.nupkg
+
+# --- Frontend (React) ---
+node_modules/
+dist/
+build/
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# --- Docker/Kubernetes ---
+**/docker-compose.yml   # Only if you don't want to track it
+**/.dockerignore
+**/docker-dev/
