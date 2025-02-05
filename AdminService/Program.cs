@@ -1,5 +1,8 @@
 
 using AdminService.Data;
+using AdminService.Mapper;
+using AdminService.Repository.SkillRepository;
+using AdminService.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace AdminService
@@ -26,6 +29,10 @@ namespace AdminService
                 sqlOptions => sqlOptions.EnableRetryOnFailure()
                  )
                  );
+
+            builder.Services.AddAutoMapper(typeof(MapperProfile));
+            builder.Services.AddScoped<ISkillRepostory, SkillRepository>();
+            builder.Services.AddScoped<ISkillService, SkillService>();
 
 
             // Add services to the container.
