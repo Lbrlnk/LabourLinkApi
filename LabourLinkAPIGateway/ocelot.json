@@ -1,0 +1,29 @@
+{
+  "GlobalConfiguration": {
+    "BaseUrl": "http://localhost:5039"
+
+  },
+  "Routes": [
+    {
+      "UpstreamPathTemplate": "/gateway/writers",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/Writers",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5075
+        }
+      ],
+      "RateLimitOptions": {
+        "EnableRateLimiting": true,
+        "Period": "10s",
+        "Limit": 3,
+        "PeriodTimespan": 5
+
+      }
+
+
+    }
+  ]
+}
