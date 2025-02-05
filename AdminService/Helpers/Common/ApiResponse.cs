@@ -1,5 +1,6 @@
-﻿namespace AdminService.Helpers.Common
+namespace AdminService.Helpers.Common
 {
+
 	public class ApiResponse<T>
 	{
 		public int StatusCode { get; set; }
@@ -16,4 +17,6 @@
 		}
 	}
 }
+
+   
 
