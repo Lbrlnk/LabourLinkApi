@@ -1,3 +1,5 @@
+
+
 # --- General ---
 *.env*                  # Ignore ALL .env files
 *.log
@@ -15,6 +17,9 @@ docker-compose.override.yml
 **/TestResults/
 *.userprefs
 *.nupkg
+
+# Entity Framework Migrations
+**/Migrations/
 
 # --- Frontend (React) ---
 node_modules/
