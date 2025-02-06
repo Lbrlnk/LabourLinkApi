@@ -7,9 +7,11 @@ namespace AdminService.Models
 
         [Key]
         public int MunicipalityId { get; set; }
+        [Required]
         public string? Name { get; set; }
+        [Required]
         public string? State { get; set; }
         public DateTime? CreatedAt { get; set; }
-        public bool IsActive {  get; set; }
+        public bool IsActive { get; set; } = true;
     }
 }

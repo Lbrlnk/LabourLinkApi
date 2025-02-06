@@ -1,44 +1,43 @@
-
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 
 namespace LabourLinkAPIGateway
 {
-    public class Program
-    {
-        public static async void Main(string[] args)
-        {
-            var builder = WebApplication.CreateBuilder(args);
+	public class Program
+	{
+		public static async Task Main(string[] args)
+		{
+			var builder = WebApplication.CreateBuilder(args);
 
-            builder.Configuration.AddJsonFile("ocelot.jsaon", optional: false, reloadOnChange: true);
-            builder.Services.AddOcelot(builder.Configuration) ;
+			builder.Configuration.AddJsonFile("ocelot.jsaon", optional: false, reloadOnChange: true);
+			builder.Services.AddOcelot(builder.Configuration);
 
-            // Add services to the container.
+			// Add services to the container.
 
-            builder.Services.AddControllers();
+			builder.Services.AddControllers();
 
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+			builder.Services.AddEndpointsApiExplorer();
+			builder.Services.AddSwaggerGen();
 
-            var app = builder.Build();
+			var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
+			// Configure the HTTP request pipeline.
+			if (app.Environment.IsDevelopment())
+			{
+				app.UseSwagger();
+				app.UseSwaggerUI();
+			}
 
-            app.UseHttpsRedirection();
+			app.UseHttpsRedirection();
 
-            app.UseAuthorization();
+			app.UseAuthorization();
 
 
-            app.MapControllers();
-            await app.UseOcelot();
+			app.MapControllers();
+			await app.UseOcelot();
 
-            app.Run();
-        }
-    }
+			await app.RunAsync();
+		}
+	}
 }
