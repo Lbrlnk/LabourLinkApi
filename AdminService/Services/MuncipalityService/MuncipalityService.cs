@@ -27,21 +27,31 @@ namespace AdminService.Services.MuncipalityService
 		}
 		public async Task<ApiResponse<string>> AddMuncipality(MuncipalityViewDto muncipality)
 		{
-			var mun = _mapper.Map<Muncipality>(muncipality);
-			var result = await _repository.AddMuncipalityAsync(mun);
-			if (result != null)
+			try
 			{
-				return new ApiResponse<string>(200, "success", data: $"Muncipality added succesfully {result.MunicipalityId}");
+				var mun = _mapper.Map<Muncipality>(muncipality);
+				var result = await _repository.AddMuncipalityAsync(mun);
+				if (result != null)
+				{
+					return new ApiResponse<string>(200, "success", data: $"Muncipality added succesfully {result.MunicipalityId}");
+				}
+				return new ApiResponse<string>(400, "bad request", data: "something went wrong ");
 			}
-
-			return new ApiResponse<string>(500, "internal server error  ", error: "error occured during the updation of the database");
-
+			catch
+			(Exception ex)
+			{
+				return new ApiResponse<string>(500, "internal server error  ", error: "error occured during the updation of the database");
+			}
 		}
 		public async Task<ApiResponse<MuncipalityViewDto>> GetMuncipalityById(int id)
 		{
 			var res = await _repository.GetMuncipalityByIdAsync(id);
-			var mun=_mapper.Map<MuncipalityViewDto>(res);
-			return new ApiResponse<MuncipalityViewDto>(200, "success", mun);
+			if (res != null)
+			{
+				var mun = _mapper.Map<MuncipalityViewDto>(res);
+				return new ApiResponse<MuncipalityViewDto>(200, "success", mun);
+			}
+			return new ApiResponse<MuncipalityViewDto>(204, "There is no Muncipality in this id");
 		}
 		public async Task<ApiResponse<string>> DeleteMuncipality(int id)
 		{
@@ -53,7 +63,7 @@ namespace AdminService.Services.MuncipalityService
 				var Updated = await _repository.UpdateMuncipalityAsync(muncipality);
 				return new ApiResponse<string>(200, "success", "Muncipality removed ");
 			}
-			return new ApiResponse<string>(404, "not found", error: "Muncipality canot found ");
+			return new ApiResponse<string>(204, "not found", error: "Muncipality canot found ");
 		}
 		public async Task<ApiResponse<string>> UpdateMuncipality(MuncipalityViewDto muncipality)
 		{
@@ -69,7 +79,7 @@ namespace AdminService.Services.MuncipalityService
 					return new ApiResponse<string>(200, "success", $"Muncipality updated successfully ");
 				}
 			}
-			return new ApiResponse<string>(404, "Not Found", error: $"Invalid Input Muncipality");
+			return new ApiResponse<string>(204, "Not Found", error: $"Invalid Input Muncipality");
 		}
 		public async Task<ApiResponse<List<MuncipalityViewDto>>> GetMuncipalitiesByState(string state)
 		{
