@@ -2,6 +2,7 @@
 using AdminService.Models;
 using AdminService.Services.MuncipalityService;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -20,6 +21,7 @@ namespace AdminService.Controllers
             _service = service;
         }
         [HttpGet("muncipalities")]
+        [Authorize]
         public async Task<IActionResult> GetAllMuncipalities()
         {
 
@@ -43,6 +45,7 @@ namespace AdminService.Controllers
 
         }
         [HttpPost("addmuncipality")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AddMuncipality(MuncipalityViewDto muncipality)
         {
             try
@@ -78,6 +81,7 @@ namespace AdminService.Controllers
             }
         }
         [HttpDelete("deletemuncipality{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteMuncipality(int id)
         {
             var response = await _service.DeleteMuncipality(id);
@@ -90,6 +94,7 @@ namespace AdminService.Controllers
             return Ok(response);
         }
         [HttpPatch("editmucipality")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateMuncipality(MuncipalityViewDto muncipality)
         {
             try
