@@ -2,6 +2,7 @@
 using AdminService.Helpers.Common;
 using AdminService.Models;
 using AdminService.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AdminService.Controllers
@@ -19,6 +20,7 @@ namespace AdminService.Controllers
         }
 
         [HttpGet("getAllSkill")]
+        [Authorize]
         public async Task<IActionResult> GettAllSkills()
         {
 
@@ -33,6 +35,7 @@ namespace AdminService.Controllers
         }
 
         [HttpGet("getSkillById/{id}")]
+        [Authorize]
         public async Task <IActionResult> GetSkillById(Guid id)
         {
             var response=await _skillService.GetSkillByIdAsync(id);
@@ -54,6 +57,7 @@ namespace AdminService.Controllers
         }
 
         [HttpPost("createSkill")]
+        [Authorize(Roles = "Admin")]
 
         public async Task<IActionResult> CreateSkill([FromBody] AddSkillDto newSkill)
         {
@@ -72,6 +76,7 @@ namespace AdminService.Controllers
         }
 
         [HttpPut("updateSkill")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateSkill([FromBody]  SkillViewDto updateSkill)
         {
             var response=await _skillService.UpdateAsync(updateSkill);
@@ -89,6 +94,7 @@ namespace AdminService.Controllers
         }
 
         [HttpDelete("deleteSkill/{id}")]
+        [Authorize(Roles = "Admin")]
 
         public async Task<IActionResult> DeleteSkill(Guid id)
         {

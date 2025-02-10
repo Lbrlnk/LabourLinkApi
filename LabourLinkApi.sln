@@ -5,7 +5,9 @@ VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdminService", "AdminService\AdminService.csproj", "{DFD175CF-FE41-4271-9DDD-7329F5858AE6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LabourLinkAPIGateway", "LabourLinkAPIGateway\LabourLinkAPIGateway.csproj", "{AC2338C7-8780-47CB-81B4-F082C20629A3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LabourLinkAPIGateway", "LabourLinkAPIGateway\LabourLinkAPIGateway.csproj", "{AC2338C7-8780-47CB-81B4-F082C20629A3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthenticationService", "AuthenticationService\AuthenticationService.csproj", "{CFA6BC2C-6A36-40FD-BB6D-4D10CBAFE5F1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{AC2338C7-8780-47CB-81B4-F082C20629A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC2338C7-8780-47CB-81B4-F082C20629A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AC2338C7-8780-47CB-81B4-F082C20629A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CFA6BC2C-6A36-40FD-BB6D-4D10CBAFE5F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFA6BC2C-6A36-40FD-BB6D-4D10CBAFE5F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFA6BC2C-6A36-40FD-BB6D-4D10CBAFE5F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFA6BC2C-6A36-40FD-BB6D-4D10CBAFE5F1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,29 +1,72 @@
+//{
+//  "GlobalConfiguration": {
+//    "BaseUrl": "http://localhost:5039"
+
+//  },
+//  "Routes": [
+//    {
+//      "UpstreamPathTemplate": "/api/muncipalities",
+//      "UpstreamHttpMethod": [ "Get" ],
+//      "DownstreamPathTemplate": "/api/Muncipality/muncipalities",
+//      "DownstreamScheme": "https",
+//      "DownstreamHostAndPorts": [
+//        {
+//          "Host": "localhost",
+//          "Port": 5075
+//        }
+//      ],
+//      "RateLimitOptions": {
+//        "EnableRateLimiting": true,
+//        "Period": "10s",
+//        "Limit": 3,
+//        "PeriodTimespan": 5
+//      }
+//    },
+//    {
+//      "UpstreamPathTemplate": "/api/addmuncipality",
+//      "UpstreamHttpMethod": [ "Post" ],
+//      "DownstreamPathTemplate": "/api/Muncipality/addmuncipality",
+//      "DownstreamScheme": "https",
+//      "DownstreamHostAndPorts": [
+//        {
+//          "Host": "localhost",
+//          "Port": 5075
+//        }
+//      ]
+//    }
+//  ]
+//}
+
+
 {
   "GlobalConfiguration": {
     "BaseUrl": "http://localhost:5039"
-
   },
   "Routes": [
     {
-      "UpstreamPathTemplate": "/gateway/writers",
-      "UpstreamHttpMethod": [ "Get" ],
-      "DownstreamPathTemplate": "/api/Writers",
-      "DownstreamScheme": "https",
+      "UpstreamPathTemplate": "/api/muncipality/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete","Patch" ],
+      "DownstreamPathTemplate": "/api/Muncipality/{everything}",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
           "Port": 5075
         }
-      ],
-      "RateLimitOptions": {
-        "EnableRateLimiting": true,
-        "Period": "10s",
-        "Limit": 3,
-        "PeriodTimespan": 5
-
-      }
-
-
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/api/skill/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete","Patch" ],
+      "DownstreamPathTemplate": "/api/Skill/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5075
+        }
+      ]
     }
   ]
 }
+

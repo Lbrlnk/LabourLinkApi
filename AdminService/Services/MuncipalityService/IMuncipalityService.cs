@@ -1,10 +1,10 @@
-﻿using AdminService.Dtos;
+﻿using AdminService.Dtos.MuncipalityDtos;
 using AdminService.Helpers.Common;
 using AdminService.Models;
 
 namespace AdminService.Services.MuncipalityService
 {
-	public interface IMuncipalityService
+    public interface IMuncipalityService
 	{
 		Task<ApiResponse<List<MuncipalityViewDto>>> GetAll();
 		Task<ApiResponse<string>> AddMuncipality(MuncipalityViewDto muncipality);

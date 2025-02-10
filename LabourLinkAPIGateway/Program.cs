@@ -6,11 +6,11 @@ namespace LabourLinkAPIGateway
 {
     public class Program
     {
-        public static async void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.Configuration.AddJsonFile("ocelot.jsaon", optional: false, reloadOnChange: true);
+            builder.Configuration.AddJsonFile("ocelot.json", optional: false, reloadOnChange: true);
             builder.Services.AddOcelot(builder.Configuration) ;
 
             // Add services to the container.
@@ -38,7 +38,7 @@ namespace LabourLinkAPIGateway
             app.MapControllers();
             await app.UseOcelot();
 
-            app.Run();
+            await app.RunAsync();
         }
     }
 }
