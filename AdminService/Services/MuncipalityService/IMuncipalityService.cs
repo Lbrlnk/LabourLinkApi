@@ -12,5 +12,13 @@ namespace AdminService.Services.MuncipalityService
 		Task<ApiResponse<string>> DeleteMuncipality(int id);
 		Task<ApiResponse<string>> UpdateMuncipality(MuncipalityViewDto muncipality);
 		Task<ApiResponse<List<MuncipalityViewDto>>> GetMuncipalitiesByState(string state);
-	}
+		Task<ApiResponse<List<MuncipalityViewDto>>> GetAllMuncipality();
+
+		Task<ApiResponse<string>> ActivateMuncipality(int id);
+
+        Task<ApiResponse<List<MuncipalityViewDto>>> GetMuncipalityBySearchParams(string searchParams);
+
+
+
+    }
 }

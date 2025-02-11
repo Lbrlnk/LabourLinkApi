@@ -9,6 +9,7 @@ namespace AdminService.Mapper
         public MapperProfile()
         {
             CreateMap<Skill, SkillViewDto>().ReverseMap();
+            CreateMap<Skill, AdminViewSkillDto>();
 
         }
 

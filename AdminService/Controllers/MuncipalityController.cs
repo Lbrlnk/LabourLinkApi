@@ -61,6 +61,7 @@ namespace AdminService.Controllers
             }
         }
         [HttpGet("mucipality{id}")]
+        [Authorize]
         public async Task<IActionResult> GetMuncipality(int id)
         {
             try
@@ -119,6 +120,7 @@ namespace AdminService.Controllers
             }
         }
         [HttpGet("muncipalities{state}")]
+        [Authorize]
         public async Task<IActionResult> GetMuncipalitiesByState(string state)
         {
             try
@@ -138,5 +140,83 @@ namespace AdminService.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [HttpGet("viewallmuncipalities")]
+        //[Authorize]
+        public async Task<IActionResult> GetAllMuncipalitiesadmin()
+        {
+
+            try
+            {
+                var muncipalities = await _service.GetAllMuncipality();
+                if (muncipalities == null)
+                {
+                    Log.Warning("There is no muncipalities");
+                    return NotFound();
+
+                }
+                Log.Information("Muncipalities fetched successfully");
+                return Ok(muncipalities);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex.ToString());
+                return StatusCode(400, ex.Message);
+            }
+
+        }
+        [HttpPatch("activatemuncipality/{id}")]
+        [Authorize("Admin")]
+
+        public async Task<IActionResult> ActivateMuncipality(int id)
+
+        {
+            try
+            {
+                var muncipalities = await _service.ActivateMuncipality(id);
+                if (muncipalities == null)
+                {
+                    Log.Warning("There is no muncipalities");
+                    return NotFound();
+
+                }
+                Log.Information("Muncipalities fetched successfully");
+                return Ok(muncipalities);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex.ToString());
+                return StatusCode(400, ex.Message);
+            }
+
+        }
+
+
+
+        [HttpGet("searchMunciplities")]
+        [Authorize]
+        public async Task<IActionResult> SearchMunicpality(string searchkey)
+        {
+            try
+            {
+                var muncipalities = await _service.GetMuncipalityBySearchParams(searchkey);
+                if (muncipalities.StatusCode==404)
+                {
+                    Log.Warning("There is no muncipalities");
+                    return NotFound(muncipalities);
+
+                }
+
+                Log.Information("Muncipalities fetched successfully");
+                return Ok(muncipalities);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex.ToString());
+                return StatusCode(400, ex.Message);
+            }
+        }
+
+
     }
+
 }
