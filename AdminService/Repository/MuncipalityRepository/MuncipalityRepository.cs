@@ -17,17 +17,18 @@ namespace AdminService.Repository.MuncipalityRepository
 		}
 		public async Task<List<Muncipality>> GetMuncipalitiesAsync()
 		{
-			return await _context.Muncipalities.ToListAsync();
+			return await _context.Muncipalities.Where(x=>x.IsActive==true).ToListAsync();
 		}
 		public async Task<Muncipality> AddMuncipalityAsync(Muncipality muncipality)
-		{
+		{	
+			muncipality.IsActive = true;
 			_context.Muncipalities.Add(muncipality);
 			await _context.SaveChangesAsync();
 			return muncipality;
 		}
 		public async Task<Muncipality> GetMuncipalityByIdAsync(int id)
 		{
-			var mun=await _context.Muncipalities.FirstOrDefaultAsync(x=>x.MunicipalityId==id);
+			var mun=await _context.Muncipalities.FirstOrDefaultAsync(x=>x.MunicipalityId==id && x.IsActive==true);
 			return mun; 
 		}
 		public async Task<bool> UpdateMuncipalityAsync(Muncipality muncipality)
@@ -40,5 +41,24 @@ namespace AdminService.Repository.MuncipalityRepository
 			var muncipalities=await _context.Muncipalities.Where(x=>x.State==state).ToListAsync();
 			return muncipalities;
 		}
-	}
+
+		public async Task<List<Muncipality>> GetAllMuncipalityAsync()
+		{
+			var muncipalities = await _context.Muncipalities.ToListAsync();
+			return muncipalities;
+		}
+
+		public async Task<List<Muncipality>> GetMnucipalityBySearchparams(string searchparams)
+		{
+			var muncipalities = await _context.Muncipalities.Where(x=>x.Name.ToLower().Contains(searchparams.ToLower()) && x.IsActive==true).ToListAsync();
+			return muncipalities;
+
+        }
+		public async Task<Muncipality> GetDeleteMuncipalityByIdAsync(int id)
+		{
+            var mun = await _context.Muncipalities.FirstOrDefaultAsync(x => x.MunicipalityId == id && x.IsActive == false);
+            return mun;
+        }
+
+    }
 }

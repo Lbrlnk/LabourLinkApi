@@ -2,6 +2,7 @@
 using AdminService.Helpers.Common;
 using AdminService.Models;
 using AdminService.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AdminService.Controllers
@@ -19,6 +20,7 @@ namespace AdminService.Controllers
         }
 
         [HttpGet("getAllSkill")]
+        [Authorize]
         public async Task<IActionResult> GettAllSkills()
         {
 
@@ -31,8 +33,18 @@ namespace AdminService.Controllers
 
 
         }
+        [HttpGet("getCompleteSkills")]
+        [Authorize(Roles = "Admin")]
+
+        public async Task <IActionResult> GetAllCreatedSkills()
+        {
+            var response=await _skillService.GetCompleteSkills();
+
+            return Ok(response);
+        }
 
         [HttpGet("getSkillById/{id}")]
+        [Authorize]
         public async Task <IActionResult> GetSkillById(Guid id)
         {
             var response=await _skillService.GetSkillByIdAsync(id);
@@ -54,6 +66,7 @@ namespace AdminService.Controllers
         }
 
         [HttpPost("createSkill")]
+        [Authorize(Roles = "Admin")]
 
         public async Task<IActionResult> CreateSkill([FromBody] AddSkillDto newSkill)
         {
@@ -72,6 +85,7 @@ namespace AdminService.Controllers
         }
 
         [HttpPut("updateSkill")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateSkill([FromBody]  SkillViewDto updateSkill)
         {
             var response=await _skillService.UpdateAsync(updateSkill);
@@ -89,6 +103,7 @@ namespace AdminService.Controllers
         }
 
         [HttpDelete("deleteSkill/{id}")]
+        [Authorize(Roles = "Admin")]
 
         public async Task<IActionResult> DeleteSkill(Guid id)
         {
@@ -102,5 +117,54 @@ namespace AdminService.Controllers
 
             return StatusCode(500, response);  
         }
+
+        [HttpGet("getDeletedSkills")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetAllDeletedSkills()
+        {
+
+            var response=await _skillService.GetAllDeletedSkillAsync();
+
+            if (response.StatusCode == 200)
+            {
+                return Ok(response);
+            }
+            return NotFound(response) ;
+
+        }
+
+        [HttpPatch("reactivateSkill/{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> ActivateDeletedSkills(Guid id)
+        {
+
+            var response = await _skillService.SkillReactivationAsync(id);
+
+            if (response.StatusCode == 200)
+            {
+                return Ok(response);
+            }
+            else if (response.StatusCode == 404)
+            {
+                return NotFound(response);
+            }
+
+            return BadRequest(response);
+        }
+
+        [HttpGet("getSkillsBySearchParams")]
+        [Authorize]
+        public async Task<IActionResult> GetSkillBySearchParams(string searchParams)
+        {
+            var response=await _skillService.GetSkillbySearchParams(searchParams);
+
+            if(response.StatusCode == 200)
+            {
+                return Ok(response);
+            }
+            return BadRequest(response);
+
+        }
+
     }
 }
