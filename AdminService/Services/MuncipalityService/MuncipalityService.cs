@@ -44,7 +44,7 @@ namespace AdminService.Services.MuncipalityService
 			return new ApiResponse<MuncipalityViewDto>(200, "success", mun);
 		}
 		public async Task<ApiResponse<string>> DeleteMuncipality(int id)
-		{
+		{ 
 			var muncipality = await _repository.GetMuncipalityByIdAsync(id);
 			if (muncipality != null)
 			{
