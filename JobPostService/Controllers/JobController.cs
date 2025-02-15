@@ -125,7 +125,40 @@ namespace JobPostService.Controllers
 				return NotFound();
 			}
 			return BadRequest(res);
-
+		}
+		[HttpGet("filterjobpostwithskill")]
+		public async Task<IActionResult> Filterjobpostskill(Guid skillid)
+		{
+			if (skillid == null)
+			{
+				return BadRequest("Enter the skill");
+			}
+			var result=await _service.FilterJopPostBasedOnSkill(skillid);
+			if(result.StatusCode == 200)
+			{
+				return Ok(result);
+			}else if(result.StatusCode ==404) {
+				return NotFound(result);
+			}
+			return BadRequest(result);
+		}
+		[HttpGet("filterjobpostwithmuncipality")]
+		public async Task<IActionResult> Filterjobpostmuncipality(int muncipalityid)
+		{
+			if (muncipalityid == null)
+			{
+				return BadRequest("Enter the muncipality");
+			}
+			var result = await _service.FilterJopPostBasedOnMuncipality(muncipalityid);
+			if (result.StatusCode == 200)
+			{
+				return Ok(result);
+			}
+			else if (result.StatusCode == 404)
+			{
+				return NotFound(result);
+			}
+			return BadRequest(result);
 		}
 	}
 }

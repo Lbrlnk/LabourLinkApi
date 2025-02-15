@@ -181,14 +181,48 @@ namespace JobPostService.Services
 				var result = await _repository.GetJobPostBySearchParamsAsync(title);
 				if (!result.Any())
 				{
-					return new ApiResponse<List<LabourViewJobPostDto>>(404, "there is no job post in this given word");
-					}
+					return new ApiResponse<List<LabourViewJobPostDto>>(404, "there is no job post in this given word");		
+				}
 				var res = _mapper.Map<List<LabourViewJobPostDto>>(result);
 				return new ApiResponse<List<LabourViewJobPostDto>>(200, "success", res);
 			}
 			catch (Exception ex)
 			{
 				return new ApiResponse<List<LabourViewJobPostDto>>(500,ex.Message);
+			}
+		}
+		public async Task<ApiResponse<List<LabourViewJobPostDto>>> FilterJopPostBasedOnSkill(Guid Skillid)
+		{
+			try
+			{
+				var result=await _repository.FilterJopPostBasedOnSkillAsync(Skillid);
+				if (!result.Any())
+				{
+					return new ApiResponse<List<LabourViewJobPostDto>>(404, "there is no job post in this skill");
+				}
+				var res = _mapper.Map<List<LabourViewJobPostDto>>(result);
+				return new ApiResponse<List<LabourViewJobPostDto>>(200, "success", res);
+			}
+			catch (Exception ex)
+			{
+				return new ApiResponse<List<LabourViewJobPostDto>>(500, ex.Message);
+			}
+		}
+		public async Task<ApiResponse<List<LabourViewJobPostDto>>> FilterJopPostBasedOnMuncipality(int muncipalityid)
+		{
+			try
+			{
+				var result = await _repository.FilterJobPostBasedOnMuncipalityAsync(muncipalityid);
+				if (!result.Any())
+				{
+					return new ApiResponse<List<LabourViewJobPostDto>>(404, "there is no job post in this muncipality");
+				}
+				var res = _mapper.Map<List<LabourViewJobPostDto>>(result);
+				return new ApiResponse<List<LabourViewJobPostDto>>(200, "success", res);
+			}
+			catch (Exception ex)
+			{
+				return new ApiResponse<List<LabourViewJobPostDto>>(500, ex.Message);
 			}
 		}
 	}

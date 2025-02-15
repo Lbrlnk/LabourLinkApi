@@ -43,5 +43,13 @@ namespace JobPostService.Repository
 		{
 			return await _context.JobPost.Where(x => x.Title.ToLower().Contains(searchParams.ToLower()) && x.Status == "Active").OrderBy(x => x.Title).ToListAsync();
 		}
+		public async Task<List<JobPost>> FilterJopPostBasedOnSkillAsync(Guid Skillid)
+		{
+			return await _context.JobPost.Where(x=>x.SkillId1 == Skillid || x.SkillId2==Skillid).ToListAsync();
+		}
+		public async Task<List<JobPost>> FilterJobPostBasedOnMuncipalityAsync(int muncipalityid)
+		{
+			return await _context.JobPost.Where(x => x.MuncipalityId ==muncipalityid ).ToListAsync();
+		}
 	}
 }
