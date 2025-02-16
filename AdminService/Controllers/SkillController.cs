@@ -153,7 +153,7 @@ namespace AdminService.Controllers
         }
 
         [HttpGet("getSkillsBySearchParams")]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> GetSkillBySearchParams(string searchParams)
         {
             var response=await _skillService.GetSkillbySearchParams(searchParams);

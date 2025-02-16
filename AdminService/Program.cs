@@ -85,8 +85,23 @@ namespace AdminService
                 });
             });
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowSpecificOrigin",
+                    builder =>
+                    {
+                        builder.WithOrigins("http://localhost:5173")
+                               .AllowCredentials()
+                               .AllowAnyMethod()
+                               .AllowAnyHeader();
 
-               
+                    });
+            });
+
+
+
+
+
             var secret  =  Encoding.UTF8.GetBytes("Laboulink21345665432@354*(45234567876543fgbfgnh");
             builder.Services.AddAuthentication(options =>
             {
@@ -119,6 +134,9 @@ namespace AdminService
             }
 
             app.UseHttpsRedirection();
+            app.UseCors("AllowSpecificOrigin");
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

@@ -21,7 +21,7 @@ namespace AdminService.Controllers
             _service = service;
         }
         [HttpGet("muncipalities")]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> GetAllMuncipalities()
         {
 
@@ -193,7 +193,7 @@ namespace AdminService.Controllers
 
 
         [HttpGet("searchMunciplities")]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> SearchMunicpality(string searchkey)
         {
             try

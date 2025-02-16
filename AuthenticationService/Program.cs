@@ -90,6 +90,20 @@ namespace AuthenticationService
                 };
             });
 
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowSpecificOrigin",
+                    builder =>
+                    {
+                        builder.WithOrigins("http://localhost:5173")
+                               .AllowCredentials()
+                               .AllowAnyMethod()
+                               .AllowAnyHeader();
+
+                    });
+            });
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -100,6 +114,7 @@ namespace AuthenticationService
             }
 
             app.UseHttpsRedirection();
+            app.UseCors("AllowSpecificOrigin");
 
             app.UseAuthentication();
             app.UseAuthorization();
