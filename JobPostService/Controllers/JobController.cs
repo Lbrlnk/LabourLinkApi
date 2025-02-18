@@ -129,7 +129,7 @@ namespace JobPostService.Controllers
 		[HttpGet("filterjobpostwithskill")]
 		public async Task<IActionResult> Filterjobpostskill(Guid skillid)
 		{
-			if (skillid == null)
+			if (skillid == Guid.Empty)
 			{
 				return BadRequest("Enter the skill");
 			}
@@ -142,10 +142,10 @@ namespace JobPostService.Controllers
 			}
 			return BadRequest(result);
 		}
-		[HttpGet("filterjobpostwithmuncipality")]
+		[HttpGet("filterjobpostwithmuncipality`")]
 		public async Task<IActionResult> Filterjobpostmuncipality(int muncipalityid)
 		{
-			if (muncipalityid == null)
+			if (muncipalityid <= 0)
 			{
 				return BadRequest("Enter the muncipality");
 			}

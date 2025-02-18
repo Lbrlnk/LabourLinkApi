@@ -17,7 +17,7 @@ namespace JobPostService.Services
 		public JobService(IJobRepository repository,ICloudinaryHelper cloudinary,IMapper mapper)
 		{
 			_repository = repository;
-			_cloudinary = cloudinary;
+			_cloudinary = cloudinary;    
 			_mapper = mapper;
 		}
 		public async Task<ApiResponse<string>> AddNewPost(JobPostDto jobPostDto,IFormFile image)
@@ -44,6 +44,11 @@ namespace JobPostService.Services
 					Description=jobPostDto.Description,
 					Wage=jobPostDto.Wage,
 					StartDate=jobPostDto.StartDate,
+					SkillId1=jobPostDto.SkillId1,
+					Skill1=jobPostDto.Skill1,
+					Skill2=jobPostDto.Skill2,
+					Muncipality=jobPostDto.Muncipality,
+					SkillId2=jobPostDto.SkillId2,
 					PrefferedTime=jobPostDto.PrefferedTime,
 					MuncipalityId=jobPostDto.MuncipalityId,
 					Image=imageurl
@@ -117,8 +122,10 @@ namespace JobPostService.Services
 				existingJob.MuncipalityId = updatePost.MuncipalityId ?? existingJob.MuncipalityId;
 				existingJob.SkillId1 = updatePost.SkillId1 ?? existingJob.SkillId1;
 				existingJob.SkillId2= updatePost.SkillId2 ?? existingJob.SkillId2;
+				existingJob.Muncipality= updatePost.Muncipality?? existingJob.Muncipality;
+				existingJob.Skill1=updatePost.Skill1??existingJob.Skill1;
+				existingJob.Skill2 = updatePost.Skill2 ?? existingJob.Skill2;
 
-				
 				var result = await _repository.UpdatePostAsync(existingJob);
 				if (result)
 				{

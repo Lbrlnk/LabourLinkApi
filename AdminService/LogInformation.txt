@@ -1965,3 +1965,18 @@ FROM [Skills] AS [s]
 2025-02-13 16:22:53.752 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7234/_vs/browserLink - 200 null text/javascript; charset=UTF-8 18.877ms
 2025-02-13 16:22:53.910 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7234/swagger/v1/swagger.json - null null
 2025-02-13 16:22:53.926 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7234/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 16.0501ms
+2025-02-15 17:40:16.483 +05:30 [INF] User profile is available. Using 'C:\Users\adn\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-02-15 17:40:16.958 +05:30 [INF] Now listening on: https://localhost:7234
+2025-02-15 17:40:17.315 +05:30 [INF] Now listening on: http://localhost:5075
+2025-02-15 17:40:17.454 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7234/swagger/index.html - null null
+2025-02-15 17:40:17.643 +05:30 [INF] Application started. Press Ctrl+C to shut down.
+2025-02-15 17:40:17.852 +05:30 [INF] Hosting environment: Development
+2025-02-15 17:40:17.893 +05:30 [INF] Content root path: D:\LabourLink\AdminService
+2025-02-15 17:40:20.124 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7234/swagger/index.html - 200 null text/html;charset=utf-8 2672.3688ms
+2025-02-15 17:40:20.160 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7234/_vs/browserLink - null null
+2025-02-15 17:40:20.160 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7234/_framework/aspnetcore-browser-refresh.js - null null
+2025-02-15 17:40:20.175 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7234/_framework/aspnetcore-browser-refresh.js - 200 13760 application/javascript; charset=utf-8 15.5555ms
+2025-02-15 17:40:20.209 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7234/_vs/browserLink - 200 null text/javascript; charset=UTF-8 49.3153ms
+2025-02-15 17:40:20.650 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7234/swagger/v1/swagger.json - null null
+2025-02-15 17:40:20.731 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7234/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 80.5067ms
+2025-02-15 17:41:05.836 +05:30 [INF] Application is shutting down...
