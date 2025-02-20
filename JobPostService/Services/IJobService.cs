@@ -13,5 +13,7 @@ namespace JobPostService.Services
 		Task<ApiResponse<string>> ChangeStatus(string status, Guid jobid, Guid clientid);
 		Task<ApiResponse<List<LabourViewJobPostDto>>> GetJobPostByClientid(Guid clientid);
 		Task<ApiResponse<List<LabourViewJobPostDto>>> SearchJobPost(string title);
+		Task<ApiResponse<List<LabourViewJobPostDto>>> FilterJopPostBasedOnSkill(Guid Skillid);
+		Task<ApiResponse<List<LabourViewJobPostDto>>> FilterJopPostBasedOnMuncipality(int muncipalityid);
 	}
 }

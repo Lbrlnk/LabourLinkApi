@@ -18,8 +18,6 @@ builder.Configuration
 				.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
 				.AddEnvironmentVariables();
 
-// Get the connection string for AdminService
-//var connectionString = Environment.GetEnvironmentVariable("DB_ADMIN");
 var connectionString = Environment.GetEnvironmentVariable("DB_ADMIN");
 if (string.IsNullOrEmpty(connectionString))
 {
