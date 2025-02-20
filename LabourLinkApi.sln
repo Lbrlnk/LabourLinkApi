@@ -9,6 +9,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LabourLinkAPIGateway", "Lab
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthenticationService", "AuthenticationService\AuthenticationService.csproj", "{CFA6BC2C-6A36-40FD-BB6D-4D10CBAFE5F1}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProfileService", "ProfileService\ProfileService.csproj", "{2DDD2468-5EA6-496D-9C52-96A11755B42F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LabourLinkApi.Event", "LabourLinkApi.Events\LabourLinkApi.Event.csproj", "{9B14D222-C480-427A-8C0F-2E23AEFB7CCD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,14 @@ Global
 		{CFA6BC2C-6A36-40FD-BB6D-4D10CBAFE5F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CFA6BC2C-6A36-40FD-BB6D-4D10CBAFE5F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CFA6BC2C-6A36-40FD-BB6D-4D10CBAFE5F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DDD2468-5EA6-496D-9C52-96A11755B42F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DDD2468-5EA6-496D-9C52-96A11755B42F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DDD2468-5EA6-496D-9C52-96A11755B42F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DDD2468-5EA6-496D-9C52-96A11755B42F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B14D222-C480-427A-8C0F-2E23AEFB7CCD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B14D222-C480-427A-8C0F-2E23AEFB7CCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B14D222-C480-427A-8C0F-2E23AEFB7CCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B14D222-C480-427A-8C0F-2E23AEFB7CCD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
