@@ -82,7 +82,7 @@ namespace AuthenticationService.Controllers
         {
             try
             {
-                if (logindto == null || string.IsNullOrEmpty(logindto.Username) || string.IsNullOrEmpty(logindto.Password))
+                if (logindto == null || string.IsNullOrEmpty(logindto.email) || string.IsNullOrEmpty(logindto.password))
                 {
                     return BadRequest(new { message = "Username and Password are required" });
                 }

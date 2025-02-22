@@ -12,7 +12,8 @@ namespace AuthenticationService.Data
 
         public DbSet<RefreshToken> RefreshTokens { get; set; }
 
-      
+       
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -25,12 +26,6 @@ namespace AuthenticationService.Data
               .WithMany(u => u.RefreshTokens)
               .HasForeignKey(rt => rt.UserId)
               .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<User>()
-                .Property(u=>u.UserType)
-                 .HasConversion<string>();
-
-
 
 
         }

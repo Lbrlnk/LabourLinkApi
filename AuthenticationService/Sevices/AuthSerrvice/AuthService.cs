@@ -70,9 +70,14 @@ namespace AuthenticationService.Sevices.AuthSerrvice
         }
         public async Task<(string accessToken, string refreshToken)> LoginAsync(LoginDto loginDto)
         {
+
+            try
+            {
+
+
             // Generate tokens
-            var user = await _authRepository.GetUserByEmailAsync(loginDto.Username);
-            if (user == null || !BCrypt.Net.BCrypt.Verify(loginDto.Password, user.Password))
+            var user = await _authRepository.GetUserByEmailAsync(loginDto.email);
+            if (user == null || !BCrypt.Net.BCrypt.Verify(loginDto.password, user.Password))
             {
                 throw new Exception("Invalid username or password");
             }
@@ -89,6 +94,11 @@ namespace AuthenticationService.Sevices.AuthSerrvice
             await _authRepository.SaveRefreshTokenAsync(user.UserId, refreshToken, DateTime.UtcNow.AddMonths(1));
 
             return (accessToken, refreshToken);
+            }
+            catch(Exception ex)
+            {
+                throw new Exception($"Error in login : {ex.Message}", ex);
+            }
         }
 
 
