@@ -33,6 +33,15 @@ namespace AdminService.Controllers
 
 
         }
+        [HttpGet("getCompleteSkills")]
+        [Authorize(Roles = "Admin")]
+
+        public async Task <IActionResult> GetAllCreatedSkills()
+        {
+            var response=await _skillService.GetCompleteSkills();
+
+            return Ok(response);
+        }
 
         [HttpGet("getSkillById/{id}")]
         [Authorize]
@@ -108,5 +117,54 @@ namespace AdminService.Controllers
 
             return StatusCode(500, response);  
         }
+
+        [HttpGet("getDeletedSkills")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetAllDeletedSkills()
+        {
+
+            var response=await _skillService.GetAllDeletedSkillAsync();
+
+            if (response.StatusCode == 200)
+            {
+                return Ok(response);
+            }
+            return NotFound(response) ;
+
+        }
+
+        [HttpPatch("reactivateSkill/{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> ActivateDeletedSkills(Guid id)
+        {
+
+            var response = await _skillService.SkillReactivationAsync(id);
+
+            if (response.StatusCode == 200)
+            {
+                return Ok(response);
+            }
+            else if (response.StatusCode == 404)
+            {
+                return NotFound(response);
+            }
+
+            return BadRequest(response);
+        }
+
+        [HttpGet("getSkillsBySearchParams")]
+        [Authorize]
+        public async Task<IActionResult> GetSkillBySearchParams(string searchParams)
+        {
+            var response=await _skillService.GetSkillbySearchParams(searchParams);
+
+            if(response.StatusCode == 200)
+            {
+                return Ok(response);
+            }
+            return BadRequest(response);
+
+        }
+
     }
 }
