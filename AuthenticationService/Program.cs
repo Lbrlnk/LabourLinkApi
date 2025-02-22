@@ -4,12 +4,14 @@ using AuthenticationService.Helpers.CloudinaryHelper;
 using AuthenticationService.Helpers.JwtHelper;
 using AuthenticationService.Mapper;
 using AuthenticationService.Repositories;
+using AuthenticationService.Services.ProfileCompletionConsumerService;
 using AuthenticationService.Sevices.AuthSerrvice;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace AuthenticationService
 {
@@ -44,23 +46,19 @@ namespace AuthenticationService
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<IAuthRepository, AuthRepository>();
             builder.Services.AddScoped<ICloudinaryHelper, CloudinaryHelper>();
+            builder.Services.AddHostedService<ProfileCompletionConsumerService>();
 
 
 
-           
 
-            builder.Services.AddControllers();
+
+            builder.Services.AddControllers().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            });
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            //builder.Services.AddSwaggerGen(options =>
-            //{
-            //    // Map IFormFile to a binary type in OpenAPI
-            //    options.MapType<IFormFile>(() => new OpenApiSchema
-            //    {
-            //        Type = "string",
-            //        Format = "binary"
-            //    });
-            //});
+            
 
             builder.Services.AddSwaggerGen();
 

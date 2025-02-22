@@ -20,36 +20,19 @@ namespace AuthenticationService.Repositories
                 .FirstOrDefaultAsync(x => x.Email == email);
         }
 
-      //  public async Task<bool> GetUserByPhoneAsync(string phone)
-        //{
-        //    var IsExist = await _context.Users.FirstOrDefaultAsync(x => x.Phone == phone);
-        //    if (IsExist == null)
-        //    {
-        //        return false;
-        //    }
-        //    return true;
-        //}
 
         public async Task AddUserAsync(User user)
         {
-            await _context.Users.AddAsync(user)  ;
+            await _context.Users.AddAsync(user);
             Console.WriteLine($"Before saving: IsActived = {user.IsActive}");
             //await _context.SaveChangesAsync();
         }
 
-       public async Task AddLabour(Labour lbr)
-        {
-            await _context.Labours.AddAsync(lbr);
-        }
-        public async Task AddEmployer(Employer employer)
-        {
-            await _context.Employers.AddAsync(employer);
 
-        }
 
-       public async Task<bool> UpdateDatabase()
+        public async Task<bool> UpdateDatabaseAsync()
         {
-           return await _context.SaveChangesAsync() > 0;
+            return await _context.SaveChangesAsync() > 0;
         }
 
 
@@ -85,6 +68,17 @@ namespace AuthenticationService.Repositories
         {
             return await _context.Users
                 .FirstOrDefaultAsync(u => u.UserId == userId);
+        }
+
+
+        public async Task<bool> MarkProfileAsCompleted(Guid userId)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId == userId);
+            if (user == null) return false;
+
+            user.IsProfileCompleted = true;
+            await _context.SaveChangesAsync();
+            return true;
         }
     }
 

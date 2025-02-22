@@ -9,6 +9,7 @@ namespace AdminService.Mapper
 		public ProfileMapper()
 		{
 			CreateMap<Muncipality,MuncipalityViewDto>().ReverseMap();
+
 		}
 	}
 }

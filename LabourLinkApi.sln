@@ -1,4 +1,3 @@
-﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35327.3
@@ -8,6 +7,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LabourLinkAPIGateway", "LabourLinkAPIGateway\LabourLinkAPIGateway.csproj", "{AC2338C7-8780-47CB-81B4-F082C20629A3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthenticationService", "AuthenticationService\AuthenticationService.csproj", "{CFA6BC2C-6A36-40FD-BB6D-4D10CBAFE5F1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProfileService", "ProfileService\ProfileService.csproj", "{2DDD2468-5EA6-496D-9C52-96A11755B42F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LabourLinkApi.Event", "LabourLinkApi.Events\LabourLinkApi.Event.csproj", "{9B14D222-C480-427A-8C0F-2E23AEFB7CCD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobPostService", "JobPostService\JobPostService.csproj", "{051D0655-1CD8-4F89-974A-4DC44E0B9768}"
 EndProject
@@ -29,6 +32,14 @@ Global
 		{CFA6BC2C-6A36-40FD-BB6D-4D10CBAFE5F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CFA6BC2C-6A36-40FD-BB6D-4D10CBAFE5F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CFA6BC2C-6A36-40FD-BB6D-4D10CBAFE5F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DDD2468-5EA6-496D-9C52-96A11755B42F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DDD2468-5EA6-496D-9C52-96A11755B42F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DDD2468-5EA6-496D-9C52-96A11755B42F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DDD2468-5EA6-496D-9C52-96A11755B42F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B14D222-C480-427A-8C0F-2E23AEFB7CCD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B14D222-C480-427A-8C0F-2E23AEFB7CCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B14D222-C480-427A-8C0F-2E23AEFB7CCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B14D222-C480-427A-8C0F-2E23AEFB7CCD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{051D0655-1CD8-4F89-974A-4DC44E0B9768}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{051D0655-1CD8-4F89-974A-4DC44E0B9768}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{051D0655-1CD8-4F89-974A-4DC44E0B9768}.Release|Any CPU.ActiveCfg = Release|Any CPU

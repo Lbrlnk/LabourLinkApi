@@ -46,47 +46,19 @@ namespace AuthenticationService.Controllers
 
 
 
-        [HttpPost("labour/registeration")]
-        public async Task<IActionResult> LabouRegistration([FromForm] LabourRegistrationDto lbrRgstrDto, [FromForm]  LabourProfilePhotoDto profilePhoto)
+
+        [HttpPost("labourlink/register")]
+        public async Task<IActionResult> EmployerRegister([FromBody] RegistrationDto registrationDto)
         {
 
             try
             {
 
-            if (lbrRgstrDto == null)
-            {
-                return BadRequest(new { message = "complete the form before submitting" });
-            }
-            var result = await _authService.RegisterAsync(lbrRgstrDto , profilePhoto);
-            if (result)
-            {
-                return Ok(new { message = "Registration Successful" });
-            }
-            else
-            {
-                return BadRequest(new { message = "Registraion failed" });
-            }
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, new { message = ex.Message });
-            }
-
-
-        }
-
-        [HttpPost("employer/registration")]
-        public async Task<IActionResult> EmployerRegister([FromBody] EmployerRegistrationDto emplyrRgstrDto)
-        {
-
-            try
-            {
-
-                if (emplyrRgstrDto == null)
+                if (registrationDto == null)
                 {
                     return BadRequest(new { message = "complete the form before submitting" });
                 }
-                var result = await _authService.RegisterAsync(emplyrRgstrDto , null);
+                var result = await _authService.RegisterAsync(registrationDto);
                 if (result)
                 {
                     return Ok(new { message = "Registration Successful" });
@@ -105,12 +77,12 @@ namespace AuthenticationService.Controllers
 
 
 
-        [HttpPost("login")]
+        [HttpPost("labourlink/login")]
         public async Task<IActionResult> Login([FromBody] LoginDto logindto)
         {
             try
             {
-                if (logindto == null || string.IsNullOrEmpty(logindto.Username) || string.IsNullOrEmpty(logindto.Password))
+                if (logindto == null || string.IsNullOrEmpty(logindto.email) || string.IsNullOrEmpty(logindto.password))
                 {
                     return BadRequest(new { message = "Username and Password are required" });
                 }

@@ -18,7 +18,7 @@ namespace AuthenticationService.Models
         [MaxLength(100)]
         [RegularExpression(@"^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,15}$",
         ErrorMessage = "Password must be 8-15 characters long, include at least one uppercase letter, one lowercase letter, one digit, and one special character.")]
-        public string PasswordHash { get; set; }
+        public string Password { get; set; }
 
         [Required]
         public UserType UserType { get; set; } 
@@ -33,9 +33,7 @@ namespace AuthenticationService.Models
 
 
         public virtual ICollection<RefreshToken> RefreshTokens { get; set; }
-        public ICollection<Labour> Labours { get; set; }
-        public ICollection<Employer> Employers { get; set; }
-
+   
 
 
 
