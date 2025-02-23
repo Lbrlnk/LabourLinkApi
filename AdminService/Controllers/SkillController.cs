@@ -20,7 +20,7 @@ namespace AdminService.Controllers
         }
 
         [HttpGet("getAllSkill")]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> GettAllSkills()
         {
 
