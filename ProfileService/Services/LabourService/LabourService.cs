@@ -5,7 +5,7 @@ using ProfileService.Dtos;
 using ProfileService.Helper.CloudinaryHelper;
 using ProfileService.Models;
 using ProfileService.Repositories.LabourRepository;
-using ProfileService.Services.RabbitMQ;
+//using ProfileService.Services.RabbitMQ;
 using System.ComponentModel.DataAnnotations;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -17,13 +17,13 @@ namespace ProfileService.Services.LabourService
         private readonly ILabourRepository _labourRepositry;
         private readonly IMapper _mapper;
         private readonly ICloudinaryHelper _cloudinary;
-        private readonly IRabbitMqService _rabbitMqService;
-        public LabourService(ILabourRepository labourRepository, IMapper mapper, ICloudinaryHelper cloudinary, IRabbitMqService rabbitMqService)
+        //private readonly IRabbitMqService _rabbitMqService;
+        public LabourService(ILabourRepository labourRepository, IMapper mapper, ICloudinaryHelper cloudinary)
         {
             _labourRepositry = labourRepository;
             _mapper = mapper;
             _cloudinary = cloudinary;
-            _rabbitMqService = rabbitMqService;
+            //_rabbitMqService = rabbitMqService;
 
         }
 
@@ -103,7 +103,7 @@ namespace ProfileService.Services.LabourService
                 if (await _labourRepositry.UpdateDatabase())
                 {
 
-                    _rabbitMqService.PublishProfileCompleted(userId);
+                    //_rabbitMqService.PublishProfileCompleted(userId);
                     return labourPeofileDto.LabourProfileCompletionDto;
                 }
                 throw new Exception("internal server erro  : database updation failed");

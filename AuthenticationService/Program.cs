@@ -4,7 +4,6 @@ using AuthenticationService.Helpers.CloudinaryHelper;
 using AuthenticationService.Helpers.JwtHelper;
 using AuthenticationService.Mapper;
 using AuthenticationService.Repositories;
-using AuthenticationService.Services.ProfileCompletionConsumerService;
 using AuthenticationService.Sevices.AuthSerrvice;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -46,7 +45,7 @@ namespace AuthenticationService
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<IAuthRepository, AuthRepository>();
             builder.Services.AddScoped<ICloudinaryHelper, CloudinaryHelper>();
-            builder.Services.AddHostedService<ProfileCompletionConsumerService>();
+            //builder.Services.AddHostedService<ProfileCompletionConsumerService>();
 
 
 

@@ -1477,3 +1477,91 @@ SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
 SELECT [MigrationId], [ProductVersion]
 FROM [__EFMigrationsHistory]
 ORDER BY [MigrationId];
+2025-02-24 16:19:45.140 +05:30 [INF] User profile is available. Using 'C:\Users\adn\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-02-24 16:19:45.307 +05:30 [INF] Now listening on: https://localhost:7234
+2025-02-24 16:19:45.309 +05:30 [INF] Now listening on: http://localhost:5075
+2025-02-24 16:19:45.438 +05:30 [INF] Application started. Press Ctrl+C to shut down.
+2025-02-24 16:19:45.441 +05:30 [INF] Hosting environment: Development
+2025-02-24 16:19:45.442 +05:30 [INF] Content root path: C:\Users\adn\Desktop\BAckend\AdminService
+2025-02-24 16:19:46.147 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7234/swagger - null null
+2025-02-24 16:19:46.357 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7234/swagger - 301 0 null 214.6733ms
+2025-02-24 16:19:46.364 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7234/swagger/index.html - null null
+2025-02-24 16:19:46.447 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7234/swagger/index.html - 200 null text/html;charset=utf-8 82.2269ms
+2025-02-24 16:19:46.487 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7234/swagger/swagger-ui.css - null null
+2025-02-24 16:19:46.487 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7234/swagger/swagger-ui-bundle.js - null null
+2025-02-24 16:19:46.488 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7234/swagger/swagger-ui-standalone-preset.js - null null
+2025-02-24 16:19:46.488 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7234/_framework/aspnetcore-browser-refresh.js - null null
+2025-02-24 16:19:46.504 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7234/_vs/browserLink - null null
+2025-02-24 16:19:46.519 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7234/_framework/aspnetcore-browser-refresh.js - 200 13760 application/javascript; charset=utf-8 30.7351ms
+2025-02-24 16:19:46.528 +05:30 [INF] Sending file. Request path: '/swagger-ui.css'. Physical path: 'N/A'
+2025-02-24 16:19:46.529 +05:30 [INF] Sending file. Request path: '/swagger-ui-standalone-preset.js'. Physical path: 'N/A'
+2025-02-24 16:19:46.555 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7234/swagger/swagger-ui.css - 200 152034 text/css 67.1129ms
+2025-02-24 16:19:46.555 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7234/swagger/swagger-ui-standalone-preset.js - 200 230280 text/javascript 67.0029ms
+2025-02-24 16:19:46.592 +05:30 [INF] Sending file. Request path: '/swagger-ui-bundle.js'. Physical path: 'N/A'
+2025-02-24 16:19:46.600 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7234/swagger/swagger-ui-bundle.js - 200 1456926 text/javascript 111.9456ms
+2025-02-24 16:19:46.628 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7234/_vs/browserLink - 200 null text/javascript; charset=UTF-8 124.3723ms
+2025-02-24 16:19:47.089 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7234/swagger/v1/swagger.json - null null
+2025-02-24 16:19:47.150 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7234/swagger/favicon-32x32.png - null null
+2025-02-24 16:19:47.159 +05:30 [INF] Sending file. Request path: '/favicon-32x32.png'. Physical path: 'N/A'
+2025-02-24 16:19:47.167 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7234/swagger/favicon-32x32.png - 200 628 image/png 17.2454ms
+2025-02-24 16:19:47.193 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7234/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 104.2433ms
+2025-02-25 10:11:23.911 +05:30 [INF] User profile is available. Using 'C:\Users\adn\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-02-25 10:11:24.304 +05:30 [INF] Now listening on: https://localhost:7234
+2025-02-25 10:11:24.306 +05:30 [INF] Now listening on: http://localhost:5075
+2025-02-25 10:11:24.487 +05:30 [INF] Application started. Press Ctrl+C to shut down.
+2025-02-25 10:11:24.494 +05:30 [INF] Hosting environment: Development
+2025-02-25 10:11:24.498 +05:30 [INF] Content root path: C:\Users\adn\Desktop\BAckend\AdminService
+2025-02-25 10:11:55.079 +05:30 [INF] User profile is available. Using 'C:\Users\adn\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-02-25 10:11:55.327 +05:30 [INF] Now listening on: https://localhost:7234
+2025-02-25 10:11:55.329 +05:30 [INF] Now listening on: http://localhost:5075
+2025-02-25 10:11:55.649 +05:30 [INF] Application started. Press Ctrl+C to shut down.
+2025-02-25 10:11:55.652 +05:30 [INF] Hosting environment: Development
+2025-02-25 10:11:55.653 +05:30 [INF] Content root path: C:\Users\adn\Desktop\BAckend\AdminService
+2025-02-25 10:13:08.218 +05:30 [INF] User profile is available. Using 'C:\Users\adn\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-02-25 10:13:08.405 +05:30 [INF] Now listening on: https://localhost:7234
+2025-02-25 10:13:08.408 +05:30 [INF] Now listening on: http://localhost:5075
+2025-02-25 10:13:08.538 +05:30 [INF] Application started. Press Ctrl+C to shut down.
+2025-02-25 10:13:08.540 +05:30 [INF] Hosting environment: Development
+2025-02-25 10:13:08.542 +05:30 [INF] Content root path: C:\Users\adn\Desktop\BAckend\AdminService
+2025-02-25 10:13:15.517 +05:30 [INF] User profile is available. Using 'C:\Users\adn\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-02-25 10:13:15.788 +05:30 [INF] Now listening on: https://localhost:7234
+2025-02-25 10:13:15.815 +05:30 [INF] Now listening on: http://localhost:5075
+2025-02-25 10:13:15.987 +05:30 [INF] Application started. Press Ctrl+C to shut down.
+2025-02-25 10:13:15.988 +05:30 [INF] Hosting environment: Development
+2025-02-25 10:13:15.990 +05:30 [INF] Content root path: C:\Users\adn\Desktop\BAckend\AdminService
+2025-02-25 10:13:22.702 +05:30 [INF] User profile is available. Using 'C:\Users\adn\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-02-25 10:13:23.024 +05:30 [INF] Now listening on: https://localhost:7234
+2025-02-25 10:13:23.046 +05:30 [INF] Now listening on: http://localhost:5075
+2025-02-25 10:13:23.239 +05:30 [INF] Application started. Press Ctrl+C to shut down.
+2025-02-25 10:13:23.240 +05:30 [INF] Hosting environment: Development
+2025-02-25 10:13:23.242 +05:30 [INF] Content root path: C:\Users\adn\Desktop\BAckend\AdminService
+2025-02-25 10:14:41.407 +05:30 [INF] User profile is available. Using 'C:\Users\adn\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-02-25 10:14:41.583 +05:30 [INF] Now listening on: https://localhost:7234
+2025-02-25 10:14:41.585 +05:30 [INF] Now listening on: http://localhost:5075
+2025-02-25 10:14:41.864 +05:30 [INF] Application started. Press Ctrl+C to shut down.
+2025-02-25 10:14:41.869 +05:30 [INF] Hosting environment: Development
+2025-02-25 10:14:41.871 +05:30 [INF] Content root path: C:\Users\adn\Desktop\BAckend\AdminService
+2025-02-25 10:14:59.719 +05:30 [INF] User profile is available. Using 'C:\Users\adn\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-02-25 10:14:59.972 +05:30 [INF] Now listening on: https://localhost:7234
+2025-02-25 10:14:59.974 +05:30 [INF] Now listening on: http://localhost:5075
+2025-02-25 10:15:00.081 +05:30 [INF] Application started. Press Ctrl+C to shut down.
+2025-02-25 10:15:00.083 +05:30 [INF] Hosting environment: Development
+2025-02-25 10:15:00.084 +05:30 [INF] Content root path: C:\Users\adn\Desktop\BAckend\AdminService
+2025-02-25 10:15:07.339 +05:30 [INF] User profile is available. Using 'C:\Users\adn\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-02-25 10:15:07.565 +05:30 [INF] Now listening on: https://localhost:7234
+2025-02-25 10:15:07.568 +05:30 [INF] Now listening on: http://localhost:5075
+2025-02-25 10:15:07.790 +05:30 [INF] Application started. Press Ctrl+C to shut down.
+2025-02-25 10:15:07.916 +05:30 [INF] Hosting environment: Development
+2025-02-25 10:15:07.919 +05:30 [INF] Content root path: C:\Users\adn\Desktop\BAckend\AdminService
+2025-02-25 10:22:47.133 +05:30 [INF] User profile is available. Using 'C:\Users\adn\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-02-25 10:22:47.358 +05:30 [INF] Now listening on: https://localhost:7234
+2025-02-25 10:22:47.362 +05:30 [INF] Now listening on: http://localhost:5075
+2025-02-25 10:22:47.927 +05:30 [INF] Application started. Press Ctrl+C to shut down.
+2025-02-25 10:22:48.146 +05:30 [INF] Hosting environment: Development
+2025-02-25 10:22:48.168 +05:30 [INF] Content root path: C:\Users\adn\Desktop\BAckend\AdminService
+2025-02-25 10:22:55.156 +05:30 [INF] User profile is available. Using 'C:\Users\adn\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-02-25 10:22:55.628 +05:30 [INF] Now listening on: https://localhost:7234
+2025-02-25 10:22:55.643 +05:30 [INF] Now listening on: http://localhost:5075
+2025-02-25 10:22:55.918 +05:30 [INF] Application started. Press Ctrl+C to shut down.
+2025-02-25 10:22:56.505 +05:30 [INF] Hosting environment: Development
+2025-02-25 10:22:56.506 +05:30 [INF] Content root path: C:\Users\adn\Desktop\BAckend\AdminService
