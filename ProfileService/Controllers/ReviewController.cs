@@ -104,7 +104,7 @@ namespace ProfileService.Controllers
 			if (result.StatusCode == 200)
 			{
 				return Ok(result);
-			}
+			}            
 			else if (result.StatusCode == 403)
 			{
 				return StatusCode(403, result);

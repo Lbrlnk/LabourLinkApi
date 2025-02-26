@@ -31,7 +31,11 @@ namespace ProfileService.Repositories.ReviewRepository
 		}
 		public async Task<Review> GetByReviewId(Guid reviewid)
 		{
-			return await _context.Reviews.FirstOrDefaultAsync(x => x.ReviewId == reviewid );
+			return await _context.Reviews.FirstOrDefaultAsync(x => x.ReviewId == reviewid && x.IsActive == true);
+		}
+		public async Task<Review> GetByReviewIdInActivealso(Guid reviewid)
+		{
+			return await _context.Reviews.FirstOrDefaultAsync(x => x.ReviewId == reviewid);
 		}
 		public async Task<bool> UpdateAsync(Review review)
 		{
