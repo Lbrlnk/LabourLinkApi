@@ -13,8 +13,11 @@ namespace ProfileService.Helper.CloudinaryHelper
                 var cloudName = configuration["CLOUDINARY_CLOUDNAME"];
                 var apiKey = configuration["CLOUDINARY_APIKEY"];
                 var apiSecret = configuration["CLOUDINARY_API_SECRET"];
-
-                var account = new Account(cloudName, apiKey, apiSecret);
+			if (string.IsNullOrEmpty(cloudName) || string.IsNullOrEmpty(apiKey) || string.IsNullOrEmpty(apiSecret))
+			{
+				throw new ArgumentNullException("Cloudinary configuration is missing. Please check appsettings.json or environment variables.");
+			}
+			var account = new Account(cloudName, apiKey, apiSecret);
                 _cloudinary = new Cloudinary(account);
             }
 
@@ -22,6 +25,7 @@ namespace ProfileService.Helper.CloudinaryHelper
             {
                 if (file == null || file.Length == 0)
                 {
+
 
                     throw new ArgumentException("File cannot be null or empty", nameof(file));
                 }

@@ -11,8 +11,10 @@ using ProfileService.Mapper;
 using ProfileService.Middlewares;
 using ProfileService.Repositories.EmployerRepository;
 using ProfileService.Repositories.LabourRepository;
+using ProfileService.Repositories.ReviewRepository;
 using ProfileService.Services.EmployerService;
 using ProfileService.Services.LabourService;
+using ProfileService.Services.ReviewService;
 using ProfileService.Services.RabbitMQ;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -49,7 +51,8 @@ namespace ProfileService
             builder.Services.AddSingleton<IRabbitMqService, RabbitMqService>();
             builder.Services.AddScoped<IEmployerRepository, EmployerRepository>();
             builder.Services.AddScoped<IEmployerService, EmployerService>();
-
+            builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
+            builder.Services.AddScoped<IReviewService, ReviewService>();
 
             builder.Services.AddControllers().AddJsonOptions(options =>
             {

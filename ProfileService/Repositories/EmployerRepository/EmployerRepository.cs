@@ -34,6 +34,5 @@ namespace ProfileService.Repositories.EmployerRepository
         {
             return await _context.SaveChangesAsync() > 0;
         }
-
     }
 }

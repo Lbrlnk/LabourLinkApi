@@ -17,8 +17,8 @@ namespace ProfileService.Services.RabbitMQ
         private bool _disposed;
 
 
-       
-        
+
+
 
 
         public RabbitMqService(IConfiguration config)
@@ -37,9 +37,9 @@ namespace ProfileService.Services.RabbitMQ
 
 
             // Declare durable exchange (idempotent operation) , Declaring an exchange in RabbitMQ means creating a routing system where messages are sent before reaching a queue. Exchanges receive messages from producers and route them to queues based on certain rules.
-           // In RabbitMQ, messages cannot go directly from a producer to a queue.Instead:
+            // In RabbitMQ, messages cannot go directly from a producer to a queue.Instead:
             _channel.ExchangeDeclare(
-                exchange: ExchangeName,  
+                exchange: ExchangeName,
                 type: ExchangeType.Direct,   //Direct exchange type (routes messages based on a specific routing key).
                 durable: true, // Ensures the exchange persists even if RabbitMQ restarts.
                 autoDelete: false,  // The exchange will not be deleted automatically when no queues are using it.

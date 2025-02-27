@@ -29,7 +29,7 @@ namespace ProfileService.Services.EmployerService
 
                 employee.UserId = userId;
                  await _employerRepository.AddEmployer(employee);
-                if(await _employerRepository.UpdateDatabase())
+                if (await _employerRepository.UpdateDatabase())
                 {
                     _rabbitMqService.PublishProfileCompleted(userId);
                     return employerProfileDto;

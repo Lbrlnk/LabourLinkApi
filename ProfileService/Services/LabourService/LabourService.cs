@@ -18,7 +18,7 @@ namespace ProfileService.Services.LabourService
         private readonly IMapper _mapper;
         private readonly ICloudinaryHelper _cloudinary;
         private readonly IRabbitMqService _rabbitMqService;
-        public LabourService(ILabourRepository labourRepository, IMapper mapper, ICloudinaryHelper cloudinary, IRabbitMqService rabbitMqService)
+        public LabourService(ILabourRepository labourRepository, IMapper mapper, ICloudinaryHelper cloudinary,IRabbitMqService rabbitMqService)
         {
             _labourRepositry = labourRepository;
             _mapper = mapper;
