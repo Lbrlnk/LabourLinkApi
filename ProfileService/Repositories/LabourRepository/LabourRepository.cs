@@ -73,7 +73,7 @@ namespace ProfileService.Repositories.LabourRepository
         }
 
         public async Task<Labour> GetLabourByPhone(string phoneNumber)
-        {
+        {   
            return await _context.Labours.FirstOrDefaultAsync(l => l.PhoneNumber == phoneNumber); 
 
         }

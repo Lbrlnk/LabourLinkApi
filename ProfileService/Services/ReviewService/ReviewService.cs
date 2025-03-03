@@ -31,6 +31,7 @@ namespace ProfileService.Services.ReviewService
 				}
 
 				var employer = await _employer.GetEmployerByIdAsync(userid);
+				Console.WriteLine(employer);
 				if (employer == null)
 				{
 					return new ApiResponse<ReviewShowDto>(404, "Employer not found");

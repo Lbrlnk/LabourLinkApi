@@ -18,9 +18,18 @@ namespace JobPostService.Controllers
 		[HttpPost("createjobpost")]
 		public async Task<IActionResult> PostAJob([FromForm] JobPostDto jobPostDto,IFormFile image)
 		{
+			if (!HttpContext.Items.ContainsKey("UserId") || HttpContext.Items["UserId"] == null)
+			{
+				return BadRequest("UserId not found in the request context.");
+			}
 
-			var response= await _service.AddNewPost(jobPostDto, image);
-			if (response.StatusCode == 200)
+			var userIdString = HttpContext.Items["UserId"].ToString();
+			if (!Guid.TryParse(userIdString, out var userId))
+			{
+				return BadRequest("Invalid UserId format.");
+			}
+			var response= await _service.AddNewPost(jobPostDto, image, userId);
+			if (response.StatusCode == 201)
 			{
 				return Ok(response);
 			}
@@ -61,13 +70,23 @@ namespace JobPostService.Controllers
 			return NotFound(res);
 		}
 		[HttpPatch("updatejobpost")]
-		public async Task<IActionResult> UpdateJobPost(Guid jobId, Guid clientId,UpdatePostDto updatePostDto)
+		public async Task<IActionResult> UpdateJobPost(Guid jobId,UpdatePostDto updatePostDto)
 		{
 			if (updatePostDto == null)
 			{
 				return BadRequest(new ApiResponse<string>(400, "Invalid request data."));
 			}
-			var res = await _service.UpdateJobPost(updatePostDto, clientId, jobId);
+			if(!HttpContext.Items.ContainsKey("UserId") || HttpContext.Items["UserId"] == null)
+			{
+				return BadRequest("UserId not found in the request context.");
+			}
+
+			var userIdString = HttpContext.Items["UserId"].ToString();
+			if (!Guid.TryParse(userIdString, out var userId))
+			{
+				return BadRequest("Invalid UserId format.");
+			}
+			var res = await _service.UpdateJobPost(updatePostDto, userId, jobId);
 			if (res.StatusCode == 200)
 			{
 				return Ok(res);
@@ -79,9 +98,19 @@ namespace JobPostService.Controllers
 			return BadRequest(res);
 		}
 		[HttpPatch("changestatus")]
-		public async Task<IActionResult> UpdateStatus(string status, Guid jobid, Guid clientid)
+		public async Task<IActionResult> UpdateStatus(string status, Guid jobid)
 		{
-			var res=await _service.ChangeStatus(status, jobid, clientid);
+			if (!HttpContext.Items.ContainsKey("UserId") || HttpContext.Items["UserId"] == null)
+			{
+				return BadRequest("UserId not found in the request context.");
+			}
+
+			var userIdString = HttpContext.Items["UserId"].ToString();
+			if (!Guid.TryParse(userIdString, out var userId))
+			{
+				return BadRequest("Invalid UserId format.");
+			}
+			var res=await _service.ChangeStatus(status, jobid, userId);
 			if(res.StatusCode == 200)
 			{
 				return Ok(res);
@@ -98,9 +127,19 @@ namespace JobPostService.Controllers
 			return BadRequest(res);
 		}
 		[HttpGet("jobpostbyclient")]
-		public async Task<IActionResult> ShowJobPostByClient(Guid cleintid)
+		public async Task<IActionResult> ShowJobPostByClient()
 		{
-			var res=await _service.GetJobPostByClientid(cleintid);
+			if (!HttpContext.Items.ContainsKey("UserId") || HttpContext.Items["UserId"] == null)
+			{
+				return BadRequest("UserId not found in the request context.");
+			}
+
+			var userIdString = HttpContext.Items["UserId"].ToString();
+			if (!Guid.TryParse(userIdString, out var userId))
+			{
+				return BadRequest("Invalid UserId format.");
+			}
+			var res=await _service.GetJobPostByClientid(userId);
 			if(res.StatusCode == 200)
 			{
 				return Ok(res);

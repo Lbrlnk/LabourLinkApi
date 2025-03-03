@@ -1,4 +1,3 @@
-
 using CloudinaryDotNet;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -15,7 +14,7 @@ using ProfileService.Repositories.ReviewRepository;
 using ProfileService.Services.EmployerService;
 using ProfileService.Services.LabourService;
 using ProfileService.Services.ReviewService;
-using ProfileService.Services.RabbitMQ;
+//using ProfileService.Services.RabbitMQ;
 using System.Text;
 using System.Text.Json.Serialization;
 
@@ -48,7 +47,7 @@ namespace ProfileService
             builder.Services.AddScoped<ILabourRepository , LabourRepository>();
             builder.Services.AddScoped<ILabourService, LabourService>();
             builder.Services.AddScoped<ICloudinaryHelper, CloudinaryHelper>();
-            builder.Services.AddSingleton<IRabbitMqService, RabbitMqService>();
+            //builder.Services.AddSingleton<IRabbitMqService, RabbitMqService>();
             builder.Services.AddScoped<IEmployerRepository, EmployerRepository>();
             builder.Services.AddScoped<IEmployerService, EmployerService>();
             builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
@@ -62,7 +61,7 @@ namespace ProfileService
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(options =>
             {
-                options.SwaggerDoc("v1", new OpenApiInfo { Title = "Kaalcharakk", Version = "v1" });
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "LabouLink", Version = "v1" });
                 options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Name = "Authorization",
