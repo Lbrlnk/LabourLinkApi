@@ -1,5 +1,7 @@
 
 using CloudinaryDotNet;
+using EventBus.Abstractions;
+using EventBus.Implementations;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -13,9 +15,11 @@ using ProfileService.Repositories.EmployerRepository;
 using ProfileService.Repositories.LabourRepository;
 using ProfileService.Services.EmployerService;
 using ProfileService.Services.LabourService;
-using ProfileService.Services.RabbitMQ;
+//using ProfileService.Services.RabbitMQ;
+using RabbitMQ.Client;
 using System.Text;
 using System.Text.Json.Serialization;
+
 
 namespace ProfileService
 {
@@ -46,9 +50,20 @@ namespace ProfileService
             builder.Services.AddScoped<ILabourRepository , LabourRepository>();
             builder.Services.AddScoped<ILabourService, LabourService>();
             builder.Services.AddScoped<ICloudinaryHelper, CloudinaryHelper>();
-            builder.Services.AddSingleton<IRabbitMqService, RabbitMqService>();
+            //builder.Services.AddSingleton<IRabbitMqService, RabbitMqService>();
             builder.Services.AddScoped<IEmployerRepository, EmployerRepository>();
             builder.Services.AddScoped<IEmployerService, EmployerService>();
+
+            builder.Services.AddSingleton<RabbitMQConnection>(sp =>
+            {
+                var config = sp.GetRequiredService<IConfiguration>();
+                var connection = new RabbitMQConnection(config);
+                connection.DeclareExchange("labourlink.events", ExchangeType.Direct);
+                
+                return connection;
+            });
+            //builder.Services.AddScoped<IEventPublisher, EventPublisher>();
+            builder.Services.AddScoped<IEventPublisher, EventPublisher>();
 
 
             builder.Services.AddControllers().AddJsonOptions(options =>
@@ -84,9 +99,7 @@ namespace ProfileService
                     }
                 });
             });
-
-
-
+                                                 
             var secret = Encoding.UTF8.GetBytes("Laboulink21345665432@354*(45234567876543fgbfgnh");
             builder.Services.AddAuthentication(options =>
             {

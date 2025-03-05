@@ -1,24 +1,28 @@
 ﻿using AutoMapper;
+using EventBus.Abstractions;
+using EventBus.Events;
 using ProfileService.Dtos;
 using ProfileService.Models;
 using ProfileService.Repositories.EmployerRepository;
 using ProfileService.Repositories.LabourRepository;
-using ProfileService.Services.RabbitMQ;
+//using ProfileService.Services.RabbitMQ;
+
 
 namespace ProfileService.Services.EmployerService
 {
     public class EmployerService : IEmployerService
     {
+        private readonly IEventPublisher _eventPublisher;
         private readonly IEmployerRepository _employerRepository;
         private readonly IMapper _mapper;
-        private readonly IRabbitMqService _rabbitMqService;
+        //private readonly IRabbitMqService _rabbitMqService;
 
-        public EmployerService(IEmployerRepository employerRepository, IMapper mapper, IRabbitMqService rabbitMqService)
+        public EmployerService(IEmployerRepository employerRepository, IMapper mapper, IEventPublisher eventPublisher)
         {
-           
+            _eventPublisher = eventPublisher;
             _mapper = mapper;
             _employerRepository = employerRepository;
-            _rabbitMqService = rabbitMqService;
+            //_rabbitMqService = rabbitMqService;
 
         }
         public async Task<CompleteEmployerProfileDto> CompleteEmployerProfile(Guid userId, CompleteEmployerProfileDto employerProfileDto)
@@ -31,7 +35,8 @@ namespace ProfileService.Services.EmployerService
                  await _employerRepository.AddEmployer(employee);
                 if(await _employerRepository.UpdateDatabase())
                 {
-                    _rabbitMqService.PublishProfileCompleted(userId);
+                    //_rabbitMqService.PublishProfileCompleted(userId);
+                    _eventPublisher.Publish(new ProfileCompletedEvent { UserId = userId });
                     return employerProfileDto;
 
                 }

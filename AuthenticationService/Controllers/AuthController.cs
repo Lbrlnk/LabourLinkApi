@@ -101,13 +101,13 @@ namespace AuthenticationService.Controllers
                 {
                     HttpOnly = true,
                     Secure = true, // Use Secure only in non-local environments
-                    SameSite = SameSiteMode.None, // Required for cross-origin cookies
-                    Expires = DateTime.UtcNow.AddMinutes(15) // Adjust for access/refresh token
+                    SameSite = SameSiteMode.None, // cross-origin cookies
+                    Expires = DateTime.UtcNow.AddMinutes(15)
                 };
 
                 Response.Cookies.Append("accessToken", accessToken, cookieOptions);
 
-                cookieOptions.Expires = DateTime.UtcNow.AddMonths(1); // Update for refresh token
+                cookieOptions.Expires = DateTime.UtcNow.AddMonths(1); 
                 Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);
 
 

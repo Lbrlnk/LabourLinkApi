@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
+using EventBus.Abstractions;
+using EventBus.Events;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using ProfileService.Dtos;
 using ProfileService.Helper.CloudinaryHelper;
 using ProfileService.Models;
 using ProfileService.Repositories.LabourRepository;
-using ProfileService.Services.RabbitMQ;
+//using ProfileService.Services.RabbitMQ;
 using System.ComponentModel.DataAnnotations;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -17,13 +19,17 @@ namespace ProfileService.Services.LabourService
         private readonly ILabourRepository _labourRepositry;
         private readonly IMapper _mapper;
         private readonly ICloudinaryHelper _cloudinary;
-        private readonly IRabbitMqService _rabbitMqService;
-        public LabourService(ILabourRepository labourRepository, IMapper mapper, ICloudinaryHelper cloudinary, IRabbitMqService rabbitMqService)
+        //private readonly IRabbitMqService _rabbitMqService;
+        private readonly IEventPublisher _eventPublisher;
+        public LabourService(ILabourRepository labourRepository, IMapper mapper, ICloudinaryHelper cloudinary,  IEventPublisher eventPublisher)
+
         {
+            
             _labourRepositry = labourRepository;
             _mapper = mapper;
             _cloudinary = cloudinary;
-            _rabbitMqService = rabbitMqService;
+            //_rabbitMqService = rabbitMqService;
+            _eventPublisher = eventPublisher;
 
         }
 
@@ -103,7 +109,8 @@ namespace ProfileService.Services.LabourService
                 if (await _labourRepositry.UpdateDatabase())
                 {
 
-                    _rabbitMqService.PublishProfileCompleted(userId);
+                    //_rabbitMqService.PublishProfileCompleted(userId);
+                    _eventPublisher.Publish(new ProfileCompletedEvent { UserId = userId });
                     return labourPeofileDto.LabourProfileCompletionDto;
                 }
                 throw new Exception("internal server erro  : database updation failed");

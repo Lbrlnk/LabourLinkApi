@@ -27,7 +27,7 @@
   </ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\LabourLinkApi.Events\LabourLinkApi.Event.csproj" />
+		<ProjectReference Include="..\EventBus\EventBus.csproj" />
 	</ItemGroup>
 
 </Project>

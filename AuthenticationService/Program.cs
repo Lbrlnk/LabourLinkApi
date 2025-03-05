@@ -4,12 +4,18 @@ using AuthenticationService.Helpers.CloudinaryHelper;
 using AuthenticationService.Helpers.JwtHelper;
 using AuthenticationService.Mapper;
 using AuthenticationService.Repositories;
-using AuthenticationService.Services.ProfileCompletionConsumerService;
+//using AuthenticationService.Services.ProfileCompletionConsumerService;
 using AuthenticationService.Sevices.AuthSerrvice;
+using AuthenticationService.Sevices.ProfileCompletionConsumerService;
+using EventBus.Implementations;
+
+//using AuthenticationService.Sevices.ProfileCompletionConsumerService;
+//using EventBus.Implementations;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using RabbitMQ.Client;
 using System.Text;
 using System.Text.Json.Serialization;
 
@@ -46,7 +52,15 @@ namespace AuthenticationService
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<IAuthRepository, AuthRepository>();
             builder.Services.AddScoped<ICloudinaryHelper, CloudinaryHelper>();
-            builder.Services.AddHostedService<ProfileCompletionConsumerService>();
+            //builder.Services.AddHostedService<ProfileCompletionConsumerService>();
+            builder.Services.AddSingleton<RabbitMQConnection>(sp =>
+            {
+                var config = sp.GetRequiredService<IConfiguration>();
+                var connection = new RabbitMQConnection(config);
+                connection.DeclareExchange("labourlink.events", ExchangeType.Direct);
+                return connection;
+            });
+            builder.Services.AddHostedService<ProfileCompletionConsumer>();
 
 
 

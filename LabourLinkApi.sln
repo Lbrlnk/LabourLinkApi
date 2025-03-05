@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProfileService", "ProfileSe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LabourLinkApi.Event", "LabourLinkApi.Events\LabourLinkApi.Event.csproj", "{9B14D222-C480-427A-8C0F-2E23AEFB7CCD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventBus", "EventBus\EventBus.csproj", "{78F463E2-F74B-44E5-A846-4C57BF6D847C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{9B14D222-C480-427A-8C0F-2E23AEFB7CCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9B14D222-C480-427A-8C0F-2E23AEFB7CCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9B14D222-C480-427A-8C0F-2E23AEFB7CCD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{78F463E2-F74B-44E5-A846-4C57BF6D847C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78F463E2-F74B-44E5-A846-4C57BF6D847C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78F463E2-F74B-44E5-A846-4C57BF6D847C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78F463E2-F74B-44E5-A846-4C57BF6D847C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
