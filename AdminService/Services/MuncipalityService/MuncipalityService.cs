@@ -1,4 +1,4 @@
-﻿using AdminService.Data;
+﻿    using AdminService.Data;
 using AdminService.Dtos.MuncipalityDtos;
 using AdminService.Helpers.Common;
 using AdminService.Models;
@@ -83,14 +83,91 @@ namespace AdminService.Services.MuncipalityService
         }
         public async Task<ApiResponse<List<MuncipalityViewDto>>> GetMuncipalitiesByState(string state)
         {
-            var response = await _repository.GetMuncipalityByStateAsync(state);
-            var res = _mapper.Map<List<MuncipalityViewDto>>(response);
-            if (response == null)
+            try
             {
-                return new ApiResponse<List<MuncipalityViewDto>>(204, "Not Found");
+
+
+                var response = await _repository.GetMuncipalityByStateAsync(state);
+                var res = _mapper.Map<List<MuncipalityViewDto>>(response);
+                if (response == null)
+                {
+                    return new ApiResponse<List<MuncipalityViewDto>>(204, "Not Found");
+                }
+                return new ApiResponse<List<MuncipalityViewDto>>(200, "Success", res);
+
             }
-            return new ApiResponse<List<MuncipalityViewDto>>(200, "Success", res);
+            catch (Exception ex)
+            {
+                return new ApiResponse<List<MuncipalityViewDto>>(500, "internal server error  ", error: "error occured during the updation of the database");
+            }
+
+
+
         }
+
+        public async Task<ApiResponse<List<MuncipalityViewDto>>> GetAllMuncipality()
+        {
+            var result = await _repository.GetAllMuncipalityAsync();
+            var res = _mapper.Map<List<MuncipalityViewDto>>(result);
+            return new ApiResponse<List<MuncipalityViewDto>>(200, "success", res);
+        }
+
+        public async Task<ApiResponse<string>> ActivateMuncipality(int id)
+        {
+            try
+            {
+                var getmuncipality=await _repository.GetDeleteMuncipalityByIdAsync(id);
+
+                if (getmuncipality == null)
+                {
+                    return new ApiResponse<string>(404, "No muncipality Found");
+
+                }
+                getmuncipality.IsActive = true;
+
+                var response=await _repository.UpdateMuncipalityAsync(getmuncipality);
+
+                if(!response)
+                {
+                    throw new InvalidOperationException("The update operation is not valid for this record.");
+
+                }
+                return new ApiResponse<string>(200, "Successfully restored Muncipality");
+                
+
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<string>(500, "internal server error  ", error:$"{ex.Message}");
+            }
+        }
+
+        public async Task<ApiResponse<List<MuncipalityViewDto>>> GetMuncipalityBySearchParams(string searchParams)
+        {
+
+
+            try
+            {
+                var queryResult = await _repository.GetMnucipalityBySearchparams(searchParams);
+
+                if (queryResult == null)
+                {
+                    var response =new List<MuncipalityViewDto>();
+                    return new ApiResponse<List<MuncipalityViewDto>>(404, "No Muncipality found", response);
+
+                }
+                var res = _mapper.Map<List<MuncipalityViewDto>>(queryResult);
+                return new ApiResponse<List<MuncipalityViewDto>>(200, "Successfully retrived matched muncipalities", res);
+
+            }
+              catch (Exception ex)
+            {
+                return new ApiResponse<List<MuncipalityViewDto>>(500, "internal server error  ", error: "error occured during the updation of the database");
+            }
+
+
+        }
+
 
     }
 }

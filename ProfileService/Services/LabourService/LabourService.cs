@@ -124,6 +124,32 @@ namespace ProfileService.Services.LabourService
             }
         }
 
+
+
+        public async Task<List<LabourViewDto>> GetFilteredLabour(LabourFilterDto LabourFilterDto)
+        {
+            
+
+            var allLabours = await _labourRepositry.GetFilterdLabours(LabourFilterDto);
+            if(allLabours == null)
+            {
+                return null; 
+            }
+            var labourViewDtos = allLabours.Select(result => new LabourViewDto
+            {
+                LabourId = result.LabourId,
+                LabourProfileCompletion = _mapper.Map<LabourProfileCompletionDto>(result),
+                ProfilePhotoUrl = result.ProfilePhotoUrl,
+                LabourWorkImages = result.LabourWorkImages.Select(img => img.ImageUrl).ToList(),
+                LabourPreferredMuncipalities = result.LabourPreferedMuncipalities.Select(m => m.MunicipalityId).ToList(),
+                LabourSkills = result.LabourSkills.Select(s => s.SkillId).ToList()
+            }).ToList();
+
+            return labourViewDtos;
+
+
+
+        }
         public async Task<LabourViewDto> GetLabourById(Guid Id)
         {
             try
@@ -142,21 +168,44 @@ namespace ProfileService.Services.LabourService
                     LabourWorkImages = result.LabourWorkImages.Select(img => img.ImageUrl).ToList(),
                     LabourPreferredMuncipalities = result.LabourPreferedMuncipalities.Select(m => m.MunicipalityId).ToList(),
                     LabourSkills = result.LabourSkills.Select(s => s.SkillId).ToList()
-
                 };
 
                 return labourViewDto;
-
-
-
-
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.InnerException?.Message ?? ex.Message);
+                throw new Exception($"{ex.InnerException?.Message ?? ex.Message }", ex);
             }
         }
 
+
+        public async Task<List<LabourViewDto>?> GetAllLabours()
+        {
+            try
+            {
+              var allLabours = await _labourRepositry.GetAllLabours();
+                if (allLabours == null || !allLabours.Any())
+                {
+                    return null; 
+                }
+                var labourViewDtos = allLabours.Select(result => new LabourViewDto
+                {
+                    LabourId = result.LabourId,
+                    LabourProfileCompletion = _mapper.Map<LabourProfileCompletionDto>(result),
+                    ProfilePhotoUrl = result.ProfilePhotoUrl,
+                    LabourWorkImages = result.LabourWorkImages.Select(img => img.ImageUrl).ToList(),
+                    LabourPreferredMuncipalities = result.LabourPreferedMuncipalities.Select(m => m.MunicipalityId).ToList(),
+                    LabourSkills = result.LabourSkills.Select(s => s.SkillId).ToList()
+                }).ToList();
+
+                return labourViewDtos;
+
+            }
+            catch(Exception ex)
+            {
+                throw new Exception($"{ex.InnerException?.Message ?? ex.Message}", ex);
+            }
+        }
 
         //public async Task<LabourProfileCompletionDto> UpdatLabourProfile(CompleteLabourPeofileDto labourProfileDto, Guid Id)
         //{

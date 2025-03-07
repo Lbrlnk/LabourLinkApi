@@ -1,4 +1,5 @@
 ﻿using AuthenticationService.Dtos.AuthenticationDtos;
+using AuthenticationService.Enums;
 using AuthenticationService.Helpers.CloudinaryHelper;
 using AuthenticationService.Helpers.JwtHelper;
 using AuthenticationService.Models;
@@ -68,7 +69,7 @@ namespace AuthenticationService.Sevices.AuthSerrvice
                 throw;
             }
         }
-        public async Task<(string accessToken, string refreshToken)> LoginAsync(LoginDto loginDto)
+        public async Task<(string accessToken, string refreshToken ,bool isProfileCompleted ,UserType userType)> LoginAsync(LoginDto loginDto)
         {
 
             try
@@ -93,7 +94,7 @@ namespace AuthenticationService.Sevices.AuthSerrvice
             // Saving the refresh token in the database
             await _authRepository.SaveRefreshTokenAsync(user.UserId, refreshToken, DateTime.UtcNow.AddMonths(1));
 
-            return (accessToken, refreshToken);
+            return (accessToken, refreshToken , user.IsProfileCompleted , user.UserType);
             }
             catch(Exception ex)
             {

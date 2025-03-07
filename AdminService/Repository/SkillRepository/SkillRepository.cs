@@ -14,16 +14,16 @@ namespace AdminService.Repository.SkillRepository
         }
 
 
-        public async Task<IEnumerable<Skill>> GetAllSkillsAsync()
+        public async Task<IEnumerable<Skill>> GetSkillsAsync()
         {
-            return await _context.Skills.ToListAsync();
+            return await _context.Skills.Where(x=>x.IsActive==true).ToListAsync();
         }
 
         
 
         public async Task<Skill> GetSkillByIdAsync(Guid id)
         {
-            return await _context.Skills.FirstOrDefaultAsync(x => x.SkillId == id);
+            return await _context.Skills.FirstOrDefaultAsync(x => x.SkillId == id && x.IsActive==true);
         }
 
 
@@ -46,6 +46,28 @@ namespace AdminService.Repository.SkillRepository
             return await _context.SaveChangesAsync() > 0;
         }
 
-       
+        public async Task<IEnumerable<Skill>> GetAllSkillsAsync()
+        {
+            return await _context.Skills.ToListAsync();
+        }
+
+        public async Task<IEnumerable<Skill>> GetAllDeletedSkillAsync()
+        {
+            return await _context.Skills.Where(x => x.IsActive == false).ToListAsync();
+        }
+
+
+        public async Task<Skill> GetDeletedSkillByIdAsync(Guid id)
+        {
+            return await  _context.Skills.FirstOrDefaultAsync(x=>x.SkillId==id && x.IsActive==false);
+        }
+
+        public async Task<IEnumerable<Skill>> GetSkillBySearchParamsAsync(string searchParams)
+        {
+            return await _context.Skills.Where(x=>x.SkillName.ToLower().Contains(searchParams.ToLower()) && x.IsActive==true).OrderBy(x=>x.SkillName).ToListAsync();
+        }
+
+
+
     }
 }

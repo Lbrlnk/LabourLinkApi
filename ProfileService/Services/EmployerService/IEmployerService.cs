@@ -7,5 +7,9 @@ namespace ProfileService.Services.EmployerService
         Task<CompleteEmployerProfileDto> CompleteEmployerProfile(Guid userId ,CompleteEmployerProfileDto employerProfileDto);
 
         Task<EditEmployerProfileDto> UpdateEmployerProfile(Guid userId, EditEmployerProfileDto employerProfileDto);
+
+        Task<EmployerView> GetEmployerDetails(Guid userId);
+
+        
     }
 }

@@ -87,7 +87,7 @@ namespace AuthenticationService.Controllers
                     return BadRequest(new { message = "Username and Password are required" });
                 }
 
-                var (accessToken, refreshToken) = await _authService.LoginAsync(logindto);
+                var (accessToken, refreshToken , isProfileCompleted ,userType) = await _authService.LoginAsync(logindto);
 
                 if (string.IsNullOrEmpty(accessToken) || string.IsNullOrEmpty(refreshToken))
                 {
@@ -111,7 +111,7 @@ namespace AuthenticationService.Controllers
                 Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);
 
 
-                return Ok(new { message = "Login Successful", accessToken, refreshToken });
+                return Ok(new { message = "Login Successful", accessToken, refreshToken, isProfileCompleted, userType });
             }
             catch (Exception ex)
             {

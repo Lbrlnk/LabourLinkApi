@@ -33,7 +33,7 @@ namespace ProfileService.Services.EmployerService
 
                 employee.UserId = userId;
                  await _employerRepository.AddEmployer(employee);
-                if(await _employerRepository.UpdateDatabase())
+                if (await _employerRepository.UpdateDatabase())
                 {
                     //_rabbitMqService.PublishProfileCompleted(userId);
                     _eventPublisher.Publish(new ProfileCompletedEvent { UserId = userId });
@@ -72,6 +72,24 @@ namespace ProfileService.Services.EmployerService
             catch (Exception ex)
             {
                 throw new Exception($"Error when Updating Employer Profile {ex.Message}", ex);
+            }
+        }
+       public async  Task<EmployerView> GetEmployerDetails(Guid userId)
+        {
+            try
+            {
+                var result = await _employerRepository.GetEmployerByIdAsync(userId);
+                if (result is null)
+                {
+                    return null;
+                }
+
+                var employerView = _mapper.Map<EmployerView>(result);
+                return employerView;
+
+            } catch (Exception ex)
+            {
+                throw new Exception($"Error when retriving Employer  : {ex.Message}", ex);
             }
         }
     }

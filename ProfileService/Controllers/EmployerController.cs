@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ProfileService.Dtos;
 using ProfileService.Services.EmployerService;
+using Sprache;
 
 namespace ProfileService.Controllers
 {
@@ -54,6 +55,25 @@ namespace ProfileService.Controllers
             catch (Exception ex)
             {
                 return BadRequest(ex.InnerException?.Message ?? ex.Message);
+            }
+        }
+        [HttpGet("my-details")]
+        public async Task<IActionResult> GetMydetails()
+        {
+            try
+            {
+                var userId = Guid.Parse(HttpContext.Items["UserId"].ToString());
+               var result =  await _employerService.GetEmployerDetails(userId);
+                if(result == null)
+                {
+                    return BadRequest("user not found");
+
+                }
+                return Ok(result);
+
+            }catch(Exception ex)
+            {
+                throw new Exception($" error in retriving Employer{ex.InnerException.Message ?? ex.Message}");
             }
         }
     }

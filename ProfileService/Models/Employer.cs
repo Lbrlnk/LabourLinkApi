@@ -18,7 +18,7 @@ namespace ProfileService.Models
         public string PhoneNumber { get; set; }
 
         public int PreferedMuncipalityId { get; set; }
-
+        public virtual ICollection<Review> Reviews { get; set; }
 
 
         

@@ -13,10 +13,16 @@ using ProfileService.Mapper;
 using ProfileService.Middlewares;
 using ProfileService.Repositories.EmployerRepository;
 using ProfileService.Repositories.LabourRepository;
+using ProfileService.Repositories.ReviewRepository;
 using ProfileService.Services.EmployerService;
 using ProfileService.Services.LabourService;
+//<<<<<<< HEAD
 //using ProfileService.Services.RabbitMQ;
 using RabbitMQ.Client;
+//=======
+using ProfileService.Services.ReviewService;
+//using ProfileService.Services.RabbitMQ;
+//>>>>>>> upstream/development
 using System.Text;
 using System.Text.Json.Serialization;
 
@@ -38,7 +44,6 @@ namespace ProfileService
             // Add services to the container.
 
             builder.Services.AddDbContext<LabourLinkProfileDbContext>(options =>
-
             options.UseSqlServer(
                 ConnectionString,
                  sqlOptions => sqlOptions.EnableRetryOnFailure()
@@ -53,6 +58,7 @@ namespace ProfileService
             //builder.Services.AddSingleton<IRabbitMqService, RabbitMqService>();
             builder.Services.AddScoped<IEmployerRepository, EmployerRepository>();
             builder.Services.AddScoped<IEmployerService, EmployerService>();
+//<<<<<<< HEAD
 
             builder.Services.AddSingleton<RabbitMQConnection>(sp =>
             {
@@ -65,6 +71,10 @@ namespace ProfileService
             //builder.Services.AddScoped<IEventPublisher, EventPublisher>();
             builder.Services.AddScoped<IEventPublisher, EventPublisher>();
 
+//=======
+            builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
+            builder.Services.AddScoped<IReviewService, ReviewService>();
+//>>>>>>> upstream/development
 
             builder.Services.AddControllers().AddJsonOptions(options =>
             {
