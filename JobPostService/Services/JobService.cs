@@ -46,8 +46,11 @@ namespace JobPostService.Services
 					StartDate=jobPostDto.StartDate,
 					PrefferedTime=jobPostDto.PrefferedTime,
 					MuncipalityId=jobPostDto.MuncipalityId,
+					MuncipalityName=jobPostDto.MuncipalityName,
 					SkillId1=jobPostDto.SkillId1,
+					Skill1Name=jobPostDto.Skill1Name,
 					SkillId2=jobPostDto.SkillId2,
+					Skill2Name=jobPostDto.Skill2Name,
 					Image=imageurl
 				};
 				var res=await _repository.AddJobPost(jobPost);

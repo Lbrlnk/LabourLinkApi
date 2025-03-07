@@ -1477,3 +1477,4 @@ SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
 SELECT [MigrationId], [ProductVersion]
 FROM [__EFMigrationsHistory]
 ORDER BY [MigrationId];
+ORDER BY [MigrationId];

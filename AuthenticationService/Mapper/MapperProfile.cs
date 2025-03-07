@@ -10,6 +10,7 @@ namespace AuthenticationService.Mapper
         {
             
             CreateMap<User, LoginDto>().ReverseMap();
+            CreateMap<User, RegistrationDto>().ReverseMap() ;
         }
     }
 }
