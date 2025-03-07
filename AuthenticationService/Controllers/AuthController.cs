@@ -87,7 +87,7 @@ namespace AuthenticationService.Controllers
                     return BadRequest(new { message = "Username and Password are required" });
                 }
 
-                var (accessToken, refreshToken) = await _authService.LoginAsync(logindto);
+                var (accessToken, refreshToken , isProfileCompleted ,userType) = await _authService.LoginAsync(logindto);
 
                 if (string.IsNullOrEmpty(accessToken) || string.IsNullOrEmpty(refreshToken))
                 {
@@ -101,17 +101,17 @@ namespace AuthenticationService.Controllers
                 {
                     HttpOnly = true,
                     Secure = true, // Use Secure only in non-local environments
-                    SameSite = SameSiteMode.None, // Required for cross-origin cookies
-                    Expires = DateTime.UtcNow.AddMinutes(15) // Adjust for access/refresh token
+                    SameSite = SameSiteMode.None, // cross-origin cookies
+                    Expires = DateTime.UtcNow.AddMinutes(15)
                 };
 
                 Response.Cookies.Append("accessToken", accessToken, cookieOptions);
 
-                cookieOptions.Expires = DateTime.UtcNow.AddMonths(1); // Update for refresh token
+                cookieOptions.Expires = DateTime.UtcNow.AddMonths(1); 
                 Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);
 
 
-                return Ok(new { message = "Login Successful", accessToken, refreshToken });
+                return Ok(new { message = "Login Successful", accessToken, refreshToken, isProfileCompleted, userType });
             }
             catch (Exception ex)
             {

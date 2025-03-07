@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProfileService.Data;
+using ProfileService.Dtos;
 using ProfileService.Models;
 
 namespace ProfileService.Repositories.LabourRepository
@@ -64,6 +65,41 @@ namespace ProfileService.Repositories.LabourRepository
         public async Task<List<LabourPreferredMuncipality>> GetLabourMuncipalities(Guid Id)
         {
             return await _context.LabourPreferedMuncipalities.Where(mun => mun.LabourId == Id).ToListAsync();
+        }
+
+        public async Task<List<Labour>> GetAllLabours() 
+        {
+            return await _context.Labours
+                 .Include(l => l.LabourSkills)
+                 .Include(l => l.LabourWorkImages)
+                 .Include(l => l.LabourPreferedMuncipalities)
+                 .Where(l => l.IsActive == true)
+                 .ToListAsync();
+        }
+
+        public async Task<List<Labour>> GetFilterdLabours(LabourFilterDto filterDto)
+        {
+            var query = _context.Labours
+        .Include(l => l.LabourSkills)
+        .Include(l => l.LabourWorkImages)
+        .Include(l => l.LabourPreferedMuncipalities)
+        .Where(l => l.IsActive == true)
+        .AsQueryable(); 
+
+            
+            if (filterDto.PreferredMunicipalities != null && filterDto.PreferredMunicipalities.Any())
+            {
+                query = query.Where(l => l.LabourPreferedMuncipalities
+                    .Any(m => filterDto.PreferredMunicipalities.Contains(m.MunicipalityId)));
+            }
+
+            if (filterDto.SkillIds != null && filterDto.SkillIds.Any())
+            {
+                query = query.Where(l => l.LabourSkills
+                    .Any(s => filterDto.SkillIds.Contains(s.SkillId)));
+            }
+
+            return await query.ToListAsync();
         }
 
         public async Task<bool> UpdateLabour(Labour labour)

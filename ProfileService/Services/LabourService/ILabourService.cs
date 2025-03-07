@@ -13,6 +13,11 @@ namespace ProfileService.Services.LabourService
         //Task<LabourProfileCompletionDto> UpdatLabourProfile(CompleteLabourPeofileDto labourProfileDto , Guid Id);
 
 
+        //Task<LabourViewDto> GetMyDetails(Guid id);
+
+        
+
+
         Task<bool> DeleteLabourSkill(Guid userId, Guid skillId);
         Task<bool> DeleteLabourMunicipality(Guid userId, int id);
         Task<bool> DeleteLabourWorkImages(Guid userId, Guid imageId);
@@ -22,6 +27,10 @@ namespace ProfileService.Services.LabourService
 
         Task<bool> AddLabourSkill(Guid userId, Guid skillId);
         Task<bool> EditLabourProfile(Guid userId, EditLabourProfileDto editLabourProfileDto);
+
+        Task<List<LabourViewDto>> GetAllLabours();
+
+        Task<List<LabourViewDto>> GetFilteredLabour(LabourFilterDto LabourFilterDto);
 
 
 

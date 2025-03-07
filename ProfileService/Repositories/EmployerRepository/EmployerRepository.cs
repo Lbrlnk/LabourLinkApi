@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProfileService.Data;
 using ProfileService.Models;
+using System.Runtime.CompilerServices;
 
 namespace ProfileService.Repositories.EmployerRepository
 {
@@ -34,5 +35,7 @@ namespace ProfileService.Repositories.EmployerRepository
         {
             return await _context.SaveChangesAsync() > 0;
         }
+        
+
     }
 }
