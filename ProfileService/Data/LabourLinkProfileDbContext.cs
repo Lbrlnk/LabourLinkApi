@@ -14,6 +14,7 @@ namespace ProfileService.Data
         public DbSet<LabourWorkImage> LabourWorkImages {get; set;}
         public DbSet<LabourSkills> LabourSkills {get; set;}
         public DbSet<Review> Reviews { get; set; }
+        public DbSet<JobPost> JobPost { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -90,7 +91,10 @@ namespace ProfileService.Data
 					  .OnDelete(DeleteBehavior.Cascade);
 
 			});
-        }
+			modelBuilder.Entity<JobPost>()
+		    .Property(j => j.Wage)
+		    .HasColumnType("decimal(18,2)");
+		}
 
     }
 }

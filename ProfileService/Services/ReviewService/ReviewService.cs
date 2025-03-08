@@ -31,6 +31,7 @@ namespace ProfileService.Services.ReviewService
 				}
 
 				var employer = await _employer.GetEmployerByIdAsync(userid);
+				Console.WriteLine(employer);
 				if (employer == null)
 				{
 					return new ApiResponse<ReviewShowDto>(404, "Employer not found");
@@ -76,11 +77,11 @@ namespace ProfileService.Services.ReviewService
 				return new ApiResponse<ReviewShowDto>(500, ex.Message);
 			}
 		}
-		public async Task<ApiResponse<List<ReviewShowDto>>> ShowReviews(Guid Labourid)
+		public async Task<ApiResponse<List<ReviewShowDto>>> ShowReviewsbyLabour(Guid Labourid)
 		{
 			try
 			{
-				var res = await _repository.GetAllReviews(Labourid);
+				var res = await _repository.GetReviewsByLabour(Labourid);
 				var reviewDtos = res.Select(r => new ReviewShowDto
 				{
 					Rating = r.Rating,
@@ -193,5 +194,67 @@ namespace ProfileService.Services.ReviewService
 				return new ApiResponse<List<int>>(500, ex.Message);
 			}
 		}
+		public async Task<ApiResponse<List<ReviewShowDto>>> ShowReviewsbyEmployee(Guid userid)
+		{
+			try
+			{
+				var employer = await _employer.GetEmployerByIdAsync(userid);
+				var res = await _repository.GetReviewsByEmployee(employer.EmployerId);
+				var reviewDtos = res.Select(r => new ReviewShowDto
+				{
+					
+					Rating = r.Rating,
+					Comment = r.Comment,
+					Image = r.Image,
+					FullName = r.Labour.FullName,
+					UpdatedAt = r.UpdatedAt
+				}).ToList();
+				if (!reviewDtos.Any())
+				{
+					return new ApiResponse<List<ReviewShowDto>>(404, "NotFound", reviewDtos);
+				}
+				return new ApiResponse<List<ReviewShowDto>>(200, "Success", reviewDtos);
+			}
+			catch (Exception ex)
+			{
+				return new ApiResponse<List<ReviewShowDto>>(500, ex.Message);
+			}
+		}
+		public async Task<ApiResponse<ReviewShowDto>> GetReviewPostedByEmployerToLabour(Guid Employeeid, Guid Labourid)
+		{
+			try
+			{
+				var employer = await _employer.GetEmployerByIdAsync(Employeeid);
+				if (employer == null)
+				{
+					Console.WriteLine("Employer not found.");
+					return new ApiResponse<ReviewShowDto>(404, "Employer not found.");
+				}
+
+				var res = await _repository.GetReviewByEmployerAndLabourAsync(employer.EmployerId, Labourid);
+				if (res == null)
+				{
+					Console.WriteLine("No review found.");
+					return new ApiResponse<ReviewShowDto>(404, "No review found.");
+				}
+
+				var reviewDtos = new ReviewShowDto
+				{
+					Rating = res.Rating,
+					Comment = res.Comment,
+					Image = res.Image,
+					FullName = res.Labour != null ? res.Labour.FullName : "Unknown Labour",
+					UpdatedAt = res.UpdatedAt
+				};
+
+				return new ApiResponse<ReviewShowDto>(200, "Success", reviewDtos);
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine($"Error: {ex.Message}");
+				return new ApiResponse<ReviewShowDto>(500, ex.Message);
+			}
+		}
+
 	}
 }

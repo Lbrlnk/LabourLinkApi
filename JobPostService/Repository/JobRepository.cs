@@ -20,11 +20,11 @@ namespace JobPostService.Repository
 		}
 		public async Task<List<JobPost>> GetJobPostsAsync()
 		{
-			return await _context.JobPost.ToListAsync();
+			return await _context.JobPost.OrderByDescending(x=>x.CreatedDate).ToListAsync();
 		}
 		public async Task<List<JobPost>> GetPostAsyncActiveAsync()
 		{
-			return await _context.JobPost.Where(x=>x.Status== "Active").ToListAsync();
+			return await _context.JobPost.Where(x=>x.Status== "Active").OrderByDescending(x => x.CreatedDate).ToListAsync();
 		}
 		public async Task<bool> UpdatePostAsync(JobPost jobPost)
 		{
@@ -37,7 +37,7 @@ namespace JobPostService.Repository
 		}
 		public async Task<List<JobPost>> GetJobPostByClientAsync(Guid clientid)
 		{
-			return await _context.JobPost.Where(x=>x.CleintId==clientid).ToListAsync();
+			return await _context.JobPost.Where(x=>x.CleintId==clientid).OrderByDescending(x => x.CreatedDate).ToListAsync();
 		}
 		public async Task<List<JobPost>> GetJobPostBySearchParamsAsync(string searchParams)
 		{

@@ -20,16 +20,14 @@ namespace ProfileService.Services.LabourService
         private readonly IMapper _mapper;
         private readonly ICloudinaryHelper _cloudinary;
         //private readonly IRabbitMqService _rabbitMqService;
-        private readonly IEventPublisher _eventPublisher;
-        public LabourService(ILabourRepository labourRepository, IMapper mapper, ICloudinaryHelper cloudinary,  IEventPublisher eventPublisher)
-
+        public LabourService(ILabourRepository labourRepository, IMapper mapper, ICloudinaryHelper cloudinary)
         {
             
             _labourRepositry = labourRepository;
             _mapper = mapper;
             _cloudinary = cloudinary;
             //_rabbitMqService = rabbitMqService;
-            _eventPublisher = eventPublisher;
+            //_eventPublisher = eventPublisher;
 
         }
 
@@ -110,7 +108,7 @@ namespace ProfileService.Services.LabourService
                 {
 
                     //_rabbitMqService.PublishProfileCompleted(userId);
-                    _eventPublisher.Publish(new ProfileCompletedEvent { UserId = userId });
+                    //_eventPublisher.Publish(new ProfileCompletedEvent { UserId = userId });
                     return labourPeofileDto.LabourProfileCompletionDto;
                 }
                 throw new Exception("internal server erro  : database updation failed");

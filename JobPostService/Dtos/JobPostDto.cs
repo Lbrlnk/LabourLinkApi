@@ -4,7 +4,7 @@ namespace JobPostService.Dtos
 {
 	public class JobPostDto
 	{
-		public Guid ClientId { get; set; }
+	
 		[Required]
 		[StringLength(40, ErrorMessage = "Skill name cannot exceed 40 characters")]
 		public string Title { get; set; }
@@ -13,7 +13,7 @@ namespace JobPostService.Dtos
 		[Required]
 		public decimal? Wage { get; set; }
 		[Required]
-		public DateTime? StartDate { get; set; }
+		public DateOnly? StartDate { get; set; }
 		[Required]
 		public string PrefferedTime { get; set; }
 		[Required]
