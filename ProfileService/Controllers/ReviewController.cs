@@ -42,7 +42,7 @@ namespace ProfileService.Controllers
 		[HttpGet("getreviewsofspecificlabour")]
 		public async Task<IActionResult> GetReviews(Guid Labourid)
 		{
-			var res = await _review.ShowReviews(Labourid);
+			var res = await _review.ShowReviewsbyLabour(Labourid);
 			if (res.StatusCode == 200)
 			{
 				return Ok(res);
@@ -132,6 +132,61 @@ namespace ProfileService.Controllers
 			}
 			return BadRequest(res);
 
+		}
+		[HttpGet("getreviewsofspecificemployee")]
+		public async Task<IActionResult> GetReviewsbyemploee()
+		{
+			if (!HttpContext.Items.ContainsKey("UserId") || HttpContext.Items["UserId"] == null)
+			{
+				return BadRequest("UserId not found in the request context.");
+			}
+
+			var userIdString = HttpContext.Items["UserId"].ToString();
+			if (!Guid.TryParse(userIdString, out var employerId))
+			{
+				return BadRequest("Invalid UserId format.");
+			}
+			Console.WriteLine(employerId);
+			var res = await _review.ShowReviewsbyEmployee(employerId);
+			if (res.StatusCode == 200)
+			{
+				return Ok(res);
+			}
+			else if (res.StatusCode == 404)
+			{
+				return NotFound(res);
+			}
+			else
+			{
+				return BadRequest(res);
+			}
+		}
+		[HttpGet("getreviewsofspecificlabourpostedbythisemployer")]
+		public async Task<IActionResult> GetReviewByEmployeeForLabour(Guid Labourid)
+		{
+			if (!HttpContext.Items.ContainsKey("UserId") || HttpContext.Items["UserId"] == null)
+			{
+				return BadRequest("UserId not found in the request context.");
+			}
+
+			var userIdString = HttpContext.Items["UserId"].ToString();
+			if (!Guid.TryParse(userIdString, out var employerId))
+			{
+				return BadRequest("Invalid UserId format.");
+			}
+			var res = await _review.GetReviewPostedByEmployerToLabour(employerId, Labourid);
+			if (res.StatusCode == 200)
+			{
+				return Ok(res);
+			}
+			else if (res.StatusCode == 404)
+			{
+				return NotFound(res);
+			}
+			else
+			{
+				return BadRequest(res);
+			}
 		}
 	}
 }

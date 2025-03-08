@@ -9,6 +9,7 @@ using ProfileService.Helper.CloudinaryHelper;
 using ProfileService.Mapper;
 using ProfileService.Middlewares;
 using ProfileService.Repositories.EmployerRepository;
+using ProfileService.Repositories.LabourPrefferedRepositorys;
 using ProfileService.Repositories.LabourRepository;
 using ProfileService.Repositories.ReviewRepository;
 using ProfileService.Services.EmployerService;
@@ -52,6 +53,8 @@ namespace ProfileService
             builder.Services.AddScoped<IEmployerService, EmployerService>();
             builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
             builder.Services.AddScoped<IReviewService, ReviewService>();
+            builder.Services.AddScoped<ILabourPrefferedRepository, LabourPrefferedRepository>();
+
 
             builder.Services.AddControllers().AddJsonOptions(options =>
             {

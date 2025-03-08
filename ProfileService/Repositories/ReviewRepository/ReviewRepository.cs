@@ -17,7 +17,7 @@ namespace ProfileService.Repositories.ReviewRepository
 			await _context.SaveChangesAsync();
 			return review;
 		}
-		public async Task<List<Review>> GetAllReviews(Guid Labourid)
+		public async Task<List<Review>> GetReviewsByLabour(Guid Labourid)
 		{
 			return await _context.Reviews
 				.Where(r => r.LabourId == Labourid && r.IsActive == true)
@@ -52,6 +52,13 @@ namespace ProfileService.Repositories.ReviewRepository
 				await _context.Reviews.CountAsync(x => x.LabourId == Labourid && x.Rating == 4 && x.IsActive == true),
 				await _context.Reviews.CountAsync(x => x.LabourId == Labourid && x.Rating == 5 && x.IsActive == true)
 			};
+		}
+		public async Task<List<Review>> GetReviewsByEmployee(Guid employeeid)
+		{
+			return await _context.Reviews
+				.Where(r => r.EmployerId == employeeid )
+				.Include(r => r.Labour)
+				.ToListAsync();
 		}
 	}
 }

@@ -1,6 +1,7 @@
 ﻿using JobPostService.Dtos;
 using JobPostService.Helpers.ApiResonse;
 using JobPostService.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,6 +16,7 @@ namespace JobPostService.Controllers
 		{
 			_service = service;
 		}
+		[Authorize(Roles = "Employer")]
 		[HttpPost("createjobpost")]
 		public async Task<IActionResult> PostAJob([FromForm] JobPostDto jobPostDto,IFormFile image)
 		{
@@ -39,6 +41,7 @@ namespace JobPostService.Controllers
 			}
 		    return BadRequest(response);
 		}
+
 		[HttpGet("showallJobpost")]
 		public async Task<IActionResult> ShowAllPost()
 		{
@@ -69,6 +72,7 @@ namespace JobPostService.Controllers
 			}
 			return NotFound(res);
 		}
+		[Authorize(Roles = "Employer")]
 		[HttpPatch("updatejobpost")]
 		public async Task<IActionResult> UpdateJobPost(Guid jobId,UpdatePostDto updatePostDto)
 		{
@@ -97,6 +101,7 @@ namespace JobPostService.Controllers
 			}
 			return BadRequest(res);
 		}
+		[Authorize(Roles = "Employer")]
 		[HttpPatch("changestatus")]
 		public async Task<IActionResult> UpdateStatus(string status, Guid jobid)
 		{
@@ -126,6 +131,7 @@ namespace JobPostService.Controllers
 			}
 			return BadRequest(res);
 		}
+		[Authorize(Roles = "Employer")]
 		[HttpGet("jobpostbyclient")]
 		public async Task<IActionResult> ShowJobPostByClient()
 		{
@@ -135,17 +141,19 @@ namespace JobPostService.Controllers
 			}
 
 			var userIdString = HttpContext.Items["UserId"].ToString();
+
 			if (!Guid.TryParse(userIdString, out var userId))
 			{
 				return BadRequest("Invalid UserId format.");
 			}
+
 			var res=await _service.GetJobPostByClientid(userId);
 			if(res.StatusCode == 200)
 			{
 				return Ok(res);
 			}else if (res.StatusCode == 404)
 			{
-				return NoContent();
+				return NotFound(res);
 			}
 			return BadRequest(res);
 		}
