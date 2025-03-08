@@ -1565,6 +1565,64 @@ ORDER BY [MigrationId];
 2025-02-25 10:22:55.918 +05:30 [INF] Application started. Press Ctrl+C to shut down.
 2025-02-25 10:22:56.505 +05:30 [INF] Hosting environment: Development
 2025-02-25 10:22:56.506 +05:30 [INF] Content root path: C:\Users\adn\Desktop\BAckend\AdminService
+2025-03-06 10:47:21.078 +05:30 [INF] Executed DbCommand (45ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-03-06 10:47:21.109 +05:30 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2025-03-06 10:47:21.239 +05:30 [INF] Executed DbCommand (127ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DECLARE @result int;
+EXEC @result = sp_getapplock @Resource = '__EFMigrationsLock', @LockOwner = 'Session', @LockMode = 'Exclusive';
+SELECT @result
+2025-03-06 10:47:21.371 +05:30 [INF] Executed DbCommand (17ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+IF OBJECT_ID(N'[__EFMigrationsHistory]') IS NULL
+BEGIN
+    CREATE TABLE [__EFMigrationsHistory] (
+        [MigrationId] nvarchar(150) NOT NULL,
+        [ProductVersion] nvarchar(32) NOT NULL,
+        CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY ([MigrationId])
+    );
+END;
+2025-03-06 10:47:21.381 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-03-06 10:47:21.381 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2025-03-06 10:47:21.543 +05:30 [INF] Executed DbCommand (159ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2025-03-06 10:47:21.555 +05:30 [INF] Applying migration '20250306051230_UpdateDatabase'.
+2025-03-06 10:47:21.747 +05:30 [INF] Executed DbCommand (160ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Muncipalities] (
+    [MunicipalityId] int NOT NULL IDENTITY,
+    [Name] nvarchar(max) NULL,
+    [State] nvarchar(max) NULL,
+    [CreatedAt] datetime2 NULL DEFAULT (GETUTCDATE()),
+    [IsActive] bit NOT NULL DEFAULT CAST(1 AS bit),
+    CONSTRAINT [PK_Muncipalities] PRIMARY KEY ([MunicipalityId])
+);
+2025-03-06 10:47:21.784 +05:30 [INF] Executed DbCommand (37ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Skills] (
+    [SkillId] uniqueidentifier NOT NULL DEFAULT (NEWSEQUENTIALID()),
+    [SkillName] nvarchar(40) NOT NULL,
+    [IsActive] bit NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    CONSTRAINT [PK_Skills] PRIMARY KEY ([SkillId])
+);
+2025-03-06 10:47:22.643 +05:30 [INF] Executed DbCommand (858ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'MunicipalityId', N'CreatedAt', N'IsActive', N'Name', N'State') AND [object_id] = OBJECT_ID(N'[Muncipalities]'))
+    SET IDENTITY_INSERT [Muncipalities] ON;
+INSERT INTO [Muncipalities] ([MunicipalityId], [CreatedAt], [IsActive], [Name], [State])
+VALUES (1, '2025-02-04T00:00:00.0000000', CAST(1 AS bit), N'Thirurangadi', N'Kerala'),
+(2, '2025-02-04T00:00:00.0000000', CAST(1 AS bit), N'Kondotty', N'Kerala');
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'MunicipalityId', N'CreatedAt', N'IsActive', N'Name', N'State') AND [object_id] = OBJECT_ID(N'[Muncipalities]'))
+    SET IDENTITY_INSERT [Muncipalities] OFF;
+2025-03-06 10:47:22.646 +05:30 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20250306051230_UpdateDatabase', N'9.0.1');
+2025-03-06 10:47:22.693 +05:30 [INF] Executed DbCommand (44ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DECLARE @result int;
+EXEC @result = sp_releaseapplock @Resource = '__EFMigrationsLock', @LockOwner = 'Session';
+SELECT @result
 2025-02-27 12:05:30.257 +05:30 [INF] User profile is available. Using 'C:\Users\adn\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
 2025-02-27 12:05:30.439 +05:30 [INF] Now listening on: https://localhost:7234
 2025-02-27 12:05:30.441 +05:30 [INF] Now listening on: http://localhost:5075

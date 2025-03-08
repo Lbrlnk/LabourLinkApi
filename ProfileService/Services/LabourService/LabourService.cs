@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using EventBus.Abstractions;
+using EventBus.Events;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using ProfileService.Dtos;
@@ -20,10 +22,12 @@ namespace ProfileService.Services.LabourService
         //private readonly IRabbitMqService _rabbitMqService;
         public LabourService(ILabourRepository labourRepository, IMapper mapper, ICloudinaryHelper cloudinary)
         {
+            
             _labourRepositry = labourRepository;
             _mapper = mapper;
             _cloudinary = cloudinary;
             //_rabbitMqService = rabbitMqService;
+            //_eventPublisher = eventPublisher;
 
         }
 
@@ -104,6 +108,7 @@ namespace ProfileService.Services.LabourService
                 {
 
                     //_rabbitMqService.PublishProfileCompleted(userId);
+                    //_eventPublisher.Publish(new ProfileCompletedEvent { UserId = userId });
                     return labourPeofileDto.LabourProfileCompletionDto;
                 }
                 throw new Exception("internal server erro  : database updation failed");
@@ -117,6 +122,32 @@ namespace ProfileService.Services.LabourService
             }
         }
 
+
+
+        public async Task<List<LabourViewDto>> GetFilteredLabour(LabourFilterDto LabourFilterDto)
+        {
+            
+
+            var allLabours = await _labourRepositry.GetFilterdLabours(LabourFilterDto);
+            if(allLabours == null)
+            {
+                return null; 
+            }
+            var labourViewDtos = allLabours.Select(result => new LabourViewDto
+            {
+                LabourId = result.LabourId,
+                LabourProfileCompletion = _mapper.Map<LabourProfileCompletionDto>(result),
+                ProfilePhotoUrl = result.ProfilePhotoUrl,
+                LabourWorkImages = result.LabourWorkImages.Select(img => img.ImageUrl).ToList(),
+                LabourPreferredMuncipalities = result.LabourPreferedMuncipalities.Select(m => m.MunicipalityId).ToList(),
+                LabourSkills = result.LabourSkills.Select(s => s.SkillId).ToList()
+            }).ToList();
+
+            return labourViewDtos;
+
+
+
+        }
         public async Task<LabourViewDto> GetLabourById(Guid Id)
         {
             try
@@ -135,21 +166,44 @@ namespace ProfileService.Services.LabourService
                     LabourWorkImages = result.LabourWorkImages.Select(img => img.ImageUrl).ToList(),
                     LabourPreferredMuncipalities = result.LabourPreferedMuncipalities.Select(m => m.MunicipalityId).ToList(),
                     LabourSkills = result.LabourSkills.Select(s => s.SkillId).ToList()
-
                 };
 
                 return labourViewDto;
-
-
-
-
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.InnerException?.Message ?? ex.Message);
+                throw new Exception($"{ex.InnerException?.Message ?? ex.Message }", ex);
             }
         }
 
+
+        public async Task<List<LabourViewDto>?> GetAllLabours()
+        {
+            try
+            {
+              var allLabours = await _labourRepositry.GetAllLabours();
+                if (allLabours == null || !allLabours.Any())
+                {
+                    return null; 
+                }
+                var labourViewDtos = allLabours.Select(result => new LabourViewDto
+                {
+                    LabourId = result.LabourId,
+                    LabourProfileCompletion = _mapper.Map<LabourProfileCompletionDto>(result),
+                    ProfilePhotoUrl = result.ProfilePhotoUrl,
+                    LabourWorkImages = result.LabourWorkImages.Select(img => img.ImageUrl).ToList(),
+                    LabourPreferredMuncipalities = result.LabourPreferedMuncipalities.Select(m => m.MunicipalityId).ToList(),
+                    LabourSkills = result.LabourSkills.Select(s => s.SkillId).ToList()
+                }).ToList();
+
+                return labourViewDtos;
+
+            }
+            catch(Exception ex)
+            {
+                throw new Exception($"{ex.InnerException?.Message ?? ex.Message}", ex);
+            }
+        }
 
         //public async Task<LabourProfileCompletionDto> UpdatLabourProfile(CompleteLabourPeofileDto labourProfileDto, Guid Id)
         //{

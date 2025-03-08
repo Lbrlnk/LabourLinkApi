@@ -1,4 +1,5 @@
-﻿using ProfileService.Models;
+﻿using ProfileService.Dtos;
+using ProfileService.Models;
 
 namespace ProfileService.Repositories.LabourRepository
 {
@@ -14,6 +15,8 @@ namespace ProfileService.Repositories.LabourRepository
 
         Task<Labour> GetLabourByIdAsync(Guid Id);
 
+        Task<List<Labour>> GetFilterdLabours(LabourFilterDto filterDto);
+        Task<List<Labour>> GetAllLabours();
 
         Task<List<LabourWorkImage>> GetLabourWorkImages(Guid Id);
         Task<List<LabourSkills>> GetLabourSkills(Guid Id);

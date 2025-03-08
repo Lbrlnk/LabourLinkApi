@@ -14,7 +14,9 @@ namespace ProfileService.Mapper
             //CreateMap<LabourSkillDto, LabourSkills>().ReverseMap();
             //CreateMap<LabourMuncipalitiesDto, LabourPreferredMuncipality>()
             //.ForMember(dest => dest.MunicipalityId, opt => opt.MapFrom(src => src.MunicipalityId));
-            CreateMap<CompleteEmployerProfileDto , Employer>().ReverseMap();
+            CreateMap<Employer, EmployerView>().ReverseMap();
+            CreateMap<Labour, LabourViewDto>().ReverseMap();
+            CreateMap<EmployerView ,Employer>().ReverseMap();
 
         }
 

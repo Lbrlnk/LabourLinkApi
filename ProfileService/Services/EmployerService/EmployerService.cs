@@ -1,21 +1,25 @@
 ﻿using AutoMapper;
+using EventBus.Abstractions;
+using EventBus.Events;
 using ProfileService.Dtos;
 using ProfileService.Models;
 using ProfileService.Repositories.EmployerRepository;
 using ProfileService.Repositories.LabourRepository;
 //using ProfileService.Services.RabbitMQ;
 
+
 namespace ProfileService.Services.EmployerService
 {
     public class EmployerService : IEmployerService
     {
+        private readonly IEventPublisher _eventPublisher;
         private readonly IEmployerRepository _employerRepository;
         private readonly IMapper _mapper;
         //private readonly IRabbitMqService _rabbitMqService;
 
-        public EmployerService(IEmployerRepository employerRepository, IMapper mapper)
+        public EmployerService(IEmployerRepository employerRepository, IMapper mapper, IEventPublisher eventPublisher)
         {
-           
+            _eventPublisher = eventPublisher;
             _mapper = mapper;
             _employerRepository = employerRepository;
             //_rabbitMqService = rabbitMqService;
@@ -67,6 +71,24 @@ namespace ProfileService.Services.EmployerService
             catch (Exception ex)
             {
                 throw new Exception($"Error when Updating Employer Profile {ex.Message}", ex);
+            }
+        }
+       public async  Task<EmployerView> GetEmployerDetails(Guid userId)
+        {
+            try
+            {
+                var result = await _employerRepository.GetEmployerByIdAsync(userId);
+                if (result is null)
+                {
+                    return null;
+                }
+
+                var employerView = _mapper.Map<EmployerView>(result);
+                return employerView;
+
+            } catch (Exception ex)
+            {
+                throw new Exception($"Error when retriving Employer  : {ex.Message}", ex);
             }
         }
     }
