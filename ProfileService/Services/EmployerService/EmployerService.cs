@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+
 using EventBus.Abstractions;
 using EventBus.Events;
 using ProfileService.Dtos;
+using ProfileService.Helper.CloudinaryHelper;
 using ProfileService.Models;
 using ProfileService.Repositories.EmployerRepository;
 using ProfileService.Repositories.LabourRepository;
@@ -15,29 +17,37 @@ namespace ProfileService.Services.EmployerService
         private readonly IEventPublisher _eventPublisher;
         private readonly IEmployerRepository _employerRepository;
         private readonly IMapper _mapper;
+        private readonly ICloudinaryHelper _cloudinary;
         //private readonly IRabbitMqService _rabbitMqService;
 
-        public EmployerService(IEmployerRepository employerRepository, IMapper mapper, IEventPublisher eventPublisher)
+        public EmployerService(IEmployerRepository employerRepository, IMapper mapper, IEventPublisher eventPublisher, ICloudinaryHelper cloudinary)
         {
             _eventPublisher = eventPublisher;
             _mapper = mapper;
             _employerRepository = employerRepository;
+            _cloudinary = cloudinary;
             //_rabbitMqService = rabbitMqService;
 
         }
-        public async Task<CompleteEmployerProfileDto> CompleteEmployerProfile(Guid userId, CompleteEmployerProfileDto employerProfileDto)
+        public async Task<string> CompleteEmployerProfile(Guid userId, CompleteEmployerProfileDto employerProfileDto)
         {
             try
             {
-                var employee = _mapper.Map<Employer>(employerProfileDto);
+                var employer = _mapper.Map<Employer>(employerProfileDto);
 
-                employee.UserId = userId;
-                 await _employerRepository.AddEmployer(employee);
+                if(employerProfileDto.ProfileImage != null)
+                {
+                    var ImageUrl = await _cloudinary.UploadImageAsync(employerProfileDto.ProfileImage, true);
+                    employer.ProfileImageUrl = ImageUrl;
+                }
+
+                 employer.UserId = userId;
+                 await _employerRepository.AddEmployer(employer);
                 if (await _employerRepository.UpdateDatabase())
                 {
                     //_rabbitMqService.PublishProfileCompleted(userId);
                     _eventPublisher.Publish(new ProfileCompletedEvent { UserId = userId });
-                    return employerProfileDto;
+                    return "registration succesfull";
 
                 }
 
@@ -46,26 +56,36 @@ namespace ProfileService.Services.EmployerService
             }
             catch (Exception ex)
             {
-                throw new Exception($"Error when Adding Employer profile  : {ex.Message}", ex);
+                throw;
             }
 
         }
 
-       public async Task<EditEmployerProfileDto> UpdateEmployerProfile(Guid userId, EditEmployerProfileDto employerProfileDto)
+       public async Task<string> UpdateEmployerProfile(Guid userId, EditEmployerProfileDto employerProfileDto)
         {
             try
             {
                 var existingEmployer = await  _employerRepository.GetEmployerByIdAsync(userId) ?? throw new Exception("Labour not found");
 
+
                 existingEmployer.FullName = employerProfileDto.FullName??existingEmployer.FullName;
 
-                if(employerProfileDto.PreferedMuncipalityId != null)
+                if (employerProfileDto.Image != null)
                 {
-                    existingEmployer.PreferedMuncipalityId = employerProfileDto.PreferedMuncipalityId;
+                    var existingImagePublicId = _cloudinary.ExtractPublicIdFromUrl(existingEmployer.ProfileImageUrl);
+                    await _cloudinary.DeleteImageAsync(existingImagePublicId);
+                    var imageUrl = await _cloudinary.UploadImageAsync(employerProfileDto.Image, false);
+                    existingEmployer.ProfileImageUrl = imageUrl;
                 }
 
-              var result =  await _employerRepository.UpdateEmployer(existingEmployer);
-                return employerProfileDto;
+                existingEmployer.PreferedMunicipality = employerProfileDto.PreferedMuncipality ?? existingEmployer.PreferedMunicipality;
+
+
+              
+               await _employerRepository.UpdateEmployer(existingEmployer);
+                
+                
+                return "Updation successfull";
 
 
             }

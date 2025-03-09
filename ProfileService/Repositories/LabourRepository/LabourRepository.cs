@@ -29,6 +29,7 @@ namespace ProfileService.Repositories.LabourRepository
         }
         public async Task<bool> AddLabourWorkImages(LabourWorkImage lwi)
         {
+            Console.WriteLine("labour workimage " , lwi);
             await _context.LabourWorkImages.AddAsync(lwi);
             return true;
         }
@@ -72,31 +73,58 @@ namespace ProfileService.Repositories.LabourRepository
             return await _context.Labours
                  .Include(l => l.LabourSkills)
                  .Include(l => l.LabourWorkImages)
-                 .Include(l => l.LabourPreferedMuncipalities)
+                 .Include(l => l.LabourPreferedMuncipalities) 
+                 .Include(l => l.Reviews)
                  .Where(l => l.IsActive == true)
                  .ToListAsync();
         }
 
+        //public async Task<List<Labour>> GetFilterdLabours(LabourFilterDto filterDto)
+        //{
+        //    var query = _context.Labours
+        //.Include(l => l.LabourSkills)
+        //.Include(l => l.LabourWorkImages)
+        //.Include(l => l.LabourPreferedMuncipalities)
+        //.Where(l => l.IsActive == true)
+        //.AsQueryable(); 
+
+
+        //    if (filterDto.PreferredMunicipalities != null && filterDto.PreferredMunicipalities.Any())
+        //    {
+        //        query = query.Where(l => l.LabourPreferedMuncipalities
+        //            .Any(m => filterDto.PreferredMunicipalities.Contains(m.MunicipalityName)));
+        //    }
+
+        //    if (filterDto.SkillIds != null && filterDto.SkillIds.Any())
+        //    {
+        //        query = query.Where(l => l.LabourSkills
+        //            .Any(s => filterDto.SkillIds.Contains(s.SkillName)));
+        //    }
+
+        //    return await query.ToListAsync();
+        //}
+
+
+
         public async Task<List<Labour>> GetFilterdLabours(LabourFilterDto filterDto)
         {
             var query = _context.Labours
-        .Include(l => l.LabourSkills)
-        .Include(l => l.LabourWorkImages)
-        .Include(l => l.LabourPreferedMuncipalities)
-        .Where(l => l.IsActive == true)
-        .AsQueryable(); 
+                .Include(l => l.LabourSkills)
+                .Include(l => l.LabourWorkImages)
+                .Include(l => l.LabourPreferedMuncipalities)
+                .Where(l => l.IsActive)
+                .AsNoTracking();  
 
-            
             if (filterDto.PreferredMunicipalities != null && filterDto.PreferredMunicipalities.Any())
             {
                 query = query.Where(l => l.LabourPreferedMuncipalities
-                    .Any(m => filterDto.PreferredMunicipalities.Contains(m.MunicipalityId)));
+                    .Any(m => filterDto.PreferredMunicipalities.Contains(m.MunicipalityName)));
             }
 
-            if (filterDto.SkillIds != null && filterDto.SkillIds.Any())
+            if (filterDto.Skills != null && filterDto.Skills.Any())
             {
                 query = query.Where(l => l.LabourSkills
-                    .Any(s => filterDto.SkillIds.Contains(s.SkillId)));
+                    .Any(s => filterDto.Skills.Contains(s.SkillName)));
             }
 
             return await query.ToListAsync();

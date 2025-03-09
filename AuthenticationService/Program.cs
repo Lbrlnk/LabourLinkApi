@@ -56,6 +56,8 @@ namespace AuthenticationService
             builder.Services.AddScoped<IAuthRepository, AuthRepository>();
             builder.Services.AddScoped<ICloudinaryHelper, CloudinaryHelper>();
            
+
+
             builder.Services.AddSingleton<RabbitMQConnection>(sp =>
             {
                 var config = sp.GetRequiredService<IConfiguration>();

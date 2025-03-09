@@ -12,7 +12,7 @@ namespace ProfileService.Models
         public Guid LabourId { get; set; }
 
         [Required(ErrorMessage = "SkillId is required.")]
-        public Guid SkillId { get; set; }
+        public string SkillName { get; set; }
 
         [ForeignKey("LabourId")]
         public Labour Labour { get; set; }

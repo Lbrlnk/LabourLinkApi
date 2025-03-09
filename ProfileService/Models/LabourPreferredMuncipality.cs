@@ -12,8 +12,8 @@ namespace ProfileService.Models
         public Guid LabourId { get; set; }
 
         [Required(ErrorMessage = "MunicipalityId is required.")]
-        [Range(1, int.MaxValue, ErrorMessage = "MunicipalityId must be greater than 0.")]
-        public int MunicipalityId { get; set; }
+        
+        public string MunicipalityName { get; set; }
 
         public Labour Labour { get; set; }
 
