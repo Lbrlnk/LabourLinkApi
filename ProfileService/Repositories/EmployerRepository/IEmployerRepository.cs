@@ -9,6 +9,8 @@ namespace ProfileService.Repositories.EmployerRepository
         Task<Employer> GetEmployerByIdAsync(Guid Id);
         Task<bool> UpdateDatabase();
 
+        
+
 
     }
 }

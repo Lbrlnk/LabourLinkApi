@@ -10,7 +10,7 @@
     <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="CloudinaryDotNet" Version="1.27.3" />
     <PackageReference Include="DotNetEnv" Version="3.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.12" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.1">
       <PrivateAssets>all</PrivateAssets>
@@ -27,7 +27,7 @@
   </ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\LabourLinkApi.Events\LabourLinkApi.Event.csproj" />
+		<ProjectReference Include="..\EventBus\EventBus.csproj" />
 	</ItemGroup>
 
 </Project>

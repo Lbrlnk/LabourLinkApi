@@ -1,5 +1,7 @@
 
 using CloudinaryDotNet;
+using EventBus.Abstractions;
+using EventBus.Implementations;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -11,11 +13,21 @@ using ProfileService.Mapper;
 using ProfileService.Middlewares;
 using ProfileService.Repositories.EmployerRepository;
 using ProfileService.Repositories.LabourRepository;
+using ProfileService.Repositories.ReviewRepository;
 using ProfileService.Services.EmployerService;
 using ProfileService.Services.LabourService;
-using ProfileService.Services.RabbitMQ;
+//<<<<<<< HEAD
+//using ProfileService.Services.RabbitMQ;
+using RabbitMQ.Client;
+//=======
+using ProfileService.Services.ReviewService;
+//using ProfileService.Services.RabbitMQ;
+//>>>>>>> upstream/development
 using System.Text;
 using System.Text.Json.Serialization;
+using ProfileService.Repositories.ChatConversationRepository;
+using ProfileService.Services.ConversationService;
+
 
 namespace ProfileService
 {
@@ -34,7 +46,6 @@ namespace ProfileService
             // Add services to the container.
 
             builder.Services.AddDbContext<LabourLinkProfileDbContext>(options =>
-
             options.UseSqlServer(
                 ConnectionString,
                  sqlOptions => sqlOptions.EnableRetryOnFailure()
@@ -46,10 +57,41 @@ namespace ProfileService
             builder.Services.AddScoped<ILabourRepository , LabourRepository>();
             builder.Services.AddScoped<ILabourService, LabourService>();
             builder.Services.AddScoped<ICloudinaryHelper, CloudinaryHelper>();
-            builder.Services.AddSingleton<IRabbitMqService, RabbitMqService>();
+            //builder.Services.AddSingleton<IRabbitMqService, RabbitMqService>();
             builder.Services.AddScoped<IEmployerRepository, EmployerRepository>();
             builder.Services.AddScoped<IEmployerService, EmployerService>();
+            builder.Services.AddScoped<IChatConversationRepository, ChatConversationRepository>();
+            builder.Services.AddScoped<IConversationService, ConversationService>();
+//<<<<<<< HEAD
 
+            builder.Services.AddSingleton<RabbitMQConnection>(sp =>
+            {
+                var config = sp.GetRequiredService<IConfiguration>();
+                var connection = new RabbitMQConnection(config);
+                connection.DeclareExchange("labourlink.events", ExchangeType.Direct);
+                
+                return connection;
+            });
+            //builder.Services.AddScoped<IEventPublisher, EventPublisher>();
+            builder.Services.AddScoped<IEventPublisher, EventPublisher>();
+
+//=======
+            builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
+            builder.Services.AddScoped<IReviewService, ReviewService>();
+            //>>>>>>> upstream/development
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowSpecificOrigin",
+                    builder =>
+                    {
+                        builder.WithOrigins("http://localhost:5173")
+                               .AllowCredentials()
+                               .AllowAnyMethod()
+                               .AllowAnyHeader();
+
+                    });
+            });
 
             builder.Services.AddControllers().AddJsonOptions(options =>
             {
@@ -84,9 +126,7 @@ namespace ProfileService
                     }
                 });
             });
-
-
-
+                                                 
             var secret = Encoding.UTF8.GetBytes("Laboulink21345665432@354*(45234567876543fgbfgnh");
             builder.Services.AddAuthentication(options =>
             {
@@ -118,7 +158,7 @@ namespace ProfileService
             }
             app.UseDeveloperExceptionPage();
             app.UseHttpsRedirection();
-
+            app.UseCors("AllowSpecificOrigin");
             app.UseMiddleware<TokenAccessingMiddleware>();
             app.UseAuthentication();
             app.UseAuthorization();

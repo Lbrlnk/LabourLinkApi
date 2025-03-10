@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using CloudinaryDotNet.Actions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProfileService.Dtos;
 using ProfileService.Services.LabourService;
@@ -18,11 +19,11 @@ namespace ProfileService.Controllers
             _labourService = labourService;
         }
 
-        
-        
+
+
 
         [HttpPost("complete-profile")]
-        public async Task<IActionResult> CompleteLabourProfile([FromForm]CompleteLabourPeofileDto labourPeofileDto)
+        public async Task<IActionResult> CompleteLabourProfile([FromForm] CompleteLabourPeofileDto labourPeofileDto)
         {
             if (!HttpContext.Items.ContainsKey("UserId"))
             {
@@ -31,11 +32,51 @@ namespace ProfileService.Controllers
 
             var userId = Guid.Parse(HttpContext.Items["UserId"].ToString());
 
-            var labour =await _labourService.CompleteLabourProfile(labourPeofileDto, userId );
+            var labour = await _labourService.CompleteLabourProfile(labourPeofileDto, userId);
 
             return Ok(labour);
         }
 
+        [HttpGet("all/lLabours")]
+        public async Task<IActionResult> GetAllLabours()
+        {
+            try
+            {
+                var result = await _labourService.GetAllLabours();
+
+                if(result == null)
+                {
+                    return NotFound();
+                }
+                return Ok(result);  
+            }
+            catch(Exception ex)
+            {
+                throw new Exception($"{ex.InnerException?.Message ?? ex.Message}", ex);
+            }
+        }
+
+        [HttpGet("filtered/labours")]
+        public async Task<IActionResult> GetAllFilteredLabours(LabourFilterDto labourFilterDto)
+        {
+            try
+            {
+                if(labourFilterDto == null)
+                {
+                    return BadRequest("filter canot be null");
+                }
+                var result = _labourService.GetFilteredLabour(labourFilterDto);
+                if(result == null)
+                {
+                    return NotFound("no labours found");
+                }
+                return Ok(result);
+            }
+            catch(Exception ex)
+            {
+                throw new Exception($"{ex.InnerException?.Message ?? ex.Message}", ex);
+            }
+        }
 
         [HttpGet("getLabour")]
         public async Task<IActionResult>  GetUserById(Guid id)
@@ -47,6 +88,24 @@ namespace ProfileService.Controllers
                 return NotFound("Labour not found");
             }
             return Ok(response);
+        }
+
+        [HttpGet("my-details")]
+        public async Task<IActionResult> GetMyDetails()
+        {
+            if (!HttpContext.Items.ContainsKey("UserId"))
+            {
+                return Unauthorized("User not authenticated.");
+            }
+            var UserId = Guid.Parse(HttpContext.Items["UserId"].ToString());
+            var response = await _labourService.GetLabourById(UserId);
+
+            if (response == null)
+            {
+                return NotFound("Labour not found");
+            }
+            return Ok(response);
+
         }
 
         [HttpDelete("delete/workimage")]

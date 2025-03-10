@@ -13,7 +13,9 @@ namespace ProfileService.Data
         public DbSet<LabourPreferredMuncipality> LabourPreferedMuncipalities {get; set;}
         public DbSet<LabourWorkImage> LabourWorkImages {get; set;}
         public DbSet<LabourSkills> LabourSkills {get; set;}
+        public DbSet<Review> Reviews { get; set; }
 
+        public DbSet<Conversation> Conversations { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -73,7 +75,41 @@ namespace ProfileService.Data
                       .WithMany(l => l.LabourWorkImages)
                       .OnDelete(DeleteBehavior.Cascade);
             });
+            modelBuilder.Entity<Review>(entity =>
+			{
+				entity.Property(r => r.Rating)
+		              .HasColumnType("decimal(3,2)")  
+		              .IsRequired();
 
+				entity.HasOne(r => r.Employer)
+		              .WithMany(c => c.Reviews)
+		              .HasForeignKey(r => r.EmployerId)
+		              .OnDelete(DeleteBehavior.Cascade);
+
+				entity.HasOne(r => r.Labour)
+					  .WithMany(l => l.Reviews)
+					  .HasForeignKey(r => r.LabourId)
+					  .OnDelete(DeleteBehavior.Cascade);
+
+			});
+
+            modelBuilder.Entity<Conversation>(entity =>
+            {
+                entity.HasKey(l => l.Id);
+               
+                entity.HasOne(l => l.User1)
+                     .WithMany(l => l.ConversationsAsUser1)
+                     .HasForeignKey(x => x.User1Id)
+                     .HasPrincipalKey(e => e.UserId) // Maps to Employer.UserId
+                     .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(l => l.User2)
+                      .WithMany(l => l.ConversationsAsUser2)
+                      .HasForeignKey(x => x.User2Id)
+                      .HasPrincipalKey(l => l.UserId) // Maps to Labour.UserId
+                      .OnDelete(DeleteBehavior.Restrict);
+
+            });
         }
 
     }
