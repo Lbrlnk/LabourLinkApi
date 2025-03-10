@@ -16,13 +16,11 @@ using ProfileService.Repositories.LabourRepository;
 using ProfileService.Repositories.ReviewRepository;
 using ProfileService.Services.EmployerService;
 using ProfileService.Services.LabourService;
-//<<<<<<< HEAD
-//using ProfileService.Services.RabbitMQ;
+
 using RabbitMQ.Client;
-//=======
+
 using ProfileService.Services.ReviewService;
-//using ProfileService.Services.RabbitMQ;
-//>>>>>>> upstream/development
+
 using System.Text;
 using System.Text.Json.Serialization;
 using ProfileService.Repositories.LabourWithinEmployer;
@@ -60,24 +58,25 @@ namespace ProfileService
 			//builder.Services.AddSingleton<IRabbitMqService, RabbitMqService>();
 			builder.Services.AddScoped<IEmployerRepository, EmployerRepository>();
 			builder.Services.AddScoped<IEmployerService, EmployerService>();
-			//<<<<<<< HEAD
-			builder.Services.AddScoped<IEmployerLabour, EmployerLabour>();
-			builder.Services.AddScoped<ILabourPrefferedRepository,LabourPrefferedRepository>();
+
+
+
+
 			builder.Services.AddSingleton<RabbitMQConnection>(sp =>
 			{
 				var config = sp.GetRequiredService<IConfiguration>();
 				var connection = new RabbitMQConnection(config);
 				connection.DeclareExchange("labourlink.events", ExchangeType.Direct);
-
 				return connection;
 			});
-			//builder.Services.AddScoped<IEventPublisher, EventPublisher>();
+
+
 			builder.Services.AddScoped<IEventPublisher, EventPublisher>();
 
-			//=======
+
 			builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 			builder.Services.AddScoped<IReviewService, ReviewService>();
-			//>>>>>>> upstream/development
+
 
 			builder.Services.AddControllers().AddJsonOptions(options =>
 			{
@@ -87,7 +86,7 @@ namespace ProfileService
 			builder.Services.AddEndpointsApiExplorer();
 			builder.Services.AddSwaggerGen(options =>
 			{
-				options.SwaggerDoc("v1", new OpenApiInfo { Title = "Kaalcharakk", Version = "v1" });
+				options.SwaggerDoc("v1", new OpenApiInfo { Title = "ProfileService", Version = "v1" });
 				options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
 				{
 					Name = "Authorization",
@@ -134,9 +133,11 @@ namespace ProfileService
 				};
 			});
 
+//			builder.Services.AddScoped<ILabourPrefferedRepository,LabourPrefferedRepository>();
+
 			var app = builder.Build();
 
-			// Configure the HTTP request pipeline.
+		
 			if (app.Environment.IsDevelopment())
 			{
 				app.UseSwagger();
@@ -157,3 +158,5 @@ namespace ProfileService
 		}
 	}
 }
+
+

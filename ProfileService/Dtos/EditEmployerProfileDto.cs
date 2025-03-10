@@ -2,7 +2,9 @@
 {
     public class EditEmployerProfileDto
     {
-        public string FullName { get; set; }
-        public int PreferedMuncipalityId { get; set; }
+        public string? FullName { get; set; }
+        public string? PreferedMuncipality { get; set; }
+
+        public IFormFile? Image { get; set; }
     }
 }
