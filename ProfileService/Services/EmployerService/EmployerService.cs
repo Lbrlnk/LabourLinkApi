@@ -46,8 +46,10 @@ namespace ProfileService.Services.EmployerService
                 if (await _employerRepository.UpdateDatabase())
                 {
                     //_rabbitMqService.PublishProfileCompleted(userId);
+
                     _eventPublisher.Publish(new ProfileCompletedEvent { UserId = userId });
                     return "registration succesfull";
+
 
                 }
 

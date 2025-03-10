@@ -10,6 +10,8 @@ namespace ProfileService.Dtos
         public string PhoneNumber { get; set; }    
         public LabourPreferedTime PreferedTime { get; set; }
         public string? AboutYourSelf { get; set; }
+
+        public decimal Rating { get; set; }
         public string ProfilePhotoUrl { get; set; }
         public List<string> LabourWorkImages { get; set; } = new List<string>();
         public List<string> LabourPreferredMuncipalities { get; set; } = new List<string>();

@@ -23,26 +23,18 @@ namespace ProfileService.Mapper
              .ForMember(dest => dest.PreferedTime, opt => opt.MapFrom(src => src.PreferedTime))
              .ForMember(dest => dest.AboutYourSelf, opt => opt.MapFrom(src => src.AboutYourSelf))
              .ForMember(dest => dest.ProfilePhotoUrl, opt => opt.MapFrom(src => src.ProfilePhotoUrl))
+             .ForMember(dest => dest.Rating , opt => opt.MapFrom(src => src.Rating))
              .ForMember(dest => dest.LabourWorkImages, opt => opt.MapFrom(src => src.LabourWorkImages.Select(img => img.ImageUrl).ToList()))
              .ForMember(dest => dest.LabourPreferredMuncipalities, opt => opt.MapFrom(src => src.LabourPreferedMuncipalities.Select(m => m.MunicipalityName).ToList()))
              .ForMember(dest => dest.LabourSkills, opt => opt.MapFrom(src => src.LabourSkills.Select(s => s.SkillName).ToList()))
-             //.ForMember(dest => dest.Reviews, opt => opt.MapFrom(src => src.Reviews
-             //   .Select(r => new ReviewShowDto
-             //   {
-             //       Rating = r.Rating,
-             //       Comment = r.Comment,
-             //       Image = r.Image,
-             //       FullName = r.Employer.FullName, 
-             //       UpdatedAt = r.UpdatedAt
-             //   }).ToList()))
              .ForMember(dest => dest.Reviews, opt => opt.MapFrom(src =>
-        (src.Reviews ?? new List<Review>())
+             (src.Reviews ?? new List<Review>())
             .Select(r => new ReviewShowDto
             {
                 Rating = r.Rating,
                 Comment = r.Comment,
                 Image = r.Image,
-                FullName = r.Employer.FullName, // Ensure Employer is not null or handle accordingly
+                FullName = r.Employer.FullName, 
                 UpdatedAt = r.UpdatedAt
             }).ToList()))
              .ReverseMap();

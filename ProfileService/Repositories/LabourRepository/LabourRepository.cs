@@ -51,7 +51,14 @@ namespace ProfileService.Repositories.LabourRepository
                 .Include(l => l.LabourSkills)
                 .Include(l => l.LabourWorkImages)
                 .Include(l => l.LabourPreferedMuncipalities)
-                .FirstOrDefaultAsync(s => s.UserId == Id);
+                .Include(l => l.Reviews)
+                .ThenInclude(r => r.Employer)
+                .FirstOrDefaultAsync(s => s.LabourId == Id);
+        }
+
+        public async Task<List<Review>> GetLabourReviews(Guid labourId)
+        {
+            return await _context.Reviews.Where(l => l.LabourId == labourId).ToListAsync();
         }
 
 
@@ -137,7 +144,7 @@ namespace ProfileService.Repositories.LabourRepository
         }
 
         public async Task<Labour> GetLabourByPhone(string phoneNumber)
-        {
+        {   
            return await _context.Labours.FirstOrDefaultAsync(l => l.PhoneNumber == phoneNumber); 
 
         }

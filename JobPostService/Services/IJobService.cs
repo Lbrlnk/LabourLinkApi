@@ -5,7 +5,7 @@ namespace JobPostService.Services
 {
 	public interface IJobService
 	{
-		Task<ApiResponse<string>> AddNewPost(JobPostDto jobPostDto, IFormFile image);
+		Task<ApiResponse<string>> AddNewPost(JobPostDto jobPostDto, IFormFile image, Guid userid);
 		Task<ApiResponse<List<LabourViewJobPostDto>>> GetJobPost();
 		Task<ApiResponse<List<LabourViewJobPostDto>>> GetJobPostactive();
 		Task<ApiResponse<LabourViewJobPostDto>> GetJobPostById(Guid id);

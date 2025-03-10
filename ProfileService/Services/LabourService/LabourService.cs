@@ -19,10 +19,10 @@ namespace ProfileService.Services.LabourService
         private readonly ILabourRepository _labourRepositry;
         private readonly IMapper _mapper;
         private readonly ICloudinaryHelper _cloudinary;
-        //private readonly IRabbitMqService _rabbitMqService;
         private readonly IEventPublisher _eventPublisher;
-        public LabourService(ILabourRepository labourRepository, IMapper mapper, ICloudinaryHelper cloudinary,  IEventPublisher eventPublisher)
 
+        //private readonly IRabbitMqService _rabbitMqService;
+        public LabourService(ILabourRepository labourRepository, IMapper mapper, ICloudinaryHelper cloudinary , IEventPublisher eventPublisher)
         {
             
             _labourRepositry = labourRepository;
@@ -115,9 +115,10 @@ namespace ProfileService.Services.LabourService
                 if (await _labourRepositry.UpdateDatabase())
                 {
 
-                    //_rabbitMqService.PublishProfileCompleted(userId);
+  
                     _eventPublisher.Publish(new ProfileCompletedEvent { UserId = userId });
                     return "profile Completion successfully completed";
+
                 }
                 throw new Exception("internal server erro  : database updation failed");
 

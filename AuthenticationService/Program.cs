@@ -4,12 +4,9 @@ using AuthenticationService.Helpers.CloudinaryHelper;
 using AuthenticationService.Helpers.JwtHelper;
 using AuthenticationService.Mapper;
 using AuthenticationService.Repositories;
-//<<<<<<< HEAD
-////using AuthenticationService.Services.ProfileCompletionConsumerService;
-//=======
 //>>>>>>> upstream/development
 using AuthenticationService.Sevices.AuthSerrvice;
-using AuthenticationService.Sevices.ProfileCompletionConsumerService;
+//using AuthenticationService.Sevices.ProfileCompletionConsumerService;
 using EventBus.Implementations;
 
 //using AuthenticationService.Sevices.ProfileCompletionConsumerService;
@@ -65,7 +62,7 @@ namespace AuthenticationService
                 connection.DeclareExchange("labourlink.events", ExchangeType.Direct);
                 return connection;
             });
-            builder.Services.AddHostedService<ProfileCompletionConsumer>();
+            //builder.Services.AddHostedService<ProfileCompletionConsumer>();
 
 
 

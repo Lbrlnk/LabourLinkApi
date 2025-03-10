@@ -78,7 +78,7 @@ namespace ProfileService.Controllers
             }
         }
 
-        [HttpGet("getLabour")]
+        [HttpPost("getLabour")]
         public async Task<IActionResult>  GetUserById(Guid id)
         {
            var response = await _labourService.GetLabourById(id);

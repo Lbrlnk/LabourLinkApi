@@ -110,7 +110,10 @@ namespace EventBus.Implementations
                 HostName = config["RabbitMQ:Host"],
                 UserName = config["RabbitMQ:Username"],
                 Password = config["RabbitMQ:Password"],
-                DispatchConsumersAsync = true
+                DispatchConsumersAsync = true,
+                VirtualHost = config["RabbitMQ:VirtualHost"] ?? "/",
+                AutomaticRecoveryEnabled = true,
+                NetworkRecoveryInterval = TimeSpan.FromSeconds(10)
             };
 
             _connection = factory.CreateConnection();
