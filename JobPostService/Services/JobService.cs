@@ -114,6 +114,7 @@ namespace JobPostService.Services
 				existingJob.Description = updatePost.Description ?? existingJob.Description;
 				existingJob.Wage = updatePost.Wage ?? existingJob.Wage;
 				existingJob.StartDate = updatePost.StartDate ?? existingJob.StartDate;
+				existingJob.EndDate = updatePost.EndDate ?? existingJob.EndDate;
 				existingJob.PrefferedTime = updatePost.PrefferedTime ?? existingJob.PrefferedTime;
 				existingJob.MuncipalityId = updatePost.MuncipalityId ?? existingJob.MuncipalityId;
 				existingJob.SkillId1 = updatePost.SkillId1 ?? existingJob.SkillId1;

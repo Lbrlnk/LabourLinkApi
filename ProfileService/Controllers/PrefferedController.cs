@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using ProfileService.Repositories.LabourPrefferedRepositorys;
 using ProfileService.Repositories.LabourWithinEmployer;
-
 namespace ProfileService.Controllers
 {
     [Route("api/[controller]")]

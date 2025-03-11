@@ -243,6 +243,17 @@ namespace ProfileService.Services.ReviewService
 				existingReview.UpdatedAt = DateTime.UtcNow;
 				var updatedRes = await _repository.UpdateAsync(existingReview);
 
+				var labour = await _labour.GetLabourByIdAsync(updatedReview.LabourId);
+
+				var labourReviews = await _labour.GetLabourReviews(updatedReview.LabourId);
+				if (labourReviews.Any())
+				{
+					labour.Rating = (decimal)labourReviews.Average(x => (double)x.Rating);
+				}
+
+				await _labour.UpdateLabour(labour);
+				await _labour.UpdateDatabase();
+
 				ReviewShowDto reviewShow = new ReviewShowDto
 				{
 					Rating = existingReview.Rating,
