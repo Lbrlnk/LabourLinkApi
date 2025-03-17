@@ -18,6 +18,5 @@ namespace AdminService.Models
         public DateTime? UpdatedAt { get; set; }
 
 
-
     }
 }

@@ -12,7 +12,7 @@ namespace ProfileService.Mapper
             CreateMap<CompleteLabourProfileDto, Labour>()
              .ForMember(dest => dest.ProfilePhotoUrl, opt => opt.Ignore())
              .ForMember(dest => dest.LabourSkills, opt => opt.Ignore())
-             .ForMember(dest => dest.LabourPreferedMuncipalities, opt => opt.Ignore())
+             .ForMember(dest => dest.LabourPreferredMunicipalities, opt => opt.Ignore())
              .ForMember(dest => dest.LabourWorkImages, opt => opt.Ignore()) 
              .ReverseMap();
 
@@ -25,7 +25,7 @@ namespace ProfileService.Mapper
              .ForMember(dest => dest.ProfilePhotoUrl, opt => opt.MapFrom(src => src.ProfilePhotoUrl))
              .ForMember(dest => dest.Rating , opt => opt.MapFrom(src => src.Rating))
              .ForMember(dest => dest.LabourWorkImages, opt => opt.MapFrom(src => src.LabourWorkImages.Select(img => img.ImageUrl).ToList()))
-             .ForMember(dest => dest.LabourPreferredMuncipalities, opt => opt.MapFrom(src => src.LabourPreferedMuncipalities.Select(m => m.MunicipalityName).ToList()))
+             .ForMember(dest => dest.LabourPreferredMuncipalities, opt => opt.MapFrom(src => src.LabourPreferredMunicipalities.Select(m => m.MunicipalityName).ToList()))
              .ForMember(dest => dest.LabourSkills, opt => opt.MapFrom(src => src.LabourSkills.Select(s => s.SkillName).ToList()))
              .ForMember(dest => dest.Reviews, opt => opt.MapFrom(src =>
              (src.Reviews ?? new List<Review>())

@@ -10,14 +10,19 @@ namespace NotificationService.Models
         [Required]
         public Guid JobPostId { get; set; }
         [Required]
-        public Guid SenderId { get; set; }
-        [Required] 
-        
-        public Guid ReceicverId { get; set; }
+        public Guid SenderUserId { get; set; }
+        [Required]
+        public string SenderName { get; set; }
+        [Required]
+        public string SenderImageUrl { get; set; }
+        [Required]
+        public Guid ReceiverUserId { get; set; }
+        [Required]
+        public string ReceicverName { get; set; }
+        public string Message { get; set; }
         [EnumDataType(typeof(NotificationType))]
-        public NotificationType notificationType { get; set; }
-        [EnumDataType(typeof(InterestRequestStatus))]
-        public InterestRequestStatus Status { get; set; } 
+        public NotificationType NotificationType { get; set; }
+       
         public bool IsRead { get; set; } = false;
         public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
     }
