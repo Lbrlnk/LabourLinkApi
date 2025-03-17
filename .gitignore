@@ -1,11 +1,17 @@
+
+
 # --- General ---
-*.env*                  # Ignore ALL .env files
+
+.env* 
+               # Ignore ALL .env files
 *.log
 *.suo
 *.user
 *.cache
 .DS_Store
 docker-compose.override.yml
+# Ignore .NET migrations folder
+**/Migrations/
 
 # --- .NET ---
 **/.vs/
@@ -15,6 +21,9 @@ docker-compose.override.yml
 **/TestResults/
 *.userprefs
 *.nupkg
+
+# Entity Framework Migrations
+**/Migrations/
 
 # --- Frontend (React) ---
 node_modules/
