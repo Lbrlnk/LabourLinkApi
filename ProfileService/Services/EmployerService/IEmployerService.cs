@@ -1,4 +1,5 @@
 ﻿using ProfileService.Dtos;
+using ProfileService.Helpers.ApiResponse;
 
 namespace ProfileService.Services.EmployerService
 {
@@ -10,6 +11,8 @@ namespace ProfileService.Services.EmployerService
 
         Task<EmployerView> GetEmployerDetails(Guid userId);
 
-        
-    }
+        Task<ApiResponse<List<EmployerView>>> GetAllEmployers();
+        Task<ApiResponse<int>> CountEmployers();
+
+	}
 }

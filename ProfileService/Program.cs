@@ -25,8 +25,10 @@ using ProfileService.Services.ReviewService;
 //>>>>>>> upstream/development
 using System.Text;
 using System.Text.Json.Serialization;
+using ProfileService.Services.JobPostServiceClientService;
 using ProfileService.Repositories.LabourWithinEmployer;
-using ProfileService.Repositories.LabourPrefferedRepositorys;
+using ProfileService.Services.SkillAnalyticsServices;
+
 
 
 namespace ProfileService
@@ -78,6 +80,11 @@ namespace ProfileService
 			builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 			builder.Services.AddScoped<IReviewService, ReviewService>();
 			//>>>>>>> upstream/development
+
+			builder.Services.AddHttpClient<JobPostServiceClient>();
+			builder.Services.AddScoped<IEmployerLabour, EmployerLabour>();
+
+			builder.Services.AddScoped<ISkillAnalyticsService, SkillAnalyticsService>();
 
 			builder.Services.AddControllers().AddJsonOptions(options =>
 			{
@@ -133,6 +140,15 @@ namespace ProfileService
 					ClockSkew = TimeSpan.Zero // Optional: Removes the default 5-minute clock skew
 				};
 			});
+			builder.Services.AddCors(options =>
+			{
+				options.AddPolicy("AllowAll",
+					policy => policy.AllowAnyOrigin()
+									.AllowAnyMethod()
+									.AllowAnyHeader());
+			});
+
+			
 
 			var app = builder.Build();
 
@@ -144,7 +160,7 @@ namespace ProfileService
 			}
 			app.UseDeveloperExceptionPage();
 			app.UseHttpsRedirection();
-
+			app.UseCors("AllowAll");
 			app.UseMiddleware<TokenAccessingMiddleware>();
 			app.UseAuthentication();
 			app.UseAuthorization();

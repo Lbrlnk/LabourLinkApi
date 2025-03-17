@@ -43,6 +43,7 @@ builder.Services.AddAutoMapper(typeof(ProfileMapper));
 builder.Services.AddScoped<ICloudinaryHelper, CloudinaryHelper>();
 builder.Services.AddScoped<IJobRepository, JobRepository>();
 builder.Services.AddScoped<IJobService, JobService>();
+builder.Services.AddHttpClient<ProfileServiceClient>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

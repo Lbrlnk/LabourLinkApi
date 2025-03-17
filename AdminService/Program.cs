@@ -22,10 +22,10 @@ namespace AdminService
             var builder = WebApplication.CreateBuilder(args);
             DotNetEnv.Env.Load();
 
-			Log.Logger = new LoggerConfiguration()
-	        .WriteTo.Console() 
-	        .WriteTo.File("LogInformation.txt") 
-	        .CreateLogger();
+			//Log.Logger = new LoggerConfiguration()
+	  //      .WriteTo.Console() 
+	  //      .WriteTo.File("LogInformation.txt") 
+	  //      .CreateLogger();
 			builder.Host.UseSerilog();
 			// Add configuration
 			builder.Configuration

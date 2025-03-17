@@ -6,7 +6,6 @@ using ProfileService.Helper.CloudinaryHelper;
 using ProfileService.Helpers.ApiResponse;
 using ProfileService.Models;
 using ProfileService.Repositories.EmployerRepository;
-using ProfileService.Repositories.LabourPrefferedRepositorys;
 using ProfileService.Repositories.LabourRepository;
 using ProfileService.Repositories.ReviewRepository;
 

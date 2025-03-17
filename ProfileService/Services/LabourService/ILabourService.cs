@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProfileService.Dtos;
+using ProfileService.Helpers.ApiResponse;
 using ProfileService.Models;
 
 namespace ProfileService.Services.LabourService
@@ -32,11 +33,12 @@ namespace ProfileService.Services.LabourService
 
         Task<List<LabourViewDto>> GetFilteredLabour(LabourFilterDto LabourFilterDto);
 
+        Task<ApiResponse<int>> GetLabourCount();
 
 
 
 
 
 
-    }
+	}
 }

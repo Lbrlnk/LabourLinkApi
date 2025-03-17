@@ -14,11 +14,13 @@ namespace JobPostService.Services
 		private readonly IJobRepository _repository;
 		private readonly ICloudinaryHelper _cloudinary;
 		private readonly IMapper _mapper;
-		public JobService(IJobRepository repository,ICloudinaryHelper cloudinary,IMapper mapper)
+		private readonly ProfileServiceClient _profileServiceClient;
+		public JobService(IJobRepository repository,ICloudinaryHelper cloudinary,IMapper mapper, ProfileServiceClient profileServiceClient)
 		{
 			_repository = repository;
 			_cloudinary = cloudinary;
 			_mapper = mapper;
+			_profileServiceClient = profileServiceClient;
 		}
 		public async Task<ApiResponse<string>> AddNewPost(JobPostDto jobPostDto,IFormFile image,Guid userid)
 		{
@@ -43,6 +45,7 @@ namespace JobPostService.Services
 					Description=jobPostDto.Description,
 					Wage=jobPostDto.Wage,
 					StartDate=jobPostDto.StartDate,
+					EndDate=jobPostDto.EndDate,
 					PrefferedTime=jobPostDto.PrefferedTime,
 					MuncipalityId=jobPostDto.MuncipalityId,
 					SkillId1=jobPostDto.SkillId1,
@@ -66,32 +69,92 @@ namespace JobPostService.Services
 			var res=_mapper.Map<List<LabourViewJobPostDto>>(result);
 			return new ApiResponse<List<LabourViewJobPostDto>>(200,"success",res);
 		}
-		public async Task<ApiResponse<List<LabourViewJobPostDto>>> GetJobPostactive()
+		public async Task<ApiResponse<List<JobPostDtoMinimal>>> GetJobPostactive()
 		{
-			var result = await _repository.GetPostAsyncActiveAsync();
-			if (!result.Any())
+			var jobPosts = await _repository.GetPostAsyncActiveAsync();
+			if (!jobPosts.Any())
 			{
-				return new ApiResponse<List<LabourViewJobPostDto>>(404, "There is no JobPost ");
+				return new ApiResponse<List<JobPostDtoMinimal>>(404, "There is no JobPost.");
 			}
-			var res = _mapper.Map<List<LabourViewJobPostDto>>(result);
-			return new ApiResponse<List<LabourViewJobPostDto>>(200, "success", res);
+
+			var jobPostDtos = new List<JobPostDtoMinimal>();
+
+			foreach (var job in jobPosts)
+			{
+				var client = await _profileServiceClient.GetClientByIdAsync(job.CleintId);
+				if (client.StatusCode != 200 || client.Data == null)
+				{
+					return new ApiResponse<List<JobPostDtoMinimal>>(404, "Client not found.");
+				}
+
+				var jobPostDto = new JobPostDtoMinimal
+				{
+					Title = job.Title,
+					Description = job.Description,
+					Wage = job.Wage,
+					StartDate = job.StartDate,
+					EndDate = job.EndDate,
+					PrefferedTime = job.PrefferedTime,
+					MuncipalityId = job.MuncipalityId,
+					Status = job.Status,
+					SkillId1 = job.SkillId1,
+					SkillId2 = job.SkillId2,
+					Image = job.Image,
+					CreatedDate = job.CreatedDate,
+					FullName = client.Data.FullName,
+					ProfileImageUrl = client.Data.ProfileImageUrl,
+				};
+
+				jobPostDtos.Add(jobPostDto);
+			}
+
+			return new ApiResponse<List<JobPostDtoMinimal>>(200, "success", jobPostDtos);
 		}
-		public async Task<ApiResponse<LabourViewJobPostDto>> GetJobPostById(Guid id)
+
+		public async Task<ApiResponse<JobPostDtoWithLabour>> GetJobPostById(Guid id)
 		{
 			try
 			{
-				var result=await _repository.GetJobPostByIdAsync(id);
-				if (result==null)
+				var result = await _repository.GetJobPostByIdAsync(id);
+				if (result == null)
 				{
-					return new ApiResponse<LabourViewJobPostDto>(404, "There is no JobPost in this id");
+					return new ApiResponse<JobPostDtoWithLabour>(404, "No job post found with the given ID.");
 				}
-				var res = _mapper.Map<LabourViewJobPostDto>(result);
-				return new ApiResponse<LabourViewJobPostDto>(200, "success", res);
-			}catch (Exception ex)
+
+				var client = await _profileServiceClient.GetClientByIdAsync(result.CleintId);
+				if (client.StatusCode != 200 || client.Data == null)
+				{
+					return new ApiResponse<JobPostDtoWithLabour>(404, "Client not found.");
+				}
+
+				var res = new JobPostDtoWithLabour
+				{
+					Title = result.Title,
+					Description = result.Description,
+					Wage = result.Wage,
+					StartDate = result.StartDate,
+					EndDate = result.EndDate,
+					PrefferedTime = result.PrefferedTime,
+					MuncipalityId = result.MuncipalityId,
+					Status = result.Status,
+					SkillId1 = result.SkillId1,
+					SkillId2 = result.SkillId2,
+					Image = result.Image,
+					CreatedDate = result.CreatedDate,
+					FullName = client.Data.FullName,
+					ProfileImageUrl = client.Data.ProfileImageUrl,
+					PreferedMunicipality = client.Data.PreferedMunicipality 
+				};
+
+				return new ApiResponse<JobPostDtoWithLabour>(200, "Success", res);
+			}
+			catch (Exception ex)
 			{
-				return new ApiResponse<LabourViewJobPostDto>(500, "Something Went Wrong");
+				Console.WriteLine($"Error in GetJobPostById: {ex.Message}");
+				return new ApiResponse<JobPostDtoWithLabour>(500, "Something went wrong.");
 			}
 		}
+
 		public async Task<ApiResponse<string>> UpdateJobPost(UpdatePostDto updatePost, Guid clientid, Guid Jobid)
 		{
 			try
@@ -191,6 +254,30 @@ namespace JobPostService.Services
 			catch (Exception ex)
 			{
 				return new ApiResponse<List<LabourViewJobPostDto>>(500,ex.Message);
+			}
+		}
+		public async Task<ApiResponse<List<LabourViewJobPostDto>>> GetJobPostBySkillandMuncipality(string municipality, List<string> skills)
+		{
+			try
+			{
+				if (string.IsNullOrWhiteSpace(municipality) || skills == null || skills.Count == 0)
+				{
+					return new ApiResponse<List<LabourViewJobPostDto>>(400, "Municipality and at least one skill are required.");
+				}
+
+				var jobPosts = await _repository.GetJobPostBySkillandMuncipalityAsync(municipality, skills);
+
+				if (jobPosts.Count == 0)
+				{
+					return new ApiResponse<List<LabourViewJobPostDto>>(404, "No job posts found matching the criteria.");
+				}
+
+				var mappedResult = _mapper.Map<List<LabourViewJobPostDto>>(jobPosts);
+				return new ApiResponse<List<LabourViewJobPostDto>>(200, "Success", mappedResult);
+			}
+			catch (Exception ex)
+			{
+				return new ApiResponse<List<LabourViewJobPostDto>>(500, "An error occurred while processing your request.");
 			}
 		}
 	}

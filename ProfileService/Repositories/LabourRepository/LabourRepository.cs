@@ -148,5 +148,19 @@ namespace ProfileService.Repositories.LabourRepository
            return await _context.Labours.FirstOrDefaultAsync(l => l.PhoneNumber == phoneNumber); 
 
         }
-    }
+		public async Task<Labour> GetLabourByuserIdAsync(Guid UserId)
+		{
+			return await _context.Labours
+				.Include(l => l.LabourSkills)
+				.Include(l => l.LabourWorkImages)
+				.Include(l => l.LabourPreferedMuncipalities)
+				.Include(l => l.Reviews)
+				.ThenInclude(r => r.Employer)
+				.FirstOrDefaultAsync(s => s.UserId == UserId);
+		}
+        public async Task<int> LabourCountAsync()
+        {
+            return await _context.Labours.CountAsync();
+        }
+	}
 }

@@ -7,7 +7,10 @@ namespace ProfileService.Repositories.EmployerRepository
         Task<Employer> AddEmployer(Employer employer);
         Task<bool> UpdateEmployer(Employer employer);
         Task<Employer> GetEmployerByIdAsync(Guid Id);
-        Task<bool> UpdateDatabase();
+        Task<List<Employer>> GetAllEmployersAsync();
+		Task<bool> UpdateDatabase();
+        Task<int> CountEmployersAsync();
 
-    }
+
+	}
 }
