@@ -44,5 +44,7 @@ namespace ProfileService.Models
 
         public ICollection<LabourSkills> LabourSkills { get; set; }
 		public virtual ICollection<Review> Reviews { get; set; }
-	}
+
+        public virtual ICollection<Conversation> ConversationsAsUser2 { get; set; }
+    }
 }

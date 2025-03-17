@@ -26,7 +26,7 @@ builder.Configuration
 
 // Get the connection string for AdminService
 //var connectionString = Environment.GetEnvironmentVariable("DB_ADMIN");
-var connectionString = Environment.GetEnvironmentVariable("DB_ADMIN");
+var connectionString = Environment.GetEnvironmentVariable("LABOURLINK-DB");
 if (string.IsNullOrEmpty(connectionString))
 {
 	throw new Exception("Database connection string is missing.");
@@ -45,6 +45,19 @@ builder.Services.AddScoped<IJobRepository, JobRepository>();
 builder.Services.AddScoped<IJobService, JobService>();
 
 builder.Services.AddControllers();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin",
+        builder =>
+        {
+            builder.WithOrigins("http://localhost:5173")
+                   .AllowCredentials()
+                   .AllowAnyMethod()
+                   .AllowAnyHeader();
+
+        });
+});
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
@@ -107,6 +120,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors("AllowSpecificOrigin");
 
 
 app.UseAuthentication();

@@ -1,5 +1,4 @@
-
-using CloudinaryDotNet;
+    using CloudinaryDotNet;
 using EventBus.Abstractions;
 using EventBus.Implementations;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -167,9 +166,7 @@ namespace ProfileService
 			app.UseMiddleware<UserIdentificationMiddleware>();
 			app.MapControllers();
 
-			app.Run();
-		}
-	}
+            app.Run();
+        }
+    }
 }
-
-
