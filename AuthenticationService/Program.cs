@@ -1,18 +1,10 @@
-
 using AuthenticationService.Data;
-using AuthenticationService.Helpers.CloudinaryHelper;
 using AuthenticationService.Helpers.JwtHelper;
 using AuthenticationService.Mapper;
 using AuthenticationService.Repositories;
-//>>>>>>> upstream/development
 using AuthenticationService.Sevices.AuthSerrvice;
 using AuthenticationService.Sevices.ProfileCompletionConsumerService;
-
-//using AuthenticationService.Sevices.ProfileCompletionConsumerService;
 using EventBus.Implementations;
-
-//using AuthenticationService.Sevices.ProfileCompletionConsumerService;
-//using EventBus.Implementations;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -29,32 +21,26 @@ namespace AuthenticationService
         {
             var builder = WebApplication.CreateBuilder(args);
             DotNetEnv.Env.Load();
-
-
             builder.Configuration
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddEnvironmentVariables();
 
-
             var ConnectionString = Environment.GetEnvironmentVariable("LABOURLINK-DB");
 
-
-            // Add services to the container.
-
-            builder.Services.AddDbContext<AuthenticationDbContext>( options =>
+            builder.Services.AddDbContext<AuthenticationDbContext>(options =>
 
             options.UseSqlServer(
                 ConnectionString,
                 sqlOptions => sqlOptions.EnableRetryOnFailure()
-                ) 
+                )
                 );
 
             builder.Services.AddAutoMapper(typeof(MapperProfile));
             builder.Services.AddScoped<IJwtHelper, JwtHelper>();
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<IAuthRepository, AuthRepository>();
-            builder.Services.AddScoped<ICloudinaryHelper, CloudinaryHelper>();
            
+
 
 
             builder.Services.AddSingleton<RabbitMQConnection>(sp =>
@@ -77,7 +63,7 @@ namespace AuthenticationService
             });
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            
+
 
             builder.Services.AddSwaggerGen();
 
@@ -85,7 +71,7 @@ namespace AuthenticationService
             var audience = builder.Configuration["JWT_AUDIENCE"];
             var issuer = builder.Configuration["JWT_ISSUER"];
 
-            
+
             // Configure JWT Authentication
             builder.Services.AddAuthentication(options =>
             {
@@ -103,7 +89,7 @@ namespace AuthenticationService
                     ValidIssuer = issuer,
                     ValidAudience = audience,
                     IssuerSigningKey = new SymmetricSecurityKey(secretKey),
-                    ClockSkew = TimeSpan.Zero 
+                    ClockSkew = TimeSpan.Zero
                 };
             });
 

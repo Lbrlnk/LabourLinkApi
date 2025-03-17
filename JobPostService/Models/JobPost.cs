@@ -18,11 +18,17 @@ namespace JobPostService.Models
 		public string PrefferedTime { get; set; }
 		[Required]
 		public int? MuncipalityId { get; set; }
-		[Required]
-		public Guid? SkillId1 { get; set; }
-		public Guid? SkillId2 { get; set; }
+        [Required]
 
-		public string Status { get; set; } = "Active";
+        public string? MuncipalityName { get; set; }
+        [Required]
+		public Guid? SkillId1 { get; set; }
+        [Required]
+        public string? Skill1Name { get; set; }
+        public Guid? SkillId2 { get; set; }
+
+        public string? Skill2Name { get; set; }
+        public string Status { get; set; } = "Active";
 		[Required]
 		public string Image { get; set; }
 		public DateOnly CreatedDate { get; set; } = DateOnly.FromDateTime(DateTime.Today);

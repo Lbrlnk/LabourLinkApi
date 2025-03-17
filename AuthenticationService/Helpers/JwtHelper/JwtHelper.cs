@@ -21,10 +21,12 @@ namespace AuthenticationService.Helpers.JwtHelper
             try
             {
                 // retreving configuration settings
-                var secretKey = _configuration["JWT_SECRET_KEY"];
-                var issuer = _configuration["JWT_ISSUER"];
-                var audience = _configuration["JWT_AUDIENCE"];
-                var expiryInHours = int.TryParse(_configuration["JwtExpiryInHours"], out var hours) ? hours : 2; 
+                var secretKey = _configuration["JwtSettings:SecretKey"];
+                var issuer = _configuration["JwtSettings:Issuer"];
+                var audience = _configuration["JwtSettings:Audience"];
+                var expiryInHours = int.TryParse(_configuration["JwtExpiryInHours"], out var hours) ? hours : 2;
+
+               
 
                 if (string.IsNullOrEmpty(secretKey) || string.IsNullOrEmpty(issuer) || string.IsNullOrEmpty(audience))
                 {

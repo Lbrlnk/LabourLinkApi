@@ -1,4 +1,4 @@
-﻿
+
 //using Microsoft.Extensions.Configuration;
 //using RabbitMQ.Client;
 //using System;
@@ -51,8 +51,8 @@
 //}
 
 using Microsoft.Extensions.Configuration;
+
 using RabbitMQ.Client;
-using System;
 
 namespace EventBus.Implementations
 {

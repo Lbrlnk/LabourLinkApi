@@ -50,9 +50,10 @@ namespace JobPostService.Services
 					Image=imageurl
 				};
 				var res=await _repository.AddJobPost(jobPost);
-					return new ApiResponse<string>(201, "success", "Job post created Successfully");
+					return new ApiResponse<string>(200, "success", "Job post created Successfully");
 			}catch (Exception ex)
 			{
+                Console.WriteLine($"{ex.Message}");
 				return new  ApiResponse<string>(500, ex.Message);
 			}
 		}

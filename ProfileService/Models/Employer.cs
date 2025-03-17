@@ -23,7 +23,7 @@ namespace ProfileService.Models
         public string PreferedMunicipality { get; set; }
         public virtual ICollection<Review> Reviews { get; set; }
 
+        public virtual ICollection<Conversation> ConversationsAsUser1 { get; set; }
 
-        
     }
 }

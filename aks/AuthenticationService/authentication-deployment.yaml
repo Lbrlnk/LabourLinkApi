@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: authentication-deployment
+  namespace: labourlink
+  labels:
+    app: authentication-microservice
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: authentication-microservice
+  template:
+    metadata:
+      labels:
+        app: authentication-microservice
+    spec:
+      containers:
+        - name: authentication-microservice
+          image: labourlinkcontainerregistry.azurecr.io/authenticationservice:latest
+          ports:
+            - containerPort: 8080
+              name: http
+            - containerPort: 443
+              name: https
+          env:
+            # Application environment and JWT settings
+            - name: ASPNETCORE_ENVIRONMENT
+              value: Production
+            - name: JWT_ISSUER
+              value: Labourlink-Api
+            - name: JWT_AUDIENCE
+              value: Labourlink-Frontend
+            - name: JWT-SECRET-KEY
+              valueFrom:
+                secretKeyRef:
+                  name: authentication-secrets
+                  key: JWT-SECRET-KEY
+
+            # Database connection settings
+            - name: DB-ConnectionString
+              valueFrom:
+                secretKeyRef:
+                  name: authentication-secrets
+                  key: DB-ConnectionString
+
+            # RabbitMQ connection settings
+            - name: RabbitMQ-Host
+              valueFrom:
+                secretKeyRef:
+                  name: authentication-secrets
+                  key: RabbitMQ-Host
+            - name: RabbitMQ-Username
+              valueFrom:
+                secretKeyRef:
+                  name: authentication-secrets
+                  key: RabbitMQ-Username
+            - name: RabbitMQ-Password
+              valueFrom:
+                secretKeyRef:
+                  name: authentication-secrets
+                  key: RabbitMQ-Password
