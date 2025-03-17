@@ -3,12 +3,12 @@ using NotificationService.Models;
 
 namespace NotificationService.Data
 {
-    public class AppDbContext : DbContext
+    public class ApplicationDbContext : DbContext
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
-        DbSet<InterestRequest> InterestRequests { get; set; }
-        DbSet<Notification> Notifications { get; set; }
+       public  DbSet<InterestRequest> InterestRequests { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -20,7 +20,7 @@ namespace NotificationService.Data
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.JobPostId).IsRequired();
                 entity.Property(e => e.EmployerUserId).IsRequired();
-                entity.Property(e => e.LabourerUserId).IsRequired();
+                entity.Property(e => e.LabourUserId).IsRequired();
                 entity.Property(e => e.Status).HasConversion<string>();
 
             });
@@ -29,8 +29,8 @@ namespace NotificationService.Data
             modelBuilder.Entity<Notification>(entity =>
             {
                 entity.HasKey(e => e.Id);
-                entity.Property(e => e.notificationType).HasConversion<string>();
-                entity.Property(e => e.Status).HasConversion<string>();
+                entity.Property(e => e.NotificationType).HasConversion<string>();
+                //entity.Property(e => e.Status).HasConversion<string>();
             });
 
 

@@ -1,6 +1,12 @@
 
 using Microsoft.EntityFrameworkCore;
 using NotificationService.Data;
+using NotificationService.Hubs;
+using NotificationService.Mapper;
+using NotificationService.Repository.InterestRequestRepository;
+using NotificationService.Repository.NotificationRepository;
+using NotificationService.Services.IntrestRequestService;
+using NotificationService.Services.NotificationService;
 using System.Text.Json.Serialization;
 
 namespace NotificationService
@@ -18,13 +24,24 @@ namespace NotificationService
 
             var ConnectionString = Environment.GetEnvironmentVariable("LABOURLINK_DB");
             // Add services to the container.
-            builder.Services.AddDbContext<AppDbContext>(options =>
+            builder.Services.AddSignalR();
+            
+            builder.Services.AddAutoMapper(typeof(MapperProfile));
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(
                 ConnectionString,
                  sqlOptions => sqlOptions.EnableRetryOnFailure()
 
                 )
             );
+
+
+
+
+            builder.Services.AddScoped<IInterestRequestRepository, InterestRequestRepository>();
+            builder.Services.AddScoped<IInterestRequestService, InterestRequestService>();
+            builder.Services.AddScoped<INotificationService,NotificationServices>();
+            builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 
             builder.Services.AddControllers().AddJsonOptions(options =>
             {
@@ -49,6 +66,7 @@ namespace NotificationService
 
 
             app.MapControllers();
+            app.MapHub<NotificationHub>("/nothub");
 
             app.Run();
         }

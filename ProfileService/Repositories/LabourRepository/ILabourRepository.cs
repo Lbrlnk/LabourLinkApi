@@ -27,6 +27,8 @@ namespace ProfileService.Repositories.LabourRepository
 
         Task<Labour> GetLabourByPhone(string phoneNumber);
 
+        Task<Labour> GetMyDetails(Guid id);
+
 
     }
 }

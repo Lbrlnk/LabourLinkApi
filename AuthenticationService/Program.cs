@@ -6,6 +6,8 @@ using AuthenticationService.Mapper;
 using AuthenticationService.Repositories;
 //>>>>>>> upstream/development
 using AuthenticationService.Sevices.AuthSerrvice;
+using AuthenticationService.Sevices.ProfileCompletionConsumerService;
+
 //using AuthenticationService.Sevices.ProfileCompletionConsumerService;
 using EventBus.Implementations;
 
@@ -34,7 +36,7 @@ namespace AuthenticationService
                 .AddEnvironmentVariables();
 
 
-            var ConnectionString = Environment.GetEnvironmentVariable("DB_USERS");
+            var ConnectionString = Environment.GetEnvironmentVariable("LABOURLINK-DB");
 
 
             // Add services to the container.
@@ -62,7 +64,7 @@ namespace AuthenticationService
                 connection.DeclareExchange("labourlink.events", ExchangeType.Direct);
                 return connection;
             });
-            //builder.Services.AddHostedService<ProfileCompletionConsumer>();
+            builder.Services.AddHostedService<ProfileCompletionConsumer>();
 
 
 
