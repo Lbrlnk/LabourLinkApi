@@ -14,7 +14,7 @@ namespace JobPostService.Models
 		[Required]
 		public string Description { get; set; }
 		public decimal? Wage { get; set; }
-		public DateTime? StartDate { get; set; }
+		public DateOnly? StartDate { get; set; }
 		public string PrefferedTime { get; set; }
 		[Required]
 		public int? MuncipalityId { get; set; }
@@ -31,8 +31,10 @@ namespace JobPostService.Models
         public string Status { get; set; } = "Active";
 		[Required]
 		public string Image { get; set; }
-		public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
+		public DateOnly CreatedDate { get; set; } = DateOnly.FromDateTime(DateTime.Today);
 		public DateTime UpdatedDate { get; set; } = DateTime.UtcNow;
+
+
 
 	}
 }

@@ -16,6 +16,7 @@ namespace ProfileService.Data
         public DbSet<Review> Reviews { get; set; }
 
         public DbSet<Conversation> Conversations { get; set; }
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -110,7 +111,10 @@ namespace ProfileService.Data
                       .OnDelete(DeleteBehavior.Restrict);
 
             });
+
+			
         }
+		
 
     }
 }

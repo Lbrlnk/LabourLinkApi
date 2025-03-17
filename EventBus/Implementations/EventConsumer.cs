@@ -11,7 +11,60 @@ using Newtonsoft.Json;
 
 namespace EventBus.Implementations
 {
-    public  class EventConsumer : BackgroundService, IEventConsumer
+    //public  class EventConsumer : BackgroundService, IEventConsumer
+    //{
+    //    private readonly RabbitMQConnection _connection;
+    //    private readonly string _exchangeName;
+
+    //    public EventConsumer(RabbitMQConnection connection, string exchangeName = "labourlink.events")
+    //    {
+    //        _connection = connection;
+    //        _exchangeName = exchangeName;
+    //    }
+
+    //    public void Subscribe<TEvent>(string queueName, Action<TEvent> handler) where TEvent : class
+    //    {
+    //        var routingKey = typeof(TEvent).Name;
+
+    //        _connection.Channel.QueueDeclare(
+    //            queue: queueName,
+    //            durable: true,
+    //            exclusive: false,
+    //            autoDelete: false);
+
+    //        _connection.Channel.QueueBind(
+    //            queue: queueName,
+    //            exchange: _exchangeName,
+    //            routingKey: routingKey);
+
+    //        var consumer = new AsyncEventingBasicConsumer(_connection.Channel);
+    //        consumer.Received += async (model, ea) =>
+    //        {
+    //            var body = ea.Body.ToArray();
+    //            var message = JsonConvert.DeserializeObject<TEvent>(Encoding.UTF8.GetString(body));
+    //            handler(message);
+    //            _connection.Channel.BasicAck(ea.DeliveryTag, false);
+    //        };
+
+    //        _connection.Channel.BasicConsume(
+    //            queue: queueName,
+    //            autoAck: false,
+    //            consumer: consumer);
+    //    }
+
+    //    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    //    {
+    //        while (!stoppingToken.IsCancellationRequested)
+    //        {
+    //            await Task.Delay(1000, stoppingToken);
+    //        }
+    //    }
+
+    //}
+
+
+
+    public class EventConsumer : BackgroundService, IEventConsumer
     {
         private readonly RabbitMQConnection _connection;
         private readonly string _exchangeName;
@@ -26,27 +79,29 @@ namespace EventBus.Implementations
         {
             var routingKey = typeof(TEvent).Name;
 
-            _connection.Channel.QueueDeclare(
+            using var channel = _connection.CreateChannel(); // 🔥 Create a new channel for each operation
+            channel.QueueDeclare(
                 queue: queueName,
                 durable: true,
                 exclusive: false,
                 autoDelete: false);
 
-            _connection.Channel.QueueBind(
+            channel.QueueBind(
                 queue: queueName,
                 exchange: _exchangeName,
                 routingKey: routingKey);
 
-            var consumer = new AsyncEventingBasicConsumer(_connection.Channel);
+            var consumer = new AsyncEventingBasicConsumer(channel);
             consumer.Received += async (model, ea) =>
             {
                 var body = ea.Body.ToArray();
                 var message = JsonConvert.DeserializeObject<TEvent>(Encoding.UTF8.GetString(body));
                 handler(message);
-                _connection.Channel.BasicAck(ea.DeliveryTag, false);
+
+                channel.BasicAck(ea.DeliveryTag, false);
             };
 
-            _connection.Channel.BasicConsume(
+            channel.BasicConsume(
                 queue: queueName,
                 autoAck: false,
                 consumer: consumer);
@@ -59,6 +114,5 @@ namespace EventBus.Implementations
                 await Task.Delay(1000, stoppingToken);
             }
         }
-
     }
 }

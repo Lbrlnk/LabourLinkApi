@@ -23,7 +23,7 @@ namespace ProfileService.Controllers
 
 
         [HttpPost("complete-profile")]
-        public async Task<IActionResult> CompleteLabourProfile([FromForm] CompleteLabourPeofileDto labourPeofileDto)
+        public async Task<IActionResult> CompleteLabourProfile([FromForm] CompleteLabourProfileDto labourPeofileDto)
         {
             if (!HttpContext.Items.ContainsKey("UserId"))
             {
@@ -56,8 +56,8 @@ namespace ProfileService.Controllers
             }
         }
 
-        [HttpGet("filtered/labours")]
-        public async Task<IActionResult> GetAllFilteredLabours(LabourFilterDto labourFilterDto)
+        [HttpPost("filtered/labours")]
+        public async Task<IActionResult> GetAllFilteredLabours([FromForm] LabourFilterDto labourFilterDto)
         {
             try
             {
@@ -65,7 +65,7 @@ namespace ProfileService.Controllers
                 {
                     return BadRequest("filter canot be null");
                 }
-                var result = _labourService.GetFilteredLabour(labourFilterDto);
+                var result = await _labourService.GetFilteredLabour(labourFilterDto);
                 if(result == null)
                 {
                     return NotFound("no labours found");
@@ -78,7 +78,7 @@ namespace ProfileService.Controllers
             }
         }
 
-        [HttpGet("getLabour")]
+        [HttpPost("getLabour")]
         public async Task<IActionResult>  GetUserById(Guid id)
         {
            var response = await _labourService.GetLabourById(id);
@@ -134,7 +134,7 @@ namespace ProfileService.Controllers
 
         }
         [HttpDelete("delete/skill")]
-        public async Task<IActionResult> DeleTeLabourSkill(Guid skillId)
+        public async Task<IActionResult> DeleTeLabourSkill(string skillName)
         {
 
             try
@@ -146,7 +146,7 @@ namespace ProfileService.Controllers
             }
 
             var userId = Guid.Parse(HttpContext.Items["UserId"].ToString());
-            var result = await _labourService.DeleteLabourSkill(userId,skillId);
+            var result = await _labourService.DeleteLabourSkill(userId,skillName);
             if (result) return Ok("Skill Deleted Successfully");
             return BadRequest(result);
             }catch (Exception ex)
@@ -159,7 +159,7 @@ namespace ProfileService.Controllers
         }
 
         [HttpDelete("delete/municipality")]
-        public async Task<IActionResult> DeleteLabourMunicipality(int municipalityId)
+        public async Task<IActionResult> DeleteLabourMunicipality(string municipalityName)
         {
 
             try
@@ -171,7 +171,7 @@ namespace ProfileService.Controllers
                 }
 
                 var userId = Guid.Parse(HttpContext.Items["UserId"].ToString());
-                var result = await _labourService.DeleteLabourMunicipality(userId, municipalityId);
+                var result = await _labourService.DeleteLabourMunicipality(userId, municipalityName);
                 if (result) return Ok("Muncipality Deleted Successfully");
                 return BadRequest(result);
             }
@@ -184,7 +184,7 @@ namespace ProfileService.Controllers
 
         }
         [HttpPost("add/municipality")]
-        public async Task<IActionResult> AddLabourMunicipality(int municipalityId)
+        public async Task<IActionResult> AddLabourMunicipality(string municipalityName)
         {
 
             try
@@ -196,7 +196,7 @@ namespace ProfileService.Controllers
                 }
 
                 var userId = Guid.Parse(HttpContext.Items["UserId"].ToString());
-                var result = await _labourService.AddLabourMunicipality(userId, municipalityId);
+                var result = await _labourService.AddLabourMunicipality(userId, municipalityName);
                 if (result) return Ok("Muncipality added Successfully");
                 return BadRequest();
             }
@@ -210,7 +210,7 @@ namespace ProfileService.Controllers
         } 
         
         [HttpPost("add/skill")]
-        public async Task<IActionResult> AddLabourSkill(Guid skillId)
+        public async Task<IActionResult> AddLabourSkill(string  skillName)
         {
 
             try
@@ -222,7 +222,7 @@ namespace ProfileService.Controllers
                 }
 
                 var userId = Guid.Parse(HttpContext.Items["UserId"].ToString());
-                var result = await _labourService.AddLabourSkill(userId, skillId);
+                var result = await _labourService.AddLabourSkill(userId, skillName);
                 if (result) return Ok("Skill added Successfully");
                 return BadRequest();
             }

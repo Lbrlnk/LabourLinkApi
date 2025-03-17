@@ -85,7 +85,7 @@ namespace ProfileService.Repositories.ChatConversationRepository
                                                         UserId = x.User1Id,
                                                         FullName = x.User1.FullName,
                                                         PhoneNumber = x.User1.PhoneNumber,
-                                                        ProfilePhotoUrl = null,
+                                                        ProfilePhotoUrl = x.User1.ProfileImageUrl,
                                                         LastMessage = x.LastMessage,
                                                         LastUpdated = x.LastUpdated,
                                                         IsBlocked = x.IsBlocked,

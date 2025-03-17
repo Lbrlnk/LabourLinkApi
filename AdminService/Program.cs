@@ -33,7 +33,7 @@ namespace AdminService
                 .AddEnvironmentVariables();
 
             // Get the connection string for AdminService
-            var connectionString = Environment.GetEnvironmentVariable("DB_ADMIN");
+            var connectionString = Environment.GetEnvironmentVariable("LABOURLINK-DB");
 
 
             builder.Services.AddDbContext<AdminDbContext>(options =>

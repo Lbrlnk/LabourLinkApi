@@ -7,7 +7,7 @@ namespace ProfileService.Services.LabourService
     public interface ILabourService
     {
         //Task<Labour> CompleteLabourProfile(LabourProfileCompletionDto lbrProfileCompletionDto, ProfileImageDto profileImageDto, LabourWorkImageDto lbrWrkImgDto , Guid userId);
-        Task<LabourProfileCompletionDto> CompleteLabourProfile(CompleteLabourPeofileDto labourPeofileDto, Guid userId);
+        Task<string> CompleteLabourProfile(CompleteLabourProfileDto labourPeofileDto, Guid userId);
         Task<LabourViewDto> GetLabourById(Guid Id);
 
         //Task<LabourProfileCompletionDto> UpdatLabourProfile(CompleteLabourPeofileDto labourProfileDto , Guid Id);
@@ -18,14 +18,14 @@ namespace ProfileService.Services.LabourService
         
 
 
-        Task<bool> DeleteLabourSkill(Guid userId, Guid skillId);
-        Task<bool> DeleteLabourMunicipality(Guid userId, int id);
+        Task<bool> DeleteLabourSkill(Guid userId, string skillname);
+        Task<bool> DeleteLabourMunicipality(Guid userId, string muncipalityName);
         Task<bool> DeleteLabourWorkImages(Guid userId, Guid imageId);
 
-        Task<bool> AddLabourMunicipality(Guid userId, int municipalityId);
+        Task<bool> AddLabourMunicipality(Guid userId, string municipalityName);
         Task<bool> AddLabourWorkImage(Guid userId, IFormFile image);
 
-        Task<bool> AddLabourSkill(Guid userId, Guid skillId);
+        Task<bool> AddLabourSkill(Guid userId, string skillName);
         Task<bool> EditLabourProfile(Guid userId, EditLabourProfileDto editLabourProfileDto);
 
         Task<List<LabourViewDto>> GetAllLabours();

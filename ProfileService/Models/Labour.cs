@@ -23,12 +23,10 @@ namespace ProfileService.Models
         public LabourPreferedTime PreferedTime { get; set; }
 
         [Range(0, 5, ErrorMessage = "Rating must be between 0 and 5.")]
-        public int Rating { get; set; }
+        public decimal Rating { get; set; }
 
         [Url(ErrorMessage = "Invalid URL format.")]
         public string? ProfilePhotoUrl { get; set; }
-
-        //  pending 
 
         [MaxLength(500, ErrorMessage = "About Yourself must be at most 500 characters.")]
         public string? AboutYourSelf { get; set; }

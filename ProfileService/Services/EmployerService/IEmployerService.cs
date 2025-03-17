@@ -4,9 +4,9 @@ namespace ProfileService.Services.EmployerService
 {
     public interface IEmployerService
     {
-        Task<CompleteEmployerProfileDto> CompleteEmployerProfile(Guid userId ,CompleteEmployerProfileDto employerProfileDto);
+        Task<string> CompleteEmployerProfile(Guid userId ,CompleteEmployerProfileDto employerProfileDto);
 
-        Task<EditEmployerProfileDto> UpdateEmployerProfile(Guid userId, EditEmployerProfileDto employerProfileDto);
+        Task<string> UpdateEmployerProfile(Guid userId, EditEmployerProfileDto employerProfileDto);
 
         Task<EmployerView> GetEmployerDetails(Guid userId);
 

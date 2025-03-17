@@ -24,7 +24,8 @@ namespace ProfileService.Repositories.EmployerRepository
        public  async Task<bool> UpdateEmployer(Employer employer)
         {
             _context.Employers.Update(employer);
-            return true;
+            return await _context.SaveChangesAsync() > 0;
+           
         }
        public  async Task<Employer> GetEmployerByIdAsync(Guid id)
         {

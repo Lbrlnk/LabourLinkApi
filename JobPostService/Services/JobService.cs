@@ -20,7 +20,7 @@ namespace JobPostService.Services
 			_cloudinary = cloudinary;
 			_mapper = mapper;
 		}
-		public async Task<ApiResponse<string>> AddNewPost(JobPostDto jobPostDto,IFormFile image)
+		public async Task<ApiResponse<string>> AddNewPost(JobPostDto jobPostDto,IFormFile image,Guid userid)
 		{
 			try
 			{
@@ -38,19 +38,15 @@ namespace JobPostService.Services
 				Console.WriteLine(imageurl);
 				JobPost jobPost = new JobPost
 				{
-					
-					CleintId=jobPostDto.ClientId,
+					CleintId=userid,
 					Title=jobPostDto.Title,
 					Description=jobPostDto.Description,
 					Wage=jobPostDto.Wage,
 					StartDate=jobPostDto.StartDate,
 					PrefferedTime=jobPostDto.PrefferedTime,
 					MuncipalityId=jobPostDto.MuncipalityId,
-					MuncipalityName=jobPostDto.MuncipalityName,
 					SkillId1=jobPostDto.SkillId1,
-					Skill1Name=jobPostDto.Skill1Name,
 					SkillId2=jobPostDto.SkillId2,
-					Skill2Name=jobPostDto.Skill2Name,
 					Image=imageurl
 				};
 				var res=await _repository.AddJobPost(jobPost);

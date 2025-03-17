@@ -83,7 +83,7 @@ namespace ProfileService.Services.ConversationService
 
                 }
 
-                var checkIslabour = await _labourRepository.GetLabourByIdAsync(userId);
+                var checkIslabour = await _labourRepository.GetMyDetails(userId);
 
                 if (checkIslabour != null)
                 {
@@ -110,6 +110,7 @@ namespace ProfileService.Services.ConversationService
 
             }
         }
+
 
         public async Task<ApiResponse<ConversationDto>> UpdateLastMessage(Guid user1Id, Guid user2Id, string message)
         {

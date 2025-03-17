@@ -18,6 +18,8 @@ namespace ProfileService.Repositories.LabourRepository
         Task<List<Labour>> GetFilterdLabours(LabourFilterDto filterDto);
         Task<List<Labour>> GetAllLabours();
 
+        Task<List<Review>> GetLabourReviews(Guid labourId);
+
         Task<List<LabourWorkImage>> GetLabourWorkImages(Guid Id);
         Task<List<LabourSkills>> GetLabourSkills(Guid Id);
         Task<List<LabourPreferredMuncipality>> GetLabourMuncipalities(Guid Id);
@@ -25,6 +27,7 @@ namespace ProfileService.Repositories.LabourRepository
 
         Task<Labour> GetLabourByPhone(string phoneNumber);
 
+        Task<Labour> GetMyDetails(Guid id);
 
     }
 }
