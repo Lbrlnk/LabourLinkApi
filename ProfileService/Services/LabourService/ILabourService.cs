@@ -10,11 +10,8 @@ namespace ProfileService.Services.LabourService
         Task<string> CompleteLabourProfile(CompleteLabourProfileDto labourPeofileDto, Guid userId);
         Task<LabourViewDto> GetLabourById(Guid Id);
 
-        //Task<LabourProfileCompletionDto> UpdatLabourProfile(CompleteLabourPeofileDto labourProfileDto , Guid Id);
 
-
-        //Task<LabourViewDto> GetMyDetails(Guid id);
-
+        Task<LabourViewDto> GetMyDetails(Guid id);
         
 
 
@@ -32,7 +29,7 @@ namespace ProfileService.Services.LabourService
 
         Task<List<LabourViewDto>> GetFilteredLabour(LabourFilterDto LabourFilterDto);
 
-
+       
 
 
 

@@ -241,6 +241,25 @@ namespace ProfileService.Services.LabourService
             }
         }
 
+       public async Task<LabourViewDto> GetMyDetails(Guid id)
+        {
+            try
+            {
+                var result = await _labourRepositry.GetMyDetails(id);
+                if (result == null)
+                {
+                    return null;
+                }
+
+                var labourViewDto = _mapper.Map<LabourViewDto>(result);
+                return labourViewDto;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"{ex.InnerException?.Message ?? ex.Message}", ex);
+            }
+        }
+
         public async Task<List<LabourViewDto>?> GetAllLabours()
         {
             try
@@ -274,28 +293,7 @@ namespace ProfileService.Services.LabourService
             }
         }
 
-       
-
-        //public async Task<LabourProfileCompletionDto> UpdatLabourProfile(CompleteLabourPeofileDto labourProfileDto, Guid Id)
-        //{
-        //    try
-        //    {
-        //        var existigLabour = _labourRepositry.GetLabourByIdAsync(Id);
-        //        if (existigLabour == null)
-        //        {
-        //            return null;
-        //        }
-
-
-
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-
-        //    }
-        //}
-
+      
         public async Task<bool> DeleteLabourSkill(Guid userId, string skillName)
         {
             try
@@ -317,8 +315,8 @@ namespace ProfileService.Services.LabourService
             {
 
                 var labour = await _labourRepositry.GetLabourByIdAsync(userId) ?? throw new Exception("Labour not found");
-                var LabourMuncipality = labour.LabourPreferedMuncipalities.FirstOrDefault(mun=> mun.MunicipalityName == municipalityName) ?? throw new Exception("Muncipality not found");
-                labour.LabourPreferedMuncipalities.Remove(LabourMuncipality);
+                var LabourMuncipality = labour.LabourPreferredMunicipalities.FirstOrDefault(mun=> mun.MunicipalityName == municipalityName) ?? throw new Exception("Muncipality not found");
+                labour.LabourPreferredMunicipalities.Remove(LabourMuncipality);
                 return await _labourRepositry.UpdateLabour(labour);
             }
             catch(Exception ex)
@@ -349,7 +347,7 @@ namespace ProfileService.Services.LabourService
             {
 
                 var labour = await _labourRepositry.GetLabourByIdAsync(userId) ?? throw new Exception("Labour not found");
-                labour.LabourPreferedMuncipalities.Add(new LabourPreferredMuncipality { MunicipalityName = municipalityName });
+                labour.LabourPreferredMunicipalities.Add(new LabourPreferredMuncipality { MunicipalityName = municipalityName });
                 return await _labourRepositry.UpdateLabour(labour);
 
             }

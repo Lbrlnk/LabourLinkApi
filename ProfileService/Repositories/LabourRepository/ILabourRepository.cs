@@ -29,6 +29,7 @@ namespace ProfileService.Repositories.LabourRepository
 
         Task<Labour> GetMyDetails(Guid id);
 
+
     }
 }
  
