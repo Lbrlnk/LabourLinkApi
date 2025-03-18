@@ -11,6 +11,7 @@ namespace JobPostService.Dtos
 		public DateOnly StartDate { get; set; }
 		public DateOnly EndDate { get; set; }
 		public string PrefferedTime { get; set; }
+
 		public string MuncipalityId { get; set; }
 		public string Status { get; set; }
 		public string SkillId1 { get; set; }

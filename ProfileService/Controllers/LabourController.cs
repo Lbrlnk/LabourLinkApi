@@ -22,7 +22,7 @@ namespace ProfileService.Controllers
 
 
 
-        [HttpPost("complete-profile")]
+        [HttpPost("complete/profile")]
         public async Task<IActionResult> CompleteLabourProfile([FromForm] CompleteLabourProfileDto labourPeofileDto)
         {
             if (!HttpContext.Items.ContainsKey("UserId"))
@@ -37,7 +37,7 @@ namespace ProfileService.Controllers
             return Ok(labour);
         }
 
-        [HttpGet("all/lLabours")]
+        [HttpGet("labours")]
         public async Task<IActionResult> GetAllLabours()
         {
             try
@@ -56,7 +56,7 @@ namespace ProfileService.Controllers
             }
         }
 
-        [HttpPost("filtered/labours")]
+        [HttpPost("filter/labours")]
         public async Task<IActionResult> GetAllFilteredLabours([FromForm] LabourFilterDto labourFilterDto)
         {
             try
@@ -78,7 +78,7 @@ namespace ProfileService.Controllers
             }
         }
 
-        [HttpPost("getLabour")]
+        [HttpPost("labour")]
         public async Task<IActionResult>  GetUserById(Guid id)
         {
            var response = await _labourService.GetLabourById(id);
@@ -98,7 +98,7 @@ namespace ProfileService.Controllers
                 return Unauthorized("User not authenticated.");
             }
             var UserId = Guid.Parse(HttpContext.Items["UserId"].ToString());
-            var response = await _labourService.GetLabourById(UserId);
+            var response = await _labourService.GetMyDetails(UserId);
 
             if (response == null)
             {
@@ -108,7 +108,7 @@ namespace ProfileService.Controllers
 
         }
 
-        [HttpDelete("delete/workimage")]
+        [HttpDelete("add/workimage")]
         public async Task<IActionResult> DeleTeLabourWorkImage(Guid WorkImage)
         {
 
@@ -158,7 +158,7 @@ namespace ProfileService.Controllers
 
         }
 
-        [HttpDelete("delete/municipality")]
+        [HttpDelete("add/municipality")]
         public async Task<IActionResult> DeleteLabourMunicipality(string municipalityName)
         {
 
@@ -209,7 +209,7 @@ namespace ProfileService.Controllers
 
         } 
         
-        [HttpPost("add/skill")]
+        [HttpPost("aad/skill")]
         public async Task<IActionResult> AddLabourSkill(string  skillName)
         {
 

@@ -2,7 +2,7 @@
 {
     public enum NotificationType
     {
-        InterestRequest = 1,
+        ShowingInterestRequest = 1,
         RequestAccepted = 2,
     }
 }

@@ -30,10 +30,10 @@ namespace ProfileService.Repositories.LabourWithinEmployer
 			}
 
 			var result = await _context.Labours
-				.Include(x => x.LabourPreferedMuncipalities)
+				.Include(x => x.LabourPreferredMunicipalities)
 				.Include(x => x.LabourSkills)
 				.Include(x => x.LabourWorkImages)
-				.Where(x => x.LabourPreferedMuncipalities
+				.Where(x => x.LabourPreferredMunicipalities
 								.Any(m => employermun.Contains(m.MunicipalityName)))
 				.Skip((pageNumber - 1) * pageSize)
 				.Take(pageSize)
@@ -54,7 +54,7 @@ namespace ProfileService.Repositories.LabourWithinEmployer
 				AboutYourSelf = labour.AboutYourSelf,
 				ProfilePhotoUrl = labour.ProfilePhotoUrl,
 				LabourWorkImages = labour.LabourWorkImages.Select(img => img.ImageUrl).ToList(),
-				LabourPreferredMuncipalities = labour.LabourPreferedMuncipalities.Select(m => m.MunicipalityName).ToList(),
+				LabourPreferredMuncipalities = labour.LabourPreferredMunicipalities.Select(m => m.MunicipalityName).ToList(),
 				LabourSkills = labour.LabourSkills.Select(s => s.SkillName).ToList()
 			}).ToList();
 

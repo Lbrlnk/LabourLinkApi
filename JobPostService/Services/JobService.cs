@@ -47,15 +47,16 @@ namespace JobPostService.Services
 					StartDate=jobPostDto.StartDate,
 					EndDate=jobPostDto.EndDate,
 					PrefferedTime=jobPostDto.PrefferedTime,
-					MuncipalityId=jobPostDto.MuncipalityId,
-					SkillId1=jobPostDto.SkillId1,
-					SkillId2=jobPostDto.SkillId2,
+					MuncipalityId=jobPostDto.MuncipalityName,
+					SkillId1=jobPostDto.Skill1Name,
+					SkillId2 = jobPostDto.Skill2Name,
 					Image=imageurl
 				};
 				var res=await _repository.AddJobPost(jobPost);
-					return new ApiResponse<string>(201, "success", "Job post created Successfully");
+					return new ApiResponse<string>(200, "success", "Job post created Successfully");
 			}catch (Exception ex)
 			{
+                Console.WriteLine($"{ex.Message}");
 				return new  ApiResponse<string>(500, ex.Message);
 			}
 		}
@@ -181,7 +182,7 @@ namespace JobPostService.Services
 				existingJob.PrefferedTime = updatePost.PrefferedTime ?? existingJob.PrefferedTime;
 				existingJob.MuncipalityId = updatePost.MuncipalityId ?? existingJob.MuncipalityId;
 				existingJob.SkillId1 = updatePost.SkillId1 ?? existingJob.SkillId1;
-				existingJob.SkillId2= updatePost.SkillId2 ?? existingJob.SkillId2;
+				existingJob.SkillId2 = updatePost.SkillId2 ?? existingJob.SkillId2;
 
 				
 				var result = await _repository.UpdatePostAsync(existingJob);

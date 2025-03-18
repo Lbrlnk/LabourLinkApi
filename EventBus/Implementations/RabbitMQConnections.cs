@@ -1,48 +1,3 @@
-﻿
-//using Microsoft.Extensions.Configuration;
-//using RabbitMQ.Client;
-//using System;
-
-//namespace EventBus.Implementations
-//{
-//    public sealed class RabbitMQConnection : IDisposable
-//    {
-//        private readonly IConnection _connection;
-//        //public IModel Channel { get; }
-//        public IModel CreateChannel() => _connection.CreateModel();
-//        public RabbitMQConnection(IConfiguration config)
-//        {
-//            var factory = new ConnectionFactory
-//            {
-//                HostName = config["RabbitMQ:Host"],
-//                UserName = config["RabbitMQ:Username"],
-//                Password = config["RabbitMQ:Password"],
-//                DispatchConsumersAsync = true
-//            };
-
-//            _connection = factory.CreateConnection();
-//            Channel = _connection.CreateModel();
-//        }
-
-//        public void DeclareExchange(string exchangeName, string exchangeType = ExchangeType.Direct)
-//        {
-//            Channel.ExchangeDeclare(
-//                exchange: exchangeName,
-//                type: exchangeType,
-//                durable: true,
-//                autoDelete: false);
-//        }
-
-//        public void Dispose()
-//        {
-//            Channel?.Dispose();
-//            _connection?.Dispose();
-//        }
-//    }
-//}
-
-
-
 
 //using Microsoft.Extensions.Configuration;
 //using RabbitMQ.Client;
@@ -53,25 +8,35 @@
 //    public sealed class RabbitMQConnection : IDisposable
 //    {
 //        private readonly IConnection _connection;
-//        public IModel Channel { get; } 
 
 //        public RabbitMQConnection(IConfiguration config)
 //        {
 //            var factory = new ConnectionFactory
 //            {
-//                HostName = config["RabbitMQ:Host"],
-//                UserName = config["RabbitMQ:Username"],
-//                Password = config["RabbitMQ:Password"],
-//                DispatchConsumersAsync = true
+
+//                HostName = Environment.GetEnvironmentVariable("RabbitMQ-Host"),
+//                UserName = Environment.GetEnvironmentVariable("RabbitMQ-Username"),
+//                Password = Environment.GetEnvironmentVariable("RabbitMQ-Password"),
+//                // Remove local config fallback for production
+//                VirtualHost = Environment.GetEnvironmentVariable("RabbitMQ-VirtualHost") ?? "/",
+//                DispatchConsumersAsync = true,
+//                AutomaticRecoveryEnabled = true,
+//                NetworkRecoveryInterval = TimeSpan.FromSeconds(10)
 //            };
 
 //            _connection = factory.CreateConnection();
-//            Channel = _connection.CreateModel(); 
+//        }
+
+
+//        public IModel CreateChannel()
+//        {
+//            return _connection.CreateModel();
 //        }
 
 //        public void DeclareExchange(string exchangeName, string exchangeType = ExchangeType.Direct)
 //        {
-//            Channel.ExchangeDeclare(
+//            using var channel = CreateChannel();
+//            channel.ExchangeDeclare(
 //                exchange: exchangeName,
 //                type: exchangeType,
 //                durable: true,
@@ -80,22 +45,14 @@
 
 //        public void Dispose()
 //        {
-//            Channel?.Dispose();
 //            _connection?.Dispose();
 //        }
 //    }
 //}
-
-
-
-
-
-
-
 
 using Microsoft.Extensions.Configuration;
+
 using RabbitMQ.Client;
-using System;
 
 namespace EventBus.Implementations
 {
@@ -105,13 +62,18 @@ namespace EventBus.Implementations
 
         public RabbitMQConnection(IConfiguration config)
         {
+
+            var host = Environment.GetEnvironmentVariable("RABBITMQ-HOST") ?? "localhost";
+            //var port = int.Parse(Environment.GetEnvironmentVariable("RABBITMQ-PORT") ?? "5672");
+            var username = Environment.GetEnvironmentVariable("RABBITMQ-USERNAME") ?? "admin";
+            var password = Environment.GetEnvironmentVariable("RABBITMQ-PASSWORD") ?? "admin123";
             var factory = new ConnectionFactory
             {
-                HostName = config["RabbitMQ:Host"],
-                UserName = config["RabbitMQ:Username"],
-                Password = config["RabbitMQ:Password"],
+                HostName = host,
+                UserName = username,
+                Password = password,
+                VirtualHost = Environment.GetEnvironmentVariable("RabbitMQ-VirtualHost") ?? "/",
                 DispatchConsumersAsync = true,
-                VirtualHost = config["RabbitMQ:VirtualHost"] ?? "/",
                 AutomaticRecoveryEnabled = true,
                 NetworkRecoveryInterval = TimeSpan.FromSeconds(10)
             };
@@ -119,7 +81,7 @@ namespace EventBus.Implementations
             _connection = factory.CreateConnection();
         }
 
-        // ✅ Create a new channel for each operation instead of using a single instance
+     
         public IModel CreateChannel()
         {
             return _connection.CreateModel();

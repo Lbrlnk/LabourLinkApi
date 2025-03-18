@@ -14,6 +14,8 @@ namespace ProfileService.Data
         public DbSet<LabourWorkImage> LabourWorkImages {get; set;}
         public DbSet<LabourSkills> LabourSkills {get; set;}
         public DbSet<Review> Reviews { get; set; }
+        public DbSet<Conversation> Conversations { get; set; }
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -26,6 +28,8 @@ namespace ProfileService.Data
                 entity.Property(l => l.Rating).HasDefaultValue(0);
                 entity.Property(l => l.PreferedTime).HasConversion<string>();
                 entity.Property(l => l.IsActive).HasDefaultValue(true);
+                entity.Property(l => l.Rating)
+                      .HasPrecision(3, 1);
                 entity.HasMany(l => l.LabourWorkImages)
                       .WithOne(lw => lw.Labour)
                       .OnDelete(DeleteBehavior.Cascade);
@@ -56,14 +60,11 @@ namespace ProfileService.Data
             });
             modelBuilder.Entity<LabourPreferredMuncipality>(entity =>
             {
-
-
                 entity.HasKey(lpm => lpm.Id);
                 entity.HasOne(l => l.Labour)
-                      .WithMany(l => l.LabourPreferedMuncipalities)
+                      .WithMany(l => l.LabourPreferredMunicipalities)
                       .HasForeignKey(l => l.LabourId) 
                       .OnDelete(DeleteBehavior.Cascade);
-
             }
             );
             modelBuilder.Entity<LabourWorkImage>(entity =>
@@ -90,10 +91,29 @@ namespace ProfileService.Data
 					  .OnDelete(DeleteBehavior.Cascade);
 
 			});
-			//modelBuilder.Entity<JobPost>()
-		 //   .Property(j => j.Wage)
-		 //   .HasColumnType("decimal(18,2)");
-		}
+
+
+            modelBuilder.Entity<Conversation>(entity =>
+            {
+                entity.HasKey(l => l.Id);
+               
+                entity.HasOne(l => l.User1)
+                     .WithMany(l => l.ConversationsAsUser1)
+                     .HasForeignKey(x => x.User1Id)
+                     .HasPrincipalKey(e => e.UserId) // Maps to Employer.UserId
+                     .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(l => l.User2)
+                      .WithMany(l => l.ConversationsAsUser2)
+                      .HasForeignKey(x => x.User2Id)
+                      .HasPrincipalKey(l => l.UserId) // Maps to Labour.UserId
+                      .OnDelete(DeleteBehavior.Restrict);
+
+            });
+
+			
+        }
+		
 
     }
 }

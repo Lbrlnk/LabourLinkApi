@@ -1,6 +1,5 @@
 ﻿using AuthenticationService.Dtos.AuthenticationDtos;
 using AuthenticationService.Enums;
-using AuthenticationService.Helpers.CloudinaryHelper;
 using AuthenticationService.Helpers.JwtHelper;
 using AuthenticationService.Models;
 using AuthenticationService.Repositories;

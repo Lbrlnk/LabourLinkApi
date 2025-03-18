@@ -16,5 +16,7 @@ namespace ProfileService.Models
 
         [ForeignKey("LabourId")]
         public Labour Labour { get; set; }
+
+        
     }
 }

@@ -19,12 +19,13 @@ namespace JobPostService.Models
 		public DateOnly EndDate { get; set; }
 		public string PrefferedTime { get; set; }
 		[Required]
-		public string MuncipalityId { get; set; }
-		[Required]
-		public string SkillId1 { get; set; }
-		public string SkillId2 { get; set; }
+        public string? MuncipalityId { get; set; }
+        [Required]
+        public string? SkillId1 { get; set; }
 
-		public string Status { get; set; } = "Active";
+
+        public string? SkillId2 { get; set; }
+        public string Status { get; set; } = "Active";
 		[Required]
 		public string Image { get; set; }
 		public DateOnly CreatedDate { get; set; } = DateOnly.FromDateTime(DateTime.Today);

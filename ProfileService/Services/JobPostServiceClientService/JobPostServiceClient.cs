@@ -21,12 +21,12 @@ namespace ProfileService.Services.JobPostServiceClientService
 			{
 				var labour = await _repository.GetLabourByuserIdAsync(userid);
 
-				if (labour == null || labour.LabourPreferedMuncipalities == null || labour.LabourSkills == null)
+				if (labour == null || labour.LabourPreferredMunicipalities == null || labour.LabourSkills == null)
 				{
 					return new ApiResponse<List<LabourViewJobPostDto>>(400, "Labourer not found or missing skills/municipalities.");
 				}
 
-				string municipalityQuery = string.Join("&municipality=", labour.LabourPreferedMuncipalities.Select(m => m.MunicipalityName));
+				string municipalityQuery = string.Join("&municipality=", labour.LabourPreferredMunicipalities.Select(m => m.MunicipalityName));
 				string skillQuery = string.Join("&skills=", labour.LabourSkills.Select(s => s.SkillName));
 				string url = $"https://localhost:7299/api/Job/getjobpostbymunicipalityandskill?municipality={municipalityQuery}&skills={skillQuery}";
 
@@ -57,7 +57,7 @@ namespace ProfileService.Services.JobPostServiceClientService
 		public string PrefferedTime { get; set; }
 		public string MuncipalityId { get; set; }
 		public string Status { get; set; }
-		public string SkillId1 { get; set; }
+		public string SkillId1 { get; set; }	
 		public string SkillId2 { get; set; }
 		public string Image { get; set; }
 		public DateOnly CreatedDate { get; set; }
