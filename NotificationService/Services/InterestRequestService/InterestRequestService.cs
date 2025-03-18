@@ -154,5 +154,41 @@ namespace NotificationService.Services.IntrestRequestService
                 throw;
             }
         }
-    }
+
+        public async Task<List<InterestRequest>> GetInterestRequestForEmployers(Guid eId)
+        {
+            try
+            {
+               
+                var interestRequestList = await _interestRequestRepository.GetAllInterestRequestToEmployer(eId);
+
+           
+                return interestRequestList ?? new List<InterestRequest>();
+            }
+            catch (Exception ex)
+            {
+               
+                Console.WriteLine($"Error fetching interest requests: {ex.Message}");
+
+                return new List<InterestRequest>();
+            }
+        }
+
+        public async Task<List<InterestRequest>> GetAcceptedInterestRequestOfLabour(Guid Lid)
+        {
+            try
+            {
+
+            var acceptedInterestRequestList = await _interestRequestRepository.GetAllInterestRequestOfLabour(Lid);
+            return acceptedInterestRequestList ?? new List<InterestRequest>();
+            }
+         catch (Exception ex)
+            {
+               
+                Console.WriteLine($"Error fetching interest requests: {ex.Message}");
+
+                return new List<InterestRequest>();
+            }
+        }
+}
 }
