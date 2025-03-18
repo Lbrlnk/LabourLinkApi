@@ -29,5 +29,8 @@ namespace NotificationService.Repository.NotificationRepository
                 .Where(n => n.ReceiverUserId == userId && !n.IsRead)
                 .ToListAsync();
         }
+
+       
+        
     }
 }

@@ -37,7 +37,7 @@ namespace ProfileService.Controllers
             return Ok(labour);
         }
 
-        [HttpGet("labours")]
+        [HttpGet("all/labours")]
         public async Task<IActionResult> GetAllLabours()
         {
             try
@@ -78,7 +78,7 @@ namespace ProfileService.Controllers
             }
         }
 
-        [HttpPost("labour")]
+        [HttpPost("labour-by-id")]
         public async Task<IActionResult>  GetUserById(Guid id)
         {
            var response = await _labourService.GetLabourById(id);
