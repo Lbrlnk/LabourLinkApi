@@ -1,5 +1,6 @@
 ﻿using AuthenticationService.Dtos.AuthenticationDtos;
 using AuthenticationService.Sevices.AuthSerrvice;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -148,7 +149,22 @@ namespace AuthenticationService.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, new { message = ex.Message });
             }
         }
+		[HttpPost("labourlink/logout")]
+		public IActionResult Logout()
+		{
+			try
+            { 
+				Response.Cookies.Delete("accessToken");
+				Response.Cookies.Delete("refreshToken");
+
+				return Ok(new { message = "Logged out successfully" });
+			}
+			catch (Exception ex)
+			{
+				return StatusCode(StatusCodes.Status500InternalServerError, new { message = ex.Message });
+			}
+		}
 
 
-    }
+	}
 }

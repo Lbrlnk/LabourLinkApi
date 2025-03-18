@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using ProfileService.Dtos;
 using ProfileService.Helper.CloudinaryHelper;
+using ProfileService.Helpers.ApiResponse;
 using ProfileService.Models;
 using ProfileService.Repositories.LabourRepository;
 //using ProfileService.Services.RabbitMQ;
@@ -415,7 +416,21 @@ namespace ProfileService.Services.LabourService
             }
             return await _labourRepositry.UpdateLabour(existingLabour);
         }
-
+        public async Task<ApiResponse<int>> GetLabourCount()
+        {
+            try
+            {
+                var res = await _labourRepositry.LabourCountAsync();
+                if (res == 0)
+                {
+                    return new ApiResponse<int>(404, "there is no labours", res);
+                }
+                return new ApiResponse<int>(200, "success", res);
+            }catch(Exception ex)
+            {
+                return new ApiResponse<int>(500, ex.Message);
+            }
+        }
     }
 }
 

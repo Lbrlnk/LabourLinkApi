@@ -14,7 +14,6 @@ namespace ProfileService.Data
         public DbSet<LabourWorkImage> LabourWorkImages {get; set;}
         public DbSet<LabourSkills> LabourSkills {get; set;}
         public DbSet<Review> Reviews { get; set; }
-
         public DbSet<Conversation> Conversations { get; set; }
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -92,6 +91,7 @@ namespace ProfileService.Data
 					  .OnDelete(DeleteBehavior.Cascade);
 
 			});
+
 
             modelBuilder.Entity<Conversation>(entity =>
             {

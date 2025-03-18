@@ -26,7 +26,7 @@ builder.Configuration
 
 // Get the connection string for AdminService
 //var connectionString = Environment.GetEnvironmentVariable("DB_ADMIN");
-var connectionString = Environment.GetEnvironmentVariable("LABOURLINK-DB");
+var connectionString = Environment.GetEnvironmentVariable("DB_ADMIN");
 if (string.IsNullOrEmpty(connectionString))
 {
 	throw new Exception("Database connection string is missing.");
@@ -43,6 +43,7 @@ builder.Services.AddAutoMapper(typeof(ProfileMapper));
 builder.Services.AddScoped<ICloudinaryHelper, CloudinaryHelper>();
 builder.Services.AddScoped<IJobRepository, JobRepository>();
 builder.Services.AddScoped<IJobService, JobService>();
+builder.Services.AddHttpClient<ProfileServiceClient>();
 
 builder.Services.AddControllers();
 

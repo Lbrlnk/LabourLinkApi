@@ -25,7 +25,7 @@ namespace AuthenticationService
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddEnvironmentVariables();
 
-            var ConnectionString = Environment.GetEnvironmentVariable("LABOURLINK-DB");
+            var ConnectionString = Environment.GetEnvironmentVariable("DB_USERS");
 
             builder.Services.AddDbContext<AuthenticationDbContext>(options =>
 

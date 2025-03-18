@@ -284,6 +284,16 @@ namespace ProfileService.Controllers
 
             }
         }
+        [HttpGet("getthecountoflabours")]
+        public async Task<IActionResult> GetLabourCount()
+        {
+            var res = await _labourService.GetLabourCount();
+            if (res.StatusCode == 200)
+            {
+                return Ok(res);
+            }
+            return BadRequest(res);
+        } 
 
     }
 }

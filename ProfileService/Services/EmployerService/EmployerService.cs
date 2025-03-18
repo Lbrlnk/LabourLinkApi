@@ -2,11 +2,14 @@
 
 using EventBus.Abstractions;
 using EventBus.Events;
+using Microsoft.AspNetCore.Http.HttpResults;
 using ProfileService.Dtos;
 using ProfileService.Helper.CloudinaryHelper;
+using ProfileService.Helpers.ApiResponse;
 using ProfileService.Models;
 using ProfileService.Repositories.EmployerRepository;
 using ProfileService.Repositories.LabourRepository;
+using Sprache;
 //using ProfileService.Services.RabbitMQ;
 
 
@@ -114,5 +117,36 @@ namespace ProfileService.Services.EmployerService
                 throw new Exception($"Error when retriving Employer  : {ex.Message}", ex);
             }
         }
-    }
+        public async Task<ApiResponse<List<EmployerView>>> GetAllEmployers()
+        {
+            try
+            {
+                var result = await _employerRepository.GetAllEmployersAsync();
+                if (!result.Any())
+                {
+                    return new ApiResponse<List<EmployerView>>(404, "Employers Not Found");
+                }
+				var res = _mapper.Map<List<EmployerView>>(result);
+				return new ApiResponse<List<EmployerView>>(200, "Success", res);
+            }catch(Exception ex)
+            {
+                return new ApiResponse<List<EmployerView>>(500, ex.Message);
+            }
+        }
+        public async Task<ApiResponse<int>> CountEmployers()
+        {
+            try
+            {
+                var res = await _employerRepository.CountEmployersAsync();
+                if (res == 0)
+                {
+                    return new ApiResponse<int>(404, "there is no employers", res);
+                }
+                return new ApiResponse<int>(200, "success", res);
+            } catch (Exception ex)
+            {
+                return new ApiResponse<int>(500, "something went wrong");
+            }
+        }
+	}
 }

@@ -19,9 +19,10 @@ using RabbitMQ.Client;
 using ProfileService.Services.ReviewService;
 using System.Text;
 using System.Text.Json.Serialization;
+using ProfileService.Services.JobPostServiceClientService;
 using ProfileService.Repositories.LabourWithinEmployer;
-using ProfileService.Repositories.LabourPrefferedRepositorys;
 using DotNetEnv;
+using ProfileService.Services.SkillAnalyticsServices;
 
 
 namespace ProfileService
@@ -45,7 +46,7 @@ namespace ProfileService
             //    DotNetEnv.Env.Load();
             //}
 
-            var connectionString = Environment.GetEnvironmentVariable("DB-CONNECTION-STRING")
+            var connectionString = Environment.GetEnvironmentVariable("LABOUR_LINK_PROFILE")
                 ?? throw new InvalidOperationException("DB-ConnectionString is not configured");
 
 			builder.Services.AddDbContext<LabourLinkProfileDbContext>(options =>
@@ -67,7 +68,11 @@ namespace ProfileService
                     });
             });
 
+			builder.Services.AddHttpClient<JobPostServiceClient>();
+		
+			builder.Services.AddScoped<IEmployerLabour, EmployerLabour>();
 
+			builder.Services.AddScoped<ISkillAnalyticsService, SkillAnalyticsService>();
             builder.Services.AddAutoMapper(typeof(MapperProfile));
 			builder.Services.AddScoped<ILabourRepository, LabourRepository>();
 			builder.Services.AddScoped<ILabourService, LabourService>();
@@ -93,7 +98,7 @@ namespace ProfileService
 			builder.Services.AddEndpointsApiExplorer();
 			builder.Services.AddSwaggerGen(options =>
 			{
-				options.SwaggerDoc("v1", new OpenApiInfo { Title = "ProfileService", Version = "v1" });
+				options.SwaggerDoc("v1", new OpenApiInfo { Title = "Kaalcharakk", Version = "v1" });
 				options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
 				{
 					Name = "Authorization",
@@ -121,7 +126,7 @@ namespace ProfileService
 			
 
 
-            var jwtSecret = Environment.GetEnvironmentVariable("JWT-SECRET-KEY")
+            var jwtSecret = Environment.GetEnvironmentVariable("JWT_SECRET_KEY")
               ?? throw new InvalidOperationException("JWT-SECRET-KEY is not configured");
 
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
