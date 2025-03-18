@@ -20,22 +20,13 @@ namespace ChatService.Services.ChatService
         {
             try
             {
-                var filter = Builders<ChatMessage>.Filter.Or(
-                    Builders<ChatMessage>.Filter.And(
-                    Builders<ChatMessage>.Filter.Eq(x => x.SenderId, userId),
-                    Builders<ChatMessage>.Filter.Eq(x => x.ReceiverId, contactId)
-                    ),
-                    Builders<ChatMessage>.Filter.And(
-                    Builders<ChatMessage>.Filter.Eq(x => x.SenderId, contactId),
-                    Builders<ChatMessage>.Filter.Eq(x => x.ReceiverId, userId)
-                    )
-                    );
-                var chatres = await _chatRepository.GetChatHistoryAsync(filter);
+               
+                var chatres = await _chatRepository.GetChatHistoryAsync( userId,  contactId,  limit = 50);
                 var chathistory = chatres.OrderBy(x => x.Timestamp)
                     .Take(limit)
                     .Select(x => new ChatResponse
                     {
-                        MessageId = x.MessageId,
+                        MessageId = x.ChatMessageId,
                         SenderId = x.SenderId,
                         ReceiverId = x.ReceiverId,
                         Message = x.Message,
@@ -58,7 +49,7 @@ namespace ChatService.Services.ChatService
         {
             try
             {
-                await _chatRepository.SaveChatMessage(chatMessage);
+                await _chatRepository.SaveChatMessageAsync(chatMessage);
             }
             catch (Exception ex)
             {
@@ -74,7 +65,7 @@ namespace ChatService.Services.ChatService
                 var res = _mapper.Map<ChatMessage>(chatDto);
                 res.SenderId = userId;
 
-                await _chatRepository.SaveChatMessage(res);
+                await _chatRepository.SaveChatMessageAsync(res);
 
 
             }

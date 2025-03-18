@@ -11,6 +11,8 @@ namespace ChatService.Data
 
         public DbSet<Conversation> Conversations { get; set; }
 
+        public DbSet<ChatMessage> ChatMessages { get; set; }
+
 
         //protected override void OnModelCreating(ModelBuilder modelBuilder)
         //{
