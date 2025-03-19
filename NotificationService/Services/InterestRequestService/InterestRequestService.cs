@@ -32,13 +32,12 @@ namespace NotificationService.Services.IntrestRequestService
                 var isAlreadyReq = await _interestRequestRepository.GetInterestRequestByEIdAndPId(interestRequestDto.EmployerUserId ,interestRequestDto.JobPostId);
                 if(isAlreadyReq != null && isAlreadyReq.Status == Enums.InterestRequestStatus.Pending)
                 {
-                    return "Error: Interest request not found.";
+                    return "Error: Interest request already exist.";
                 }
                 var req = _mapper.Map<InterestRequest>(interestRequestDto);
                 var result = await _interestRequestRepository.AddInterestRequest(req);
                await _notificationService.SendNotificaitonToEmployer(interestRequestDto);
                 
-
                 if (!result)
                 {
                     throw new Exception("internal server error when adding ");
