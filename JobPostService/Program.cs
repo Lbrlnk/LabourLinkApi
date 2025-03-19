@@ -24,9 +24,9 @@ builder.Configuration
 				.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
 				.AddEnvironmentVariables();
 
-// Get the connection string for AdminService
+
 //var connectionString = Environment.GetEnvironmentVariable("DB_ADMIN");
-var connectionString = Environment.GetEnvironmentVariable("DB_ADMIN");
+var connectionString = Environment.GetEnvironmentVariable("shahidjob");
 if (string.IsNullOrEmpty(connectionString))
 {
 	throw new Exception("Database connection string is missing.");

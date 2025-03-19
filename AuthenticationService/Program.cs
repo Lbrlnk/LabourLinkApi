@@ -25,7 +25,7 @@ namespace AuthenticationService
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddEnvironmentVariables();
 
-            var ConnectionString = Environment.GetEnvironmentVariable("DB_USERS");
+            var ConnectionString = Environment.GetEnvironmentVariable("Auth");
 
             builder.Services.AddDbContext<AuthenticationDbContext>(options =>
 
@@ -93,6 +93,19 @@ namespace AuthenticationService
                 };
             });
 
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowSpecificOrigin",
+                    builder =>
+                    {
+                        builder.WithOrigins("http://localhost:5173") // Your frontend URL
+                               .AllowCredentials()
+                               .AllowAnyHeader()
+                               .AllowAnyMethod();
+                    });
+            });
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -103,7 +116,7 @@ namespace AuthenticationService
             }
 
             app.UseHttpsRedirection();
-
+            app.UseCors("AllowSpecificOrigin");
             app.UseAuthentication();
             app.UseAuthorization();
 

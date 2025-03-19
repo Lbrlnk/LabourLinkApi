@@ -10,9 +10,9 @@ namespace ProfileService.Helper.CloudinaryHelper
 
             public CloudinaryHelper(IConfiguration configuration)
             {
-                var cloudName = configuration["CLOUDINARY-CLOUDNAME"];
-                var apiKey = configuration["CLOUDINARY-APIKEY"];
-                var apiSecret = configuration["CLOUDINARY-API-SECRET"];
+                var cloudName = configuration["CLOUDINARY_CLOUDNAME"];
+                var apiKey = configuration["CLOUDINARY_APIKEY"];
+                var apiSecret = configuration["CLOUDINARY_API_SECRET"];
 			if (string.IsNullOrEmpty(cloudName) || string.IsNullOrEmpty(apiKey) || string.IsNullOrEmpty(apiSecret))
 			{
 				throw new ArgumentNullException("Cloudinary configuration is missing. Please check appsettings.json or environment variables.");
