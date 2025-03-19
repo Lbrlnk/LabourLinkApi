@@ -8,6 +8,6 @@
         public string EmployerName { get; set; }
         public Guid LabourUserId { get; set; }
         public string LabourName { get; set; }
-        public string LabourImageUrl { get; set; }
+        public string EmployerImageUrl { get; set; }
     }
 }

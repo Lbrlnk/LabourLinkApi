@@ -3,15 +3,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ChatService.Data
 {
-    public   class ChatDbContext:DbContext
+    public class ChatDbContext : DbContext
     {
-        public ChatDbContext(DbContextOptions<ChatDbContext> options) :base(options){ }
+        public ChatDbContext(DbContextOptions<ChatDbContext> options) : base(options) { }
 
         //public DbSet<ChatMessage> ChatMessages { get; set; }
 
         public DbSet<Conversation> Conversations { get; set; }
-
-        public DbSet<ChatMessage> ChatMessages { get; set; }
 
 
         //protected override void OnModelCreating(ModelBuilder modelBuilder)

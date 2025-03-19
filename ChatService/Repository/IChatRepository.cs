@@ -6,8 +6,8 @@ namespace ChatService.Repository
     public interface IChatRepository
     {
 
-        Task SaveChatMessageAsync(ChatMessage chatMessage);
+        Task SaveChatMessage(ChatMessage chatMessage);
 
-        Task<List<ChatMessage>> GetChatHistoryAsync(Guid userId, Guid contactId, int limit = 50);
+        Task<List<ChatMessage>> GetChatHistoryAsync(FilterDefinition<ChatMessage> filter);
     }
 }

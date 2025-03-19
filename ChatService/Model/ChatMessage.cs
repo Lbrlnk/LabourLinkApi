@@ -1,19 +1,19 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
-using System.ComponentModel.DataAnnotations;
 
 
 namespace ChatService.Model
 {
     public class ChatMessage
     {
-        [Key] 
-        public Guid ChatMessageId { get; set; }
+        [BsonId]
+        [BsonRepresentation(BsonType.String)]
+        public Guid MessageId { get; set; }
 
-        [Required]
+        [BsonRepresentation(BsonType.String)]
         public Guid SenderId { get; set; }  // Changed to Guid
 
-        [Required]
+        [BsonRepresentation(BsonType.String)]
         public Guid ReceiverId { get; set; }  // Changed to Guid
 
         public string Message { get; set; }
