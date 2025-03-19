@@ -85,31 +85,6 @@ namespace ProfileService.Repositories.LabourRepository
                  .ToListAsync();
         }
 
-        //public async Task<List<Labour>> GetFilterdLabours(LabourFilterDto filterDto)
-        //{
-        //    var query = _context.Labours
-        //.Include(l => l.LabourSkills)
-        //.Include(l => l.LabourWorkImages)
-        //.Include(l => l.LabourPreferedMuncipalities)
-        //.Where(l => l.IsActive == true)
-        //.AsQueryable(); 
-
-
-        //    if (filterDto.PreferredMunicipalities != null && filterDto.PreferredMunicipalities.Any())
-        //    {
-        //        query = query.Where(l => l.LabourPreferedMuncipalities
-        //            .Any(m => filterDto.PreferredMunicipalities.Contains(m.MunicipalityName)));
-        //    }
-
-        //    if (filterDto.SkillIds != null && filterDto.SkillIds.Any())
-        //    {
-        //        query = query.Where(l => l.LabourSkills
-        //            .Any(s => filterDto.SkillIds.Contains(s.SkillName)));
-        //    }
-
-        //    return await query.ToListAsync();
-        //}
-
 
 
         public async Task<List<Labour>> GetFilterdLabours(LabourFilterDto filterDto)
@@ -148,6 +123,23 @@ namespace ProfileService.Repositories.LabourRepository
 
         }
 
+		public async Task<Labour> GetLabourByuserIdAsync(Guid UserId)
+		{
+			return await _context.Labours
+				.Include(l => l.LabourSkills)
+				.Include(l => l.LabourWorkImages)
+				.Include(l => l.LabourPreferredMunicipalities)
+				.Include(l => l.Reviews)
+				.ThenInclude(r => r.Employer)
+				.FirstOrDefaultAsync(s => s.UserId == UserId);
+		}
+        public async Task<int> LabourCountAsync()
+        {
+            return await _context.Labours.CountAsync();
+        }
+	
+
+
         public async Task<Labour> GetMyDetails(Guid id)
         {
             return await _context.Labours
@@ -159,4 +151,5 @@ namespace ProfileService.Repositories.LabourRepository
                 .FirstOrDefaultAsync(s => s.UserId == id);
         }
     }
+
 }

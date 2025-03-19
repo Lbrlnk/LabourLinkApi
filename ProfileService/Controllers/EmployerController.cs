@@ -76,5 +76,44 @@ namespace ProfileService.Controllers
                 throw new Exception($" error in retriving Employer{ex.InnerException.Message ?? ex.Message}");
             }
         }
-    }
+        [HttpGet("getallemployers")]
+        public async Task<IActionResult> GetAllEmployers()
+        {
+            var res = await _employerService.GetAllEmployers();
+            if (res.StatusCode == 200)
+            {
+                return Ok(res);
+            }
+            return BadRequest(res);
+        }
+        [HttpGet("getthecountofemployers")]
+        public async Task<IActionResult> GetCount()
+        {
+            var res = await _employerService.CountEmployers();
+            if (res.StatusCode == 200)
+            {
+                return Ok(res);
+            }
+            return BadRequest(res);
+        }
+		[HttpGet("getemployerbyid")]
+		public async Task<IActionResult> GetEmployerById([FromQuery] Guid userId)
+		{
+			try
+			{
+				var result = await _employerService.GetEmployerDetails(userId);
+				if (result == null)
+				{
+					return BadRequest("user not found");
+
+				}
+				return Ok(result);
+
+			}
+			catch (Exception ex)
+			{
+				throw new Exception($" error in retriving Employer{ex.InnerException.Message ?? ex.Message}");
+			}
+		}
+	}
 }

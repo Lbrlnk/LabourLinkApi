@@ -15,19 +15,16 @@ namespace JobPostService.Models
 		public string Description { get; set; }
 		public decimal? Wage { get; set; }
 		public DateOnly? StartDate { get; set; }
+		[Required]
+		public DateOnly EndDate { get; set; }
 		public string PrefferedTime { get; set; }
 		[Required]
-		public int? MuncipalityId { get; set; }
+        public string? MuncipalityId { get; set; }
         [Required]
+        public string? SkillId1 { get; set; }
 
-        public string? MuncipalityName { get; set; }
-        [Required]
-		public Guid? SkillId1 { get; set; }
-        [Required]
-        public string? Skill1Name { get; set; }
-        public Guid? SkillId2 { get; set; }
 
-        public string? Skill2Name { get; set; }
+        public string? SkillId2 { get; set; }
         public string Status { get; set; } = "Active";
 		[Required]
 		public string Image { get; set; }

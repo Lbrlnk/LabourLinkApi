@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
+using NotificationService.Data;
 using NotificationService.Dtos;
 using NotificationService.Enums;
 using NotificationService.Hubs;
@@ -16,25 +18,83 @@ namespace NotificationService.Services.NotificationService
         private readonly INotificationRepository _notificationRepository;
         private readonly IHubContext<NotificationHub> _hubContext;
         private readonly IMapper _mapper;
+        private ApplicationDbContext _dbContext;
 
 
-        public NotificationServices(INotificationRepository notificationRepository , IHubContext<NotificationHub> hubContext , IMapper mapper)
+        public NotificationServices(INotificationRepository notificationRepository , IHubContext<NotificationHub> hubContext , IMapper mapper , ApplicationDbContext dbContext)
         {
             _notificationRepository = notificationRepository;
             _hubContext = hubContext;
             _mapper = mapper;
+            _dbContext = dbContext;
         }
 
 
 
 
+        //public async Task SendNotificaitonToEmployer(InterestRequestDto interestRequestDto)
+        //{
+        //    try
+        //    {
+        //        if (interestRequestDto.LabourUserId == interestRequestDto.EmployerUserId)
+        //        {
+
+        //            throw new ValidationException("Cannot send notification to yourself");
+        //        }
+
+        //        Notification notification = new Notification()
+        //        {
+        //            SenderUserId = interestRequestDto.LabourUserId,
+        //            SenderName = interestRequestDto.LabourName,
+        //            SenderImageUrl = interestRequestDto.LabourImageUrl,
+        //            JobPostId = interestRequestDto.JobPostId,
+        //            ReceiverUserId = interestRequestDto.EmployerUserId,
+        //            ReceicverName = interestRequestDto.EmployerName,
+        //            Message = $"{interestRequestDto.LabourName} have sented a job Request to your JobPost",
+        //            NotificationType = NotificationType.ShowingInterestRequest,
+        //            IsRead = false
+
+        //        };
+
+        //        var result = await _notificationRepository.AddNotification(notification);
+        //        if (!result)
+        //        {
+        //            throw new Exception("Error when adding notification to the database ");
+        //        }
+
+
+        //        var ntfctn = _mapper.Map<NotificationViewDto>(notification);
+
+        //        if (ntfctn != null)
+        //        {
+
+        //            if (NotificationHub.ConnectedUsers.TryGetValue(ntfctn.ReceiverUserId.ToString(), out string connectionId))
+        //            {
+        //                await _hubContext.Clients.Client(connectionId)
+        //                    .SendAsync("ReceiveNotification", ntfctn);
+        //                notification.IsRead = true;
+        //                await _notificationRepository.UpdateNotification(notification);
+        //            }
+        //        }
+
+        //    }
+        //    catch (Exception)
+        //    {
+        //        throw;
+        //    }
+
+        //}
+
+
         public async Task SendNotificaitonToEmployer(InterestRequestDto interestRequestDto)
         {
+            using var transaction = await _dbContext.Database.BeginTransactionAsync();
+
             try
             {
+
                 if (interestRequestDto.LabourUserId == interestRequestDto.EmployerUserId)
                 {
-
                     throw new ValidationException("Cannot send notification to yourself");
                 }
 
@@ -46,44 +106,58 @@ namespace NotificationService.Services.NotificationService
                     JobPostId = interestRequestDto.JobPostId,
                     ReceiverUserId = interestRequestDto.EmployerUserId,
                     ReceicverName = interestRequestDto.EmployerName,
-                    Message = $"{interestRequestDto.LabourName} have sented a job Request to your JobPost",
+                    Message = $"{interestRequestDto.LabourName} has sent a job request to your JobPost",
                     NotificationType = NotificationType.ShowingInterestRequest,
                     IsRead = false
-
                 };
 
                 var result = await _notificationRepository.AddNotification(notification);
+
                 if (!result)
                 {
-                    throw new Exception("Error when adding notification to the database ");
+                    throw new Exception("Error when adding notification to the database");
                 }
-
 
                 var ntfctn = _mapper.Map<NotificationViewDto>(notification);
 
                 if (ntfctn != null)
                 {
-
                     if (NotificationHub.ConnectedUsers.TryGetValue(ntfctn.ReceiverUserId.ToString(), out string connectionId))
                     {
-                        await _hubContext.Clients.Client(connectionId)
-                            .SendAsync("ReceiveNotification", ntfctn);
-                        notification.IsRead = true;
-                        await _notificationRepository.UpdateNotification(notification);
+                        try
+                        {
+                            await _hubContext.Clients.Client(connectionId)
+                                .SendAsync("ReceiveNotification", ntfctn);
+
+                            notification.IsRead = true;
+                            await _notificationRepository.UpdateNotification(notification);
+                        }
+                        catch (Exception ex)
+                        {
+                           
+                            throw new Exception("Notification sending failed, rolling back transaction.");
+                        }
                     }
                 }
 
+                await transaction.CommitAsync(); 
             }
             catch (Exception)
             {
+                await transaction.RollbackAsync();
                 throw;
             }
-
         }
+
 
 
         public async Task SendNotificaitonToLabour(AcceptInterestDto acceptInterestDto)
         {
+            if (acceptInterestDto.LabourUserId == acceptInterestDto.EmployerUserId)
+            {
+                throw new ValidationException("Cannot send notification to yourself");
+            }
+            using var transaction = await _dbContext.Database.BeginTransactionAsync();
             try
             {
 
@@ -105,20 +179,22 @@ namespace NotificationService.Services.NotificationService
 
             var ntfctn = _mapper.Map<NotificationViewDto>(notification);
 
-            if (ntfctn != null)
-            {
-
-                if (NotificationHub.ConnectedUsers.TryGetValue(ntfctn.ReceiverUserId.ToString(), out string connectionId))
+                if (ntfctn != null)
                 {
-                    await _hubContext.Clients.Client(connectionId)
-                        .SendAsync("ReceiveNotification", ntfctn);
-                    notification.IsRead = true;
-                    await _notificationRepository.UpdateNotification(notification);
+
+                    if (NotificationHub.ConnectedUsers.TryGetValue(ntfctn.ReceiverUserId.ToString(), out string connectionId))
+                    {
+                        await _hubContext.Clients.Client(connectionId)
+                            .SendAsync("ReceiveNotification", ntfctn);
+                        notification.IsRead = true;
+                        await _notificationRepository.UpdateNotification(notification);
+                    }
                 }
-            }
+                await transaction.CommitAsync();
             }
             catch (Exception ex)
             {
+                await transaction.RollbackAsync();
                 throw;
             }
 

@@ -24,7 +24,7 @@ namespace NotificationService.Controllers
                 {
                     return BadRequest(ModelState);
                 }
-                var result =  await _interestRequestService.AddInterestRequest(intrst);
+                var result = await _interestRequestService.AddInterestRequest(intrst);
                 if (result.StartsWith("Error:"))
                 {
                     return BadRequest(result);
@@ -42,7 +42,7 @@ namespace NotificationService.Controllers
         {
             try
             {
-               var result =  await _interestRequestService.WithdrawInterstRequest(id);
+                var result = await _interestRequestService.WithdrawInterstRequest(id);
                 if (result.StartsWith("Error:"))
                 {
                     return BadRequest(result);
@@ -91,5 +91,46 @@ namespace NotificationService.Controllers
             }
         }
 
+        [HttpGet("from-Labours")]
+        public async Task<IActionResult> GetAllInterestRequest()
+        {
+            try
+            {
+
+            if (!HttpContext.Items.ContainsKey("UserId"))
+            {
+                return Unauthorized("User not authenticated.");
+            }
+            var userId = Guid.Parse(HttpContext.Items["UserId"].ToString());
+            var result = await _interestRequestService.GetInterestRequestForEmployers(userId);
+            return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"{ex.InnerException?.Message ?? ex.Message}");
+            }
+        }
+
+        [HttpGet("get/accepted-interest-request")]
+        public   async Task<IActionResult> GetAllInterestRequestLabour()
+        {
+            try
+            {
+
+            if (!HttpContext.Items.ContainsKey("UserId"))
+            {
+                return Unauthorized("User not authenticated.");
+            }
+            var userId = Guid.Parse(HttpContext.Items["UserId"].ToString());
+            var result = await _interestRequestService.GetAcceptedInterestRequestOfLabour(userId);
+            return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"{ex.InnerException?.Message ?? ex.Message}");
+            }
+        }
     }
+
+    
 }

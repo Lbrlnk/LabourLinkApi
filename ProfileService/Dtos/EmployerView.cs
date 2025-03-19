@@ -9,6 +9,7 @@ namespace ProfileService.Dtos
 
         public string PhoneNumber { get; set; }
 
-        public int PreferedMuncipalityId { get; set; }
-    }
+        public string PreferedMunicipality { get; set; }
+		public string? ProfileImageUrl { get; set; }
+	}
 }

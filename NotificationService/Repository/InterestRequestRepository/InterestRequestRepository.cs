@@ -9,7 +9,7 @@ namespace NotificationService.Repository.InterestRequestRepository
     public class InterestRequestRepository : IInterestRequestRepository
     {
         private readonly ApplicationDbContext _context;
-        public InterestRequestRepository(ApplicationDbContext context) 
+        public InterestRequestRepository(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -20,11 +20,11 @@ namespace NotificationService.Repository.InterestRequestRepository
             {
                 await _context.InterestRequests.AddAsync(intreq);
                 await _context.SaveChangesAsync();
-                return true; 
+                return true;
             }
-            catch (Exception ex )
+            catch (Exception ex)
             {
-                throw ;
+                throw;
             }
         }
 
@@ -32,8 +32,8 @@ namespace NotificationService.Repository.InterestRequestRepository
         {
             try
             {
-               return await _context.InterestRequests.FirstOrDefaultAsync(x => x.EmployerUserId == eId && x.JobPostId == pId);
-                
+                return await _context.InterestRequests.FirstOrDefaultAsync(x => x.EmployerUserId == eId && x.JobPostId == pId);
+
             }
             catch (Exception ex)
             {
@@ -47,17 +47,17 @@ namespace NotificationService.Repository.InterestRequestRepository
             try
             {
                 _context.InterestRequests.Update(intereq);
-                return await _context.SaveChangesAsync() > 0; 
-                 
+                return await _context.SaveChangesAsync() > 0;
+
             }
             catch (Exception)
             {
-                return false; 
+                return false;
             }
         }
 
 
-        
+
         public async Task<InterestRequest> GetInterestRequestById(Guid id)
         {
             try
@@ -67,6 +67,36 @@ namespace NotificationService.Repository.InterestRequestRepository
             catch (Exception ex)
             {
                 return null;
+            }
+        }
+
+        public async Task<List<InterestRequest>> GetAllInterestRequestToEmployer(Guid eId)
+        {
+            try
+            {
+                return await _context.InterestRequests
+                    .Where(i => (i.Status == Enums.InterestRequestStatus.Accepted || i.Status == Enums.InterestRequestStatus.Pending)
+                                && i.EmployerUserId == eId)
+                    .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                return new List<InterestRequest>();
+            }
+        }
+
+        public async Task<List<InterestRequest>> GetAllInterestRequestOfLabour(Guid Lid)
+        {
+            try
+            {
+                return await _context.InterestRequests
+                    .Where(i => i.LabourUserId == Lid && i.Status == Enums.InterestRequestStatus.Accepted).ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                return new List<InterestRequest>();
             }
         }
 

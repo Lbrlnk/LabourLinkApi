@@ -27,9 +27,13 @@ namespace ProfileService.Repositories.LabourRepository
 
         Task<Labour> GetLabourByPhone(string phoneNumber);
 
+
+		Task<Labour> GetLabourByuserIdAsync(Guid UserId);
+        Task<int> LabourCountAsync();
         Task<Labour> GetMyDetails(Guid id);
 
 
     }
+
 }
  
