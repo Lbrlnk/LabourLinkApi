@@ -41,7 +41,13 @@ namespace ProfileService.Services.LabourService
             try
             {
 
-             var IsUsedPhone  = await _labourRepositry.GetLabourByPhone(labourProfileDto.PhoneNumber);
+                var isAlreadyLabour = await _labourRepositry.GetLabourByIdAsync(userId);
+                if(isAlreadyLabour != null)
+                {
+                    throw new Exception("Labour already in use ");
+                }
+
+                var IsUsedPhone  = await _labourRepositry.GetLabourByPhone(labourProfileDto.PhoneNumber);
 
                 if(IsUsedPhone != null)
                 {

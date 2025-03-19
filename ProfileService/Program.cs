@@ -46,7 +46,7 @@ namespace ProfileService
             //    DotNetEnv.Env.Load();
             //}
 
-            var connectionString = Environment.GetEnvironmentVariable("LABOUR_LINK_PROFILE")
+            var connectionString = Environment.GetEnvironmentVariable("DB-CONNECTION-STRING")
                 ?? throw new InvalidOperationException("DB-ConnectionString is not configured");
 
 			builder.Services.AddDbContext<LabourLinkProfileDbContext>(options =>
@@ -126,7 +126,7 @@ namespace ProfileService
 			
 
 
-            var jwtSecret = Environment.GetEnvironmentVariable("JWT_SECRET_KEY")
+            var jwtSecret = Environment.GetEnvironmentVariable("JWT-SECRET-KEY")
               ?? throw new InvalidOperationException("JWT-SECRET-KEY is not configured");
 
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
