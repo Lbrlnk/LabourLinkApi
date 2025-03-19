@@ -14,8 +14,6 @@ namespace ProfileService.Services.LabourService
 
         Task<LabourViewDto> GetMyDetails(Guid id);
         
-
-
         Task<bool> DeleteLabourSkill(Guid userId, string skillname);
         Task<bool> DeleteLabourMunicipality(Guid userId, string muncipalityName);
         Task<bool> DeleteLabourWorkImages(Guid userId, Guid imageId);
