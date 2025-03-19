@@ -6,7 +6,6 @@ using ProfileService.Helper.CloudinaryHelper;
 using ProfileService.Helpers.ApiResponse;
 using ProfileService.Models;
 using ProfileService.Repositories.EmployerRepository;
-using ProfileService.Repositories.LabourPrefferedRepositorys;
 using ProfileService.Repositories.LabourRepository;
 using ProfileService.Repositories.ReviewRepository;
 
@@ -242,6 +241,17 @@ namespace ProfileService.Services.ReviewService
 				existingReview.Comment = updatedReview.Comment ?? existingReview.Comment;
 				existingReview.UpdatedAt = DateTime.UtcNow;
 				var updatedRes = await _repository.UpdateAsync(existingReview);
+
+				var labour = await _labour.GetLabourByIdAsync(updatedReview.LabourId);
+
+				var labourReviews = await _labour.GetLabourReviews(updatedReview.LabourId);
+				if (labourReviews.Any())
+				{
+					labour.Rating = (decimal)labourReviews.Average(x => (double)x.Rating);
+				}
+
+				await _labour.UpdateLabour(labour);
+				await _labour.UpdateDatabase();
 
 				ReviewShowDto reviewShow = new ReviewShowDto
 				{

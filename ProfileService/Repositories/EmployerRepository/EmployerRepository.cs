@@ -31,12 +31,18 @@ namespace ProfileService.Repositories.EmployerRepository
         {
             return await _context.Employers.FirstOrDefaultAsync(e => e.UserId == id);
         }
-
+        public async Task<List<Employer>> GetAllEmployersAsync()
+        {
+            return await _context.Employers.ToListAsync();
+        }
         public async Task<bool> UpdateDatabase()
         {
             return await _context.SaveChangesAsync() > 0;
         }
-        
+        public async Task<int> CountEmployersAsync()
+        {
+            return await _context.Employers.CountAsync();
+        }
 
     }
 }

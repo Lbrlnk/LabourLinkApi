@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProfileService.Dtos;
+using ProfileService.Helpers.ApiResponse;
 using ProfileService.Models;
 
 namespace ProfileService.Services.LabourService
@@ -10,14 +11,9 @@ namespace ProfileService.Services.LabourService
         Task<string> CompleteLabourProfile(CompleteLabourProfileDto labourPeofileDto, Guid userId);
         Task<LabourViewDto> GetLabourById(Guid Id);
 
-        //Task<LabourProfileCompletionDto> UpdatLabourProfile(CompleteLabourPeofileDto labourProfileDto , Guid Id);
 
-
-        //Task<LabourViewDto> GetMyDetails(Guid id);
-
+        Task<LabourViewDto> GetMyDetails(Guid id);
         
-
-
         Task<bool> DeleteLabourSkill(Guid userId, string skillname);
         Task<bool> DeleteLabourMunicipality(Guid userId, string muncipalityName);
         Task<bool> DeleteLabourWorkImages(Guid userId, Guid imageId);
@@ -33,10 +29,10 @@ namespace ProfileService.Services.LabourService
         Task<List<LabourViewDto>> GetFilteredLabour(LabourFilterDto LabourFilterDto);
 
 
+        Task<ApiResponse<int>> GetLabourCount();
 
 
 
 
-
-    }
+	}
 }

@@ -2,11 +2,14 @@
 
 using EventBus.Abstractions;
 using EventBus.Events;
+using Microsoft.AspNetCore.Http.HttpResults;
 using ProfileService.Dtos;
 using ProfileService.Helper.CloudinaryHelper;
+using ProfileService.Helpers.ApiResponse;
 using ProfileService.Models;
 using ProfileService.Repositories.EmployerRepository;
 using ProfileService.Repositories.LabourRepository;
+using Sprache;
 //using ProfileService.Services.RabbitMQ;
 
 
@@ -18,7 +21,7 @@ namespace ProfileService.Services.EmployerService
         private readonly IEmployerRepository _employerRepository;
         private readonly IMapper _mapper;
         private readonly ICloudinaryHelper _cloudinary;
-        //private readonly IRabbitMqService _rabbitMqService;
+        
 
         public EmployerService(IEmployerRepository employerRepository, IMapper mapper, IEventPublisher eventPublisher, ICloudinaryHelper cloudinary)
         {
@@ -26,13 +29,18 @@ namespace ProfileService.Services.EmployerService
             _mapper = mapper;
             _employerRepository = employerRepository;
             _cloudinary = cloudinary;
-            //_rabbitMqService = rabbitMqService;
+            
 
         }
         public async Task<string> CompleteEmployerProfile(Guid userId, CompleteEmployerProfileDto employerProfileDto)
         {
             try
             {
+               var alreadyEmpolyer = await _employerRepository.GetEmployerByIdAsync(userId);
+                if (alreadyEmpolyer == null)
+                {
+                    throw new Exception("employer already completed profile ");
+                }
                 var employer = _mapper.Map<Employer>(employerProfileDto);
 
                 if(employerProfileDto.ProfileImage != null)
@@ -45,7 +53,7 @@ namespace ProfileService.Services.EmployerService
                  await _employerRepository.AddEmployer(employer);
                 if (await _employerRepository.UpdateDatabase())
                 {
-                    //_rabbitMqService.PublishProfileCompleted(userId);
+                 
 
                     _eventPublisher.Publish(new ProfileCompletedEvent { UserId = userId });
                     return "registration succesfull";
@@ -93,7 +101,7 @@ namespace ProfileService.Services.EmployerService
             }
             catch (Exception ex)
             {
-                throw new Exception($"Error when Updating Employer Profile {ex.Message}", ex);
+                throw;
             }
         }
        public async  Task<EmployerView> GetEmployerDetails(Guid userId)
@@ -114,5 +122,36 @@ namespace ProfileService.Services.EmployerService
                 throw new Exception($"Error when retriving Employer  : {ex.Message}", ex);
             }
         }
-    }
+        public async Task<ApiResponse<List<EmployerView>>> GetAllEmployers()
+        {
+            try
+            {
+                var result = await _employerRepository.GetAllEmployersAsync();
+                if (!result.Any())
+                {
+                    return new ApiResponse<List<EmployerView>>(404, "Employers Not Found");
+                }
+				var res = _mapper.Map<List<EmployerView>>(result);
+				return new ApiResponse<List<EmployerView>>(200, "Success", res);
+            }catch(Exception ex)
+            {
+                return new ApiResponse<List<EmployerView>>(500, ex.Message);
+            }
+        }
+        public async Task<ApiResponse<int>> CountEmployers()
+        {
+            try
+            {
+                var res = await _employerRepository.CountEmployersAsync();
+                if (res == 0)
+                {
+                    return new ApiResponse<int>(404, "there is no employers", res);
+                }
+                return new ApiResponse<int>(200, "success", res);
+            } catch (Exception ex)
+            {
+                return new ApiResponse<int>(500, "something went wrong");
+            }
+        }
+	}
 }

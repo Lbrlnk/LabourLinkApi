@@ -174,5 +174,21 @@ namespace JobPostService.Controllers
 			return BadRequest(res);
 
 		}
+		[HttpGet("getjobpostbymunicipalityandskill")]
+		public async Task<IActionResult> GetJobsByMuncipalityandskill([FromQuery] string municipality, [FromQuery] List<string> skills)
+		{
+			var res = await _service.GetJobPostBySkillandMuncipality(municipality, skills);
+			if (res.StatusCode == 200)
+			{
+				return Ok(res);
+			}else if (res.StatusCode == 404)
+			{
+				return NotFound(res);
+			}else
+			{
+				return BadRequest(res);
+			}
+			
+		}
 	}
 }

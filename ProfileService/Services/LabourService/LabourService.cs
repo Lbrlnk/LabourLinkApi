@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using ProfileService.Dtos;
 using ProfileService.Helper.CloudinaryHelper;
+using ProfileService.Helpers.ApiResponse;
 using ProfileService.Models;
 using ProfileService.Repositories.LabourRepository;
 //using ProfileService.Services.RabbitMQ;
@@ -40,7 +41,13 @@ namespace ProfileService.Services.LabourService
             try
             {
 
-             var IsUsedPhone  = await _labourRepositry.GetLabourByPhone(labourProfileDto.PhoneNumber);
+                var isAlreadyLabour = await _labourRepositry.GetLabourByIdAsync(userId);
+                if(isAlreadyLabour != null)
+                {
+                    throw new Exception("Labour already in use ");
+                }
+
+                var IsUsedPhone  = await _labourRepositry.GetLabourByPhone(labourProfileDto.PhoneNumber);
 
                 if(IsUsedPhone != null)
                 {
@@ -241,6 +248,25 @@ namespace ProfileService.Services.LabourService
             }
         }
 
+       public async Task<LabourViewDto> GetMyDetails(Guid id)
+        {
+            try
+            {
+                var result = await _labourRepositry.GetMyDetails(id);
+                if (result == null)
+                {
+                    return null;
+                }
+
+                var labourViewDto = _mapper.Map<LabourViewDto>(result);
+                return labourViewDto;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"{ex.InnerException?.Message ?? ex.Message}", ex);
+            }
+        }
+
         public async Task<List<LabourViewDto>?> GetAllLabours()
         {
             try
@@ -274,28 +300,7 @@ namespace ProfileService.Services.LabourService
             }
         }
 
-       
-
-        //public async Task<LabourProfileCompletionDto> UpdatLabourProfile(CompleteLabourPeofileDto labourProfileDto, Guid Id)
-        //{
-        //    try
-        //    {
-        //        var existigLabour = _labourRepositry.GetLabourByIdAsync(Id);
-        //        if (existigLabour == null)
-        //        {
-        //            return null;
-        //        }
-
-
-
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-
-        //    }
-        //}
-
+      
         public async Task<bool> DeleteLabourSkill(Guid userId, string skillName)
         {
             try
@@ -317,8 +322,8 @@ namespace ProfileService.Services.LabourService
             {
 
                 var labour = await _labourRepositry.GetLabourByIdAsync(userId) ?? throw new Exception("Labour not found");
-                var LabourMuncipality = labour.LabourPreferedMuncipalities.FirstOrDefault(mun=> mun.MunicipalityName == municipalityName) ?? throw new Exception("Muncipality not found");
-                labour.LabourPreferedMuncipalities.Remove(LabourMuncipality);
+                var LabourMuncipality = labour.LabourPreferredMunicipalities.FirstOrDefault(mun=> mun.MunicipalityName == municipalityName) ?? throw new Exception("Muncipality not found");
+                labour.LabourPreferredMunicipalities.Remove(LabourMuncipality);
                 return await _labourRepositry.UpdateLabour(labour);
             }
             catch(Exception ex)
@@ -349,7 +354,7 @@ namespace ProfileService.Services.LabourService
             {
 
                 var labour = await _labourRepositry.GetLabourByIdAsync(userId) ?? throw new Exception("Labour not found");
-                labour.LabourPreferedMuncipalities.Add(new LabourPreferredMuncipality { MunicipalityName = municipalityName });
+                labour.LabourPreferredMunicipalities.Add(new LabourPreferredMuncipality { MunicipalityName = municipalityName });
                 return await _labourRepositry.UpdateLabour(labour);
 
             }
@@ -417,7 +422,21 @@ namespace ProfileService.Services.LabourService
             }
             return await _labourRepositry.UpdateLabour(existingLabour);
         }
-
+        public async Task<ApiResponse<int>> GetLabourCount()
+        {
+            try
+            {
+                var res = await _labourRepositry.LabourCountAsync();
+                if (res == 0)
+                {
+                    return new ApiResponse<int>(404, "there is no labours", res);
+                }
+                return new ApiResponse<int>(200, "success", res);
+            }catch(Exception ex)
+            {
+                return new ApiResponse<int>(500, ex.Message);
+            }
+        }
     }
 }
 

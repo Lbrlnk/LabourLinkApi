@@ -11,5 +11,6 @@ namespace JobPostService.Repository
 		Task<JobPost> GetJobPostByIdAsync(Guid id);
 		Task<List<JobPost>> GetJobPostByClientAsync(Guid clientid);
 		Task<List<JobPost>> GetJobPostBySearchParamsAsync(string searchParams);
+		Task<List<JobPost>> GetJobPostBySkillandMuncipalityAsync(string municipality, List<string> skills);
 	}
 }

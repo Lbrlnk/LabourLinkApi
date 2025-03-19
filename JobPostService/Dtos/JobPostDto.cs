@@ -15,18 +15,16 @@ namespace JobPostService.Dtos
 		[Required]
 		public DateOnly? StartDate { get; set; }
 		[Required]
+		public DateOnly EndDate { get; set; }
+		[Required]
 		public string PrefferedTime { get; set; }
+		
 		[Required]
-		public int? MuncipalityId { get; set; }
-		[Required]
-
 		public string? MuncipalityName { get; set; }
-		[Required]
-		public Guid SkillId1 { get; set; }
+		
 		[Required]
         public string? Skill1Name { get; set; }
 
-        public Guid? SkillId2 { get; set; }
         public string? Skill2Name { get; set; }
 
 
