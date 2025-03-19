@@ -4,6 +4,7 @@ using NotificationService.Dtos;
 using NotificationService.Models;
 using NotificationService.Repository.NotificationRepository;
 using System.Collections.Concurrent;
+using System.Security.Claims;
 
 namespace NotificationService.Hubs
 {
@@ -34,7 +35,12 @@ namespace NotificationService.Hubs
 
         public override async Task OnConnectedAsync()
         {
-            var userId = Context.GetHttpContext().Request.Query["userId"];
+            var refId = Guid.Parse(Context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            var userId = Context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            Console.WriteLine(userId);
+            Console.WriteLine("================================================");
+            Console.WriteLine(Context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+          
             if (!string.IsNullOrEmpty(userId))
             {
                 ConnectedUsers[userId] = Context.ConnectionId;

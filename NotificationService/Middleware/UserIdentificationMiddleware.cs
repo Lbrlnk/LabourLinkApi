@@ -23,6 +23,8 @@ namespace NotificationService.Middleware
                     context.Items["UserId"] = idClaim.Value;
 
                 }
+
+
             }
             await _next(context);
 

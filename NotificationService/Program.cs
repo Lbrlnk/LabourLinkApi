@@ -52,6 +52,38 @@ namespace NotificationService
             {
                 options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
             });
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAllOrigins",
+                    builder =>
+                    {
+                        builder.SetIsOriginAllowed(_ => true) // Allows all origins while keeping credentials
+                               .AllowAnyMethod()   // Allows any HTTP method (GET, POST, PUT, DELETE, etc.)
+                               .AllowAnyHeader()   // Allows any headers
+                               .AllowCredentials(); // Allows credentials like cookies or auth tokens
+                    });
+            });
+            var jwtSecret = Environment.GetEnvironmentVariable("JWT-SECRET-KEY")
+             ?? throw new InvalidOperationException("JWT-SECRET-KEY is not configured");
+
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = Environment.GetEnvironmentVariable("JWT-ISSUER"),
+                        ValidAudience = Environment.GetEnvironmentVariable("JWT-AUDIENCE"),
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret)),
+                        ClockSkew = TimeSpan.Zero
+                    };
+                });
+
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(options =>
@@ -84,8 +116,8 @@ namespace NotificationService
 
 
 
-            var jwtSecret = Environment.GetEnvironmentVariable("JWT-SECRET-KEY")
-              ?? throw new InvalidOperationException("JWT-SECRET-KEY is not configured");
+            //var jwtSecret = Environment.GetEnvironmentVariable("JWT-SECRET-KEY")
+            //  ?? throw new InvalidOperationException("JWT-SECRET-KEY is not configured");
 
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
@@ -112,12 +144,15 @@ namespace NotificationService
                 app.UseSwaggerUI();
             }
 
+            app.UseHttpsRedirection();
+            app.UseCors("AllowAllOrigins");
             app.UseMiddleware<TokenAccessingMiddleware>();
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseMiddleware<UserIdentificationMiddleware>();
+            app.MapHub<NotificationHub>("/nothub").RequireAuthorization();
+
             app.MapControllers();
-            app.MapHub<NotificationHub>("/nothub");
 
             app.Run();
         }

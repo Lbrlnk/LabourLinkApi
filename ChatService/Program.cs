@@ -24,7 +24,7 @@ builder.Configuration
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
     .AddEnvironmentVariables();
 
-var ConnectionString = Environment.GetEnvironmentVariable("LABOURLINK-DB");
+var ConnectionString = Environment.GetEnvironmentVariable("LABOUR_LINK_PROFILE");
 // Add services to the container.
 
 builder.Services.AddDbContext<ChatDbContext>(options =>
@@ -52,7 +52,7 @@ builder.Services.AddControllers();
 builder.Services.AddScoped<IConversationRepository, ConversationRepository>();
 builder.Services.AddScoped<IChatRepository, ChatRepository>();
 builder.Services.AddScoped<IChatMessageService, ChatMessageService>();
-builder.Services.AddScoped<IConversationService,ConversationService>();
+builder.Services.AddScoped<IConversationService, ConversationService>();
 
 
 builder.Services.AddCors(options =>
