@@ -24,7 +24,7 @@ builder.Configuration
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
     .AddEnvironmentVariables();
 
-var ConnectionString = Environment.GetEnvironmentVariable("LABOUR_LINK_PROFILE");
+var ConnectionString = Environment.GetEnvironmentVariable("LABOURLINK-DB");
 // Add services to the container.
 
 builder.Services.AddDbContext<ChatDbContext>(options =>
@@ -45,7 +45,11 @@ builder.Services.AddScoped<IMongoDatabase>(provider =>
 });
 builder.Services.AddAutoMapper(typeof(MapperProfile));
 
-builder.Services.AddSignalR();
+builder.Services.AddSignalR().AddAzureSignalR(options =>
+{
+    options.ConnectionString = Environment.GetEnvironmentVariable("AZURE-SIGNALR-CONNECTIONSTRING");
+    options.ServerStickyMode = Microsoft.Azure.SignalR.ServerStickyMode.Required;
+});
 // Add services to the container.
 
 builder.Services.AddControllers();

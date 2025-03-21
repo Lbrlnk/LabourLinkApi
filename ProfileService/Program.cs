@@ -23,6 +23,8 @@ using ProfileService.Services.JobPostServiceClientService;
 using ProfileService.Repositories.LabourWithinEmployer;
 using DotNetEnv;
 using ProfileService.Services.SkillAnalyticsServices;
+using ProfileService.Services.ConversationService;
+using ProfileService.Repositories.ChatConversationRepository;
 
 
 namespace ProfileService
@@ -79,6 +81,8 @@ namespace ProfileService
 			builder.Services.AddScoped<IEmployerRepository, EmployerRepository>();
             builder.Services.AddScoped<IEmployerService, EmployerService>();
             builder.Services.AddScoped<ICloudinaryHelper, CloudinaryHelper>();
+			builder.Services.AddScoped<IConversationService, ConversationService>();
+			builder.Services.AddScoped<IChatConversationRepository, ChatConversationRepository>();
             builder.Services.AddSingleton<RabbitMQConnection>(sp =>
             {
                 var config = sp.GetRequiredService<IConfiguration>();
