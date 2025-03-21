@@ -31,7 +31,7 @@ namespace JobPostService.Controllers
 				return BadRequest("Invalid UserId format.");
 			}
 			var response= await _service.AddNewPost(jobPostDto, image, userId);
-			if (response.StatusCode == 201)
+			if (response.StatusCode == 200)
 			{
 				return Ok(response);
 			}

@@ -9,9 +9,9 @@ namespace JobPostService.Helpers.CloudinaryHelper
 		private readonly Cloudinary _cloudinary;
 		public CloudinaryHelper(IConfiguration configuration)
 		{
-			var cloudName = configuration["CloudinarySettings:CloudName"];
-			var apiKey = configuration["CloudinarySettings:ApiKey"];
-			var apiSecret = configuration["CloudinarySettings:ApiSecret"];
+			var cloudName = configuration["CLOUDINARY-CLOUDNAME"];
+			var apiKey = configuration["CLOUDINARY-APIKEY"];
+			var apiSecret = configuration["CLOUDINARY-API-SECRET"];
 
 
 			var account = new Account(cloudName, apiKey, apiSecret);
