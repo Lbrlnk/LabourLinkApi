@@ -165,6 +165,7 @@ namespace NotificationService.Services.NotificationService
             {
                 SenderUserId = acceptInterestDto.EmployerUserId,
                 SenderName = acceptInterestDto.EmployerName,
+                SenderImageUrl = acceptInterestDto.EmployerImageUrl,
                 JobPostId = acceptInterestDto.JobPostId,
                 ReceiverUserId = acceptInterestDto.LabourUserId,
                 ReceicverName = acceptInterestDto.LabourName,

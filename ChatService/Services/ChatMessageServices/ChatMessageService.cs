@@ -6,7 +6,7 @@ using MongoDB.Driver;
 
 namespace ChatService.Services.ChatService
 {
-    public class ChatMessageService:IChatMessageService
+    public class ChatMessageService : IChatMessageService
     {
         private readonly IChatRepository _chatRepository;
         private readonly IMapper _mapper;

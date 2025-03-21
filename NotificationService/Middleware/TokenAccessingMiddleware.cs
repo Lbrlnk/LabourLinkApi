@@ -13,8 +13,10 @@
         public async Task InvokeAsync(HttpContext context)
         {
             // Extract the access token from cookies
+
             var accessToken = context.Request.Cookies["accessToken"];
             Console.WriteLine($"Extracted Token: {accessToken}");
+
 
             if (!string.IsNullOrEmpty(accessToken))
             {

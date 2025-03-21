@@ -5,12 +5,12 @@ using ChatService.Repository;
 
 namespace ChatService.Services.ConversationServices
 {
-    public class ConversationService:IConversationService
+    public class ConversationService : IConversationService
     {
 
         private readonly IConversationRepository _conversationRepository;
         private readonly IMapper _mapper;
-        public ConversationService(IConversationRepository conversationRepository,IMapper mapper)
+        public ConversationService(IConversationRepository conversationRepository, IMapper mapper)
         {
             _conversationRepository = conversationRepository;
             _mapper = mapper;

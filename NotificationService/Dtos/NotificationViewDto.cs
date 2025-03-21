@@ -9,7 +9,7 @@ namespace NotificationService.Dtos
         public Guid Id { get; set; } 
         public Guid JobPostId { get; set; }
         public Guid SenderUserId { get; set; }
-        public string SednderImageUrl { get; set; }
+        public string SenderImageUrl { get; set; }
         public string SenderName { get; set; } 
         public string ReceiverUserId { get; set; }
         public string Title { get; set; }
