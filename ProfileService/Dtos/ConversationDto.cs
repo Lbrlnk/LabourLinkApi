@@ -5,9 +5,9 @@ namespace ProfileService.Dtos
     public class ConversationDto
     {
         public Guid Id { get; set; }
-        [Required]
+        
         public Guid User1Id { get; set; }
-        [Required]
+       
         public Guid User2Id { get; set; }
         public string LastMessage { get; set; }
         public DateTime LastUpdated { get; set; } = DateTime.Now;

@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.DependencyInjection;
 using System.Text;
+using DotNetEnv;
 
 namespace AdminService
 {
@@ -19,8 +20,13 @@ namespace AdminService
     {
         public static void Main(string[] args)
         {
+
+            if(Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
+            {
+                Env.Load();
+            }
             var builder = WebApplication.CreateBuilder(args);
-            DotNetEnv.Env.Load();
+            //DotNetEnv.Env.Load();
 
             Log.Logger = new LoggerConfiguration()
             .WriteTo.Console()
@@ -32,7 +38,7 @@ namespace AdminService
                 .AddEnvironmentVariables();
 
             // Get the connection string for AdminService
-            var connectionString = Environment.GetEnvironmentVariable("LABOURLINK-DB");
+            var connectionString = Environment.GetEnvironmentVariable("DB-CONNECTION-STRING");
 
 
             builder.Services.AddDbContext<AdminDbContext>(options =>
@@ -100,8 +106,8 @@ namespace AdminService
 
 
 
-
-            var secret  =  Encoding.UTF8.GetBytes("Laboulink21345665432@354*(45234567876543fgbfgnh");
+            var secret = Environment.GetEnvironmentVariable("JWT-SECRET-KEY") ?? throw new InvalidOperationException("jwt key not configured");
+            //var secret  =  Encoding.UTF8.GetBytes("Laboulink21345665432@354*(45234567876543fgbfgnh");
             builder.Services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -115,9 +121,9 @@ namespace AdminService
                     ValidateAudience = true,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
-                    ValidIssuer = "Labourlink-Api",
-                    ValidAudience = "Labourlink-Frontend",
-                    IssuerSigningKey = new SymmetricSecurityKey(secret),
+                    ValidIssuer = Environment.GetEnvironmentVariable("JWT-ISSUER"),
+                    ValidAudience = Environment.GetEnvironmentVariable("JWT-AUDIENCE"),
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret)),
                     ClockSkew = TimeSpan.Zero // Optional: Removes the default 5-minute clock skew
                 };
             });
