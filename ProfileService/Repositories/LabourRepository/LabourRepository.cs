@@ -19,7 +19,7 @@ namespace ProfileService.Repositories.LabourRepository
             await _context.Labours.AddAsync(lbr);
             return true;
         }
-
+        //===================
 
         public async Task<bool> AddLabourPreferredMuncipalities(LabourPreferredMuncipality lpm)
         {
