@@ -1,3 +1,5 @@
+
+
 using AuthenticationService.Data;
 using AuthenticationService.Helpers.JwtHelper;
 using AuthenticationService.Mapper;
@@ -11,9 +13,9 @@ using Microsoft.OpenApi.Models;
 using RabbitMQ.Client;
 using System.Text;
 using System.Text.Json.Serialization;
-using EventBus.Implementations;
+//using EventBus.Implementations;
 using DotNetEnv;
-using AuthenticationService.Services.ProfileCompletionConsumerService;
+
 using AuthenticationService.Middleware;
 
 namespace AuthenticationService
@@ -42,21 +44,15 @@ namespace AuthenticationService
             builder.Services.AddScoped<IJwtHelper, JwtHelper>();
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<IAuthRepository, AuthRepository>();
-            //builder.Services.AddSingleton<RabbitMQConnection>(sp =>
-            //{
-            //    var config = sp.GetRequiredService<IConfiguration>();
-            //    var connection = new RabbitMQConnection(config);
-            //    connection.DeclareExchange("labourlink.events", ExchangeType.Direct);
-            //    return connection;
-            //});
-            //builder.Services.AddHostedService<ProfileCompletionConsumer>();
+            
             builder.Services.AddHostedService<ProfileCompletionConsumerService>();
 
+         
             builder.Services.AddControllers().AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
             });
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+           
             builder.Services.AddEndpointsApiExplorer();
 
 
@@ -112,6 +108,20 @@ namespace AuthenticationService
                     ClockSkew = TimeSpan.Zero
                 };
             });
+
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowFrontend",
+                    policy =>
+                    {
+                        policy.WithOrigins("http://localhost:5173") // Allow frontend URL
+                              .AllowAnyMethod()
+                              .AllowAnyHeader()
+                              .AllowCredentials(); // Allow cookies/auth tokens
+                    });
+            });
+
 
             var app = builder.Build();
 

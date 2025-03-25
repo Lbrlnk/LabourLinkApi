@@ -34,7 +34,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Labourlink.Events\LabourlinkApi.Events.csproj" />
+   
+    <ProjectReference Include="..\LaborlinkApi.Events\LaborlinkApi.Events.csproj" />
   </ItemGroup>
 
 </Project>

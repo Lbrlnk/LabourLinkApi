@@ -11,7 +11,7 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="Azure.Identity" Version="1.13.2" />
-    <PackageReference Include="Azure.Security.KeyVault.Secrets" Version="4.7.0" />
+    <PackageReference Include="Azure.Security.KeyVault.Secrets" Version="4.2.0" />
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
     <PackageReference Include="CloudinaryDotNet" Version="1.27.3" />
     <PackageReference Include="DotNetEnv" Version="3.1.1" />
@@ -33,8 +33,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EventBus\EventBus.csproj" />
-    <ProjectReference Include="..\Labourlink.Events\LabourlinkApi.Events.csproj" />
+    <ProjectReference Include="..\LaborlinkApi.Events\LaborlinkApi.Events.csproj" />
   </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="https://json.schemastore.org/asconfig-schema.json" /></VisualStudio></ProjectExtensions>
 
 </Project>

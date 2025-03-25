@@ -45,7 +45,7 @@ namespace AdminService.Controllers
 
         }
         [HttpPost("addmuncipality")]
-        [Authorize(Roles = "Admin")]
+  
         public async Task<IActionResult> AddMuncipality(MuncipalityViewDto muncipality)
         {
             try
@@ -61,7 +61,7 @@ namespace AdminService.Controllers
             }
         }
         [HttpGet("mucipality{id}")]
-        [Authorize]
+   
         public async Task<IActionResult> GetMuncipality(int id)
         {
             try
@@ -82,7 +82,7 @@ namespace AdminService.Controllers
             }
         }
         [HttpDelete("deletemuncipality{id}")]
-        [Authorize(Roles = "Admin")]
+     
         public async Task<IActionResult> DeleteMuncipality(int id)
         {
             var response = await _service.DeleteMuncipality(id);
@@ -95,7 +95,7 @@ namespace AdminService.Controllers
             return Ok(response);
         }
         [HttpPatch("editmucipality")]
-        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> UpdateMuncipality(MuncipalityViewDto muncipality)
         {
             try
@@ -120,7 +120,7 @@ namespace AdminService.Controllers
             }
         }
         [HttpGet("muncipalities{state}")]
-        [Authorize]
+      
         public async Task<IActionResult> GetMuncipalitiesByState(string state)
         {
             try
@@ -165,7 +165,7 @@ namespace AdminService.Controllers
 
         }
         [HttpPatch("activatemuncipality/{id}")]
-        [Authorize("Admin")]
+     
 
         public async Task<IActionResult> ActivateMuncipality(int id)
 

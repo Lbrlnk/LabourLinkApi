@@ -27,7 +27,7 @@ namespace NotificationService
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddEnvironmentVariables();
 
-            var ConnectionString = Environment.GetEnvironmentVariable("LABOURLINK_DB");
+            var ConnectionString = Environment.GetEnvironmentVariable("DB-CONNECTION-STRING");
             // Add services to the container.
             builder.Services.AddSignalR();
             

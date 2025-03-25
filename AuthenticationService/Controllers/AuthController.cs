@@ -17,33 +17,6 @@ namespace AuthenticationService.Controllers
             _authService = authService;
         }
 
-        //[HttpPost("register")]
-        //public async Task<IActionResult> Register([FromBody] RegistrationDto registerDto)
-        //{
-        //    try
-        //    {
-
-        //        if (registerDto == null)
-        //        {
-        //            return BadRequest(new { message = "form are incomplete" });
-        //        }
-
-        //        var result = await _authService.RegisterAsync(registerDto);
-        //        if (result)
-        //        {
-        //            return Ok(new { message = "Registration Successful" });
-        //        }
-        //        else
-        //        {
-        //            return BadRequest(new { message = "Registraion failed" });
-        //        }
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return StatusCode(StatusCodes.Status500InternalServerError, new { message = ex.Message });
-        //    }
-        //}
 
 
 
@@ -98,19 +71,20 @@ namespace AuthenticationService.Controllers
 
 
 
-                var cookieOptions = new CookieOptions
-                {
-                    HttpOnly = true,
-                    Secure = true, // Use Secure only in non-local environments
-                    SameSite = SameSiteMode.None, // cross-origin cookies
-                    Expires = DateTime.UtcNow.AddMinutes(15)
-                };
+                //var cookieOptions = new CookieOptions
+                //{
+                //    HttpOnly = true,
+                //    Secure = true, // Use Secure only in non-local environments
+                //    SameSite = SameSiteMode.None, // cross-origin cookies
+                //    Expires = DateTime.UtcNow.AddMinutes(15)
+                //};
 
-                Response.Cookies.Append("accessToken", accessToken, cookieOptions);
+                //Response.Cookies.Append("accessToken", accessToken, cookieOptions);
 
-                cookieOptions.Expires = DateTime.UtcNow.AddMonths(1);
-                Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);
+                //cookieOptions.Expires = DateTime.UtcNow.AddMonths(1);
+                //Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);
 
+                
 
                 return Ok(new { message = "Login Successful", accessToken, refreshToken, isProfileCompleted, userType });
             }
@@ -135,12 +109,12 @@ namespace AuthenticationService.Controllers
                 var newAccessToken = await _authService.RefreshTokenAsync(refreshToken);
 
                 // Set new access token in cookies
-                Response.Cookies.Append("accessToken", newAccessToken, new CookieOptions
-                {
-                    HttpOnly = true,
-                    Secure = true,
-                    Expires = DateTime.UtcNow.AddMinutes(15)
-                });
+                //Response.Cookies.Append("accessToken", newAccessToken, new CookieOptions
+                //{
+                //    HttpOnly = true,
+                //    Secure = true,
+                //    Expires = DateTime.UtcNow.AddMinutes(15)
+                //});
 
                 return Ok(new { message = "Token refreshed successfully", accessToken = newAccessToken });
             }

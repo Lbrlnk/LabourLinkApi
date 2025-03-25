@@ -7,6 +7,7 @@ namespace NotificationService.Services.NotificationService
     {
         Task SendNotificaitonToEmployer(InterestRequestDto interestRequestDto , Guid userId);
         Task SendNotificaitonToLabour(AcceptInterestDto acceptInterestDto, Guid userId);
+        
 
         //Task<NotificationViewDto> SendNotificationToLabour(InterestRequestDto intrstReqDto);
 

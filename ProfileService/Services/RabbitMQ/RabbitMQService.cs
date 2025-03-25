@@ -1,8 +1,9 @@
 ﻿
+using LaborlinkApi.Events;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using System.Text;
-using LabourlinkApi.Events;
+
 
 
 

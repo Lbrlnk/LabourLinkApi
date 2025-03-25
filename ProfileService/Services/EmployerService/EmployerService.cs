@@ -11,7 +11,7 @@ using ProfileService.Repositories.EmployerRepository;
 using ProfileService.Repositories.LabourRepository;
 using ProfileService.Services.RabbitMQ;
 using Sprache;
-//using ProfileService.Services.RabbitMQ;
+using ProfileService.Services.RabbitMQ;
 
 
 namespace ProfileService.Services.EmployerService
@@ -19,19 +19,19 @@ namespace ProfileService.Services.EmployerService
     public class EmployerService : IEmployerService
     {
         //private readonly IEventPublisher _eventPublisher;
-        private readonly IRabbitMqService _rabbitMqService;
         private readonly IEmployerRepository _employerRepository;
         private readonly IMapper _mapper;
         private readonly ICloudinaryHelper _cloudinary;
+        private readonly IRabbitMqService _rabbitMqService;
         
 
-        public EmployerService(IEmployerRepository employerRepository, IMapper mapper, IRabbitMqService rabbitMqService, ICloudinaryHelper cloudinary)
+        public EmployerService(IEmployerRepository employerRepository, IMapper mapper,IRabbitMqService rabbitMqService , ICloudinaryHelper cloudinary )
         {
             //_eventPublisher = eventPublisher;
-            _rabbitMqService = rabbitMqService;
             _mapper = mapper;
             _employerRepository = employerRepository;
             _cloudinary = cloudinary;
+            _rabbitMqService = rabbitMqService;
             
 
         }
@@ -54,6 +54,8 @@ namespace ProfileService.Services.EmployerService
                  await _employerRepository.AddEmployer(employer);
                 if (await _employerRepository.UpdateDatabase())
                 {
+
+
                     //_eventPublisher.Publish(new ProfileCompletedEvent { UserId = userId });
                     _rabbitMqService.PublishProfileCompleted(userId);
                     return "registration succesfull";

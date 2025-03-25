@@ -1,4 +1,4 @@
-    using CloudinaryDotNet;
+using CloudinaryDotNet;
 //using EventBus.Abstractions;
 //using EventBus.Implementations;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -30,10 +30,10 @@ using ProfileService.Services.RabbitMQ;
 
 namespace ProfileService
 {
-	public class Program
-	{
-		public static void Main(string[] args)
-		{
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
 
             if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
             {
@@ -41,9 +41,9 @@ namespace ProfileService
             }
             var builder = WebApplication.CreateBuilder(args);
 
-			builder.Configuration
-				.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-				.AddEnvironmentVariables();
+            builder.Configuration
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddEnvironmentVariables();
             //if (builder.Environment.IsDevelopment())
             //{
             //    DotNetEnv.Env.Load();
@@ -52,12 +52,12 @@ namespace ProfileService
             var connectionString = Environment.GetEnvironmentVariable("DB-CONNECTION-STRING")
                 ?? throw new InvalidOperationException("DB-ConnectionString is not configured");
 
-			builder.Services.AddDbContext<LabourLinkProfileDbContext>(options =>
-				options.UseSqlServer(
-					connectionString,
-					sqlOptions => sqlOptions.EnableRetryOnFailure()
-				)
-			);
+            builder.Services.AddDbContext<LabourLinkProfileDbContext>(options =>
+                options.UseSqlServer(
+                    connectionString,
+                    sqlOptions => sqlOptions.EnableRetryOnFailure()
+                )
+            );
 
             builder.Services.AddCors(options =>
             {
@@ -71,66 +71,65 @@ namespace ProfileService
                     });
             });
 
-			builder.Services.AddHttpClient<JobPostServiceClient>();
-		
-			builder.Services.AddScoped<IEmployerLabour, EmployerLabour>();
+            builder.Services.AddHttpClient<JobPostServiceClient>();
 
-			builder.Services.AddScoped<ISkillAnalyticsService, SkillAnalyticsService>();
+            builder.Services.AddScoped<IEmployerLabour, EmployerLabour>();
+
+            builder.Services.AddScoped<ISkillAnalyticsService, SkillAnalyticsService>();
             builder.Services.AddAutoMapper(typeof(MapperProfile));
-			builder.Services.AddScoped<ILabourRepository, LabourRepository>();
-			builder.Services.AddScoped<ILabourService, LabourService>();
-			builder.Services.AddScoped<IEmployerRepository, EmployerRepository>();
+            builder.Services.AddScoped<ILabourRepository, LabourRepository>();
+            builder.Services.AddScoped<ILabourService, LabourService>();
+            builder.Services.AddScoped<IEmployerRepository, EmployerRepository>();
             builder.Services.AddScoped<IEmployerService, EmployerService>();
             builder.Services.AddScoped<ICloudinaryHelper, CloudinaryHelper>();
 			builder.Services.AddScoped<IConversationService, ConversationService>();
 			builder.Services.AddScoped<IChatConversationRepository, ChatConversationRepository>();
-			//builder.Services.AddSingleton<RabbitMQConnection>(sp =>
-			//{
-			//    var config = sp.GetRequiredService<IConfiguration>();
-			//    var connection = new RabbitMQConnection(config);
-			//    connection.DeclareExchange("labourlink.events", ExchangeType.Direct);
-			//    return connection;
-			//});
-			//builder.Services.AddScoped<IEventPublisher, EventPublisher>();
+            //builder.Services.AddSingleton<RabbitMQConnection>(sp =>
+            //{
+            //    var config = sp.GetRequiredService<IConfiguration>();
+            //    var connection = new RabbitMQConnection(config);
+            //    connection.DeclareExchange("labourlink.events", ExchangeType.Direct);
+            //    return connection;
+            //});
 
-			builder.Services.AddScoped<IRabbitMqService, RabbitMqService>();
+            //builder.Services.AddScoped<IEventPublisher, EventPublisher>();
+            builder.Services.AddScoped<IRabbitMqService, RabbitMqService>();
+            builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
+            builder.Services.AddScoped<IReviewService, ReviewService>();
+            builder.Services.AddControllers().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            });
+            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "Kaalcharakk", Version = "v1" });
+                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "Enter 'Bearer' [space] and then your token"
+                });
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    new string[] {}
+                }
+            });
+            });
 
-			builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
-			builder.Services.AddScoped<IReviewService, ReviewService>();
-			builder.Services.AddControllers().AddJsonOptions(options =>
-			{
-				options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-			});
-			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-			builder.Services.AddEndpointsApiExplorer();
-			builder.Services.AddSwaggerGen(options =>
-			{
-				options.SwaggerDoc("v1", new OpenApiInfo { Title = "Kaalcharakk", Version = "v1" });
-				options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-				{
-					Name = "Authorization",
-					Type = SecuritySchemeType.ApiKey,
-					Scheme = "Bearer",
-					BearerFormat = "JWT",
-					In = ParameterLocation.Header,
-					Description = "Enter 'Bearer' [space] and then your token"
-				});
-				options.AddSecurityRequirement(new OpenApiSecurityRequirement
-				{
-					{
-						new OpenApiSecurityScheme
-						{
-							Reference = new OpenApiReference
-							{
-								Type = ReferenceType.SecurityScheme,
-								Id = "Bearer"
-							}
-						},
-						new string[] {}
-					}
-				});
-			});
-			
 
 
             var jwtSecret = Environment.GetEnvironmentVariable("JWT-SECRET-KEY")
@@ -155,28 +154,28 @@ namespace ProfileService
 
             var app = builder.Build();
 
-			if (!app.Environment.IsDevelopment())
-			{
-				using var scope = app.Services.CreateScope();
-				var db = scope.ServiceProvider.GetRequiredService<LabourLinkProfileDbContext>();
-				db.Database.Migrate();
-			}
+            if (!app.Environment.IsDevelopment())
+            {
+                using var scope = app.Services.CreateScope();
+                var db = scope.ServiceProvider.GetRequiredService<LabourLinkProfileDbContext>();
+                db.Database.Migrate();
+            }
 
 
 
-			if (app.Environment.IsDevelopment())
-			{
-				app.UseSwagger();
-				app.UseSwaggerUI();
-			app.UseDeveloperExceptionPage();
-			}
-			app.UseHttpsRedirection();
-			app.UseCors("AllowAllOrigins");
-			app.UseMiddleware<TokenAccessingMiddleware>();
-			app.UseAuthentication();
-			app.UseAuthorization();
-			app.UseMiddleware<UserIdentificationMiddleware>();
-			app.MapControllers();
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseSwagger();
+                app.UseSwaggerUI();
+                app.UseDeveloperExceptionPage();
+            }
+            app.UseHttpsRedirection();
+            app.UseCors("AllowAllOrigins");
+            app.UseMiddleware<TokenAccessingMiddleware>();
+            app.UseAuthentication();
+            app.UseAuthorization();
+            app.UseMiddleware<UserIdentificationMiddleware>();
+            app.MapControllers();
 
             app.Run();
         }
