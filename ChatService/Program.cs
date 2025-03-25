@@ -39,17 +39,6 @@ options.UseSqlServer(
     )
 );
 
-//builder.Services.AddSingleton<IMongoClient>(new MongoClient(Environment.GetEnvironmentVariable("MongoDB")));
-
-//builder.Services.AddScoped<IMongoDatabase>(provider =>
-//{
-//    IMongoClient client = provider.GetRequiredService<IMongoClient>();
-//    return client.GetDatabase("NotificationDb");
-//});
-// Replace the existing MongoDB configuration section with this:
-
-// Get the MongoDB connection string for Cosmos DB
-// Get the MongoDB connection string for Cosmos DB
 var cosmosConnectionString = Environment.GetEnvironmentVariable("COSMOS-CONNECTIONSTRING") ?? throw new InvalidOperationException("cosmos db connection string  is not configured");
 string cosmos_database = Environment.GetEnvironmentVariable("COSMOS-DATABASE") ?? throw new InvalidOperationException("cosmos db Database  is not configured");
 
@@ -93,7 +82,7 @@ builder.Services.AddScoped<IChatRepository, ChatRepository>();
 builder.Services.AddScoped<IChatMessageService, ChatMessageService>();
 builder.Services.AddScoped<IConversationService, ConversationService>();
 
-var allow_origin = Environment.GetEnvironmentVariable("ALLOW-ORIGIN") ?? throw new InvalidOperationException("Cors orgin is not configured");
+var allow_origin = Environment.GetEnvironmentVariable("CORS-ORIGIN") ?? throw new InvalidOperationException("Cors orgin is not configured");
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigin",
@@ -112,7 +101,7 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen(options =>
 {
-    options.SwaggerDoc("v1", new OpenApiInfo { Title = "ChatLabrLink", Version = "v1" });
+    options.SwaggerDoc("v1", new OpenApiInfo { Title = "LabourLink-Chat", Version = "v1" });
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Name = "Authorization",
