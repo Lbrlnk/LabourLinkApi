@@ -14,17 +14,17 @@ namespace AuthenticationService.Sevices.AuthSerrvice
         private readonly IAuthRepository _authRepository;
         private readonly IJwtHelper _jwtHelper;
         private readonly IMapper _mapper;
-      
+
         //private readonly ILogger<AuthService> _logger;
 
 
-        public AuthService(IAuthRepository authRepository, IJwtHelper jwtHelper ,IMapper mapper  )
+        public AuthService(IAuthRepository authRepository, IJwtHelper jwtHelper, IMapper mapper)
         {
 
             _authRepository = authRepository;
             _jwtHelper = jwtHelper;
             _mapper = mapper;
-           
+
             //_logger = logger;
 
         }
@@ -45,14 +45,14 @@ namespace AuthenticationService.Sevices.AuthSerrvice
                 }
 
 
-                registrationDto.Password =  BCrypt.Net.BCrypt.HashPassword(registrationDto.Password);
+                registrationDto.Password = BCrypt.Net.BCrypt.HashPassword(registrationDto.Password);
 
                 var user = _mapper.Map<User>(registrationDto);
 
 
-               await _authRepository.AddUserAsync(user);
+                await _authRepository.AddUserAsync(user);
 
-               var response =  await _authRepository.UpdateDatabaseAsync();
+                var response = await _authRepository.UpdateDatabaseAsync();
 
                 if (response)
                 {
@@ -60,7 +60,7 @@ namespace AuthenticationService.Sevices.AuthSerrvice
                 }
 
                 throw new Exception("internal server error , registration failed ");
-               
+
             }
             catch (Exception ex)
             {
@@ -68,34 +68,34 @@ namespace AuthenticationService.Sevices.AuthSerrvice
                 throw;
             }
         }
-        public async Task<(string accessToken, string refreshToken ,bool isProfileCompleted ,UserType userType)> LoginAsync(LoginDto loginDto)
+        public async Task<(string accessToken, string refreshToken, bool isProfileCompleted, UserType userType)> LoginAsync(LoginDto loginDto)
         {
 
             try
             {
 
 
-            // Generate tokens
-            var user = await _authRepository.GetUserByEmailAsync(loginDto.email);
-            if (user == null || !BCrypt.Net.BCrypt.Verify(loginDto.password, user.Password))
-            {
-                throw new Exception("Invalid username or password");
+                // Generate tokens
+                var user = await _authRepository.GetUserByEmailAsync(loginDto.email);
+                if (user == null || !BCrypt.Net.BCrypt.Verify(loginDto.password, user.Password))
+                {
+                    throw new Exception("Invalid username or password");
+                }
+
+                if (!user.IsActive)
+                {
+                    throw new Exception("You are blocked");
+                }
+
+                var accessToken = _jwtHelper.GenerateToken(user);
+                var refreshToken = _jwtHelper.GenerateRefreshToken();
+
+                // Saving the refresh token in the database
+                await _authRepository.SaveRefreshTokenAsync(user.UserId, refreshToken, DateTime.UtcNow.AddMonths(1));
+
+                return (accessToken, refreshToken, user.IsProfileCompleted, user.UserType);
             }
-
-            if (!user.IsActive) 
-            {
-                throw new Exception("You are blocked");
-            }
-
-            var accessToken = _jwtHelper.GenerateToken(user);
-            var refreshToken = _jwtHelper.GenerateRefreshToken();
-
-            // Saving the refresh token in the database
-            await _authRepository.SaveRefreshTokenAsync(user.UserId, refreshToken, DateTime.UtcNow.AddMonths(1));
-
-            return (accessToken, refreshToken , user.IsProfileCompleted , user.UserType);
-            }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception($"Error in login : {ex.Message}", ex);
             }
@@ -126,6 +126,18 @@ namespace AuthenticationService.Sevices.AuthSerrvice
             return newAccessToken;  // Returning new access token
         }
 
+        public async Task<bool?> IsprofileCompleted(Guid userId)
+        {
+            try
+            {
+                return await _authRepository.IsProfileCompleted(userId);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
 
     }
 }
+

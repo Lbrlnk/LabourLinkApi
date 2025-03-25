@@ -16,13 +16,15 @@ namespace NotificationService.Models
         [Required]
 
         public string LabourName { get; set; }
+
         public string LabourImageUrl { get; set; }
 
         public Guid EmployerUserId { get; set; }
 
         public string EmployerName { get; set; }
-        public string EmployerImageUrl { get; set; }
 
+        
+ 
 
         [Required]
         [EnumDataType(typeof(InterestRequestStatus))]

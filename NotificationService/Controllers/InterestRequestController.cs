@@ -70,6 +70,7 @@ namespace NotificationService.Controllers
         {
             try
             {
+
                 var result = await _interestRequestService.RejectInterestRequest(id);
                 if (result.StartsWith("Error:"))
                 
@@ -123,7 +124,7 @@ namespace NotificationService.Controllers
             {
 
             if (!HttpContext.Items.ContainsKey("UserId"))
-            {
+            { 
                 return Unauthorized("User not authenticated.");
             }
             var userId = Guid.Parse(HttpContext.Items["UserId"].ToString());

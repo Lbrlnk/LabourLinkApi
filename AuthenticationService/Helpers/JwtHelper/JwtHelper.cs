@@ -75,30 +75,7 @@ namespace AuthenticationService.Helpers.JwtHelper
             rng.GetBytes(randomBytes);
             return Convert.ToBase64String(randomBytes);
         }
-        //public ClaimsPrincipal? GetPrincipalFromExpiredToken(string token)
-        //{
-        //    var secretKey = _configuration["JWT_SECRET_KEY"];
-        //    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
-
-        //    var tokenHandler = new JwtSecurityTokenHandler();
-        //    try
-        //    {
-        //        var principal = tokenHandler.ValidateToken(token, new TokenValidationParameters
-        //        {
-        //            ValidateIssuerSigningKey = true,
-        //            IssuerSigningKey = key,
-        //            ValidateIssuer = false,
-        //            ValidateAudience = false,
-        //            ValidateLifetime = false // Allow expired tokens
-        //        }, out _);
-
-        //        return principal;
-        //    }
-        //    catch
-        //    {
-        //        return null;
-        //    }
-        //}
+        
 
     }
 }

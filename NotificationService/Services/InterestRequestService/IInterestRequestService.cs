@@ -15,5 +15,7 @@ namespace NotificationService.Services.IntrestRequestService
         Task<List<InterestRequest>> GetInterestRequestForEmployers(Guid eId);
         Task<List<InterestRequest>> GetAcceptedInterestRequestOfLabour(Guid Lid);
 
+       
+
     }
 }

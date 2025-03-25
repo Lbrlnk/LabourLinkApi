@@ -17,33 +17,6 @@ namespace AuthenticationService.Controllers
             _authService = authService;
         }
 
-        //[HttpPost("register")]
-        //public async Task<IActionResult> Register([FromBody] RegistrationDto registerDto)
-        //{
-        //    try
-        //    {
-
-        //        if (registerDto == null)
-        //        {
-        //            return BadRequest(new { message = "form are incomplete" });
-        //        }
-
-        //        var result = await _authService.RegisterAsync(registerDto);
-        //        if (result)
-        //        {
-        //            return Ok(new { message = "Registration Successful" });
-        //        }
-        //        else
-        //        {
-        //            return BadRequest(new { message = "Registraion failed" });
-        //        }
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return StatusCode(StatusCodes.Status500InternalServerError, new { message = ex.Message });
-        //    }
-        //}
 
 
 
@@ -88,7 +61,7 @@ namespace AuthenticationService.Controllers
                     return BadRequest(new { message = "Username and Password are required" });
                 }
 
-                var (accessToken, refreshToken , isProfileCompleted ,userType) = await _authService.LoginAsync(logindto);
+                var (accessToken, refreshToken, isProfileCompleted, userType) = await _authService.LoginAsync(logindto);
 
                 if (string.IsNullOrEmpty(accessToken) || string.IsNullOrEmpty(refreshToken))
                 {
@@ -98,19 +71,20 @@ namespace AuthenticationService.Controllers
 
 
 
-                var cookieOptions = new CookieOptions
-                {
-                    HttpOnly = true,
-                    Secure = true, // Use Secure only in non-local environments
-                    SameSite = SameSiteMode.None, // cross-origin cookies
-                    Expires = DateTime.UtcNow.AddMinutes(1000)
-                };
+                //var cookieOptions = new CookieOptions
+                //{
+                //    HttpOnly = true,
+                //    Secure = true, // Use Secure only in non-local environments
+                //    SameSite = SameSiteMode.None, // cross-origin cookies
+                //    Expires = DateTime.UtcNow.AddMinutes(15)
+                //};
 
-                Response.Cookies.Append("accessToken", accessToken, cookieOptions);
+                //Response.Cookies.Append("accessToken", accessToken, cookieOptions);
 
-                cookieOptions.Expires = DateTime.UtcNow.AddMonths(1); 
-                Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);
+                //cookieOptions.Expires = DateTime.UtcNow.AddMonths(1);
+                //Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);
 
+                
 
                 return Ok(new { message = "Login Successful", accessToken, refreshToken, isProfileCompleted, userType });
             }
@@ -135,12 +109,12 @@ namespace AuthenticationService.Controllers
                 var newAccessToken = await _authService.RefreshTokenAsync(refreshToken);
 
                 // Set new access token in cookies
-                Response.Cookies.Append("accessToken", newAccessToken, new CookieOptions
-                {
-                    HttpOnly = true,
-                    Secure = true,
-                    Expires = DateTime.UtcNow.AddMinutes(15)
-                });
+                //Response.Cookies.Append("accessToken", newAccessToken, new CookieOptions
+                //{
+                //    HttpOnly = true,
+                //    Secure = true,
+                //    Expires = DateTime.UtcNow.AddMinutes(15)
+                //});
 
                 return Ok(new { message = "Token refreshed successfully", accessToken = newAccessToken });
             }
@@ -149,22 +123,38 @@ namespace AuthenticationService.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, new { message = ex.Message });
             }
         }
-		[HttpPost("labourlink/logout")]
-		public IActionResult Logout()
-		{
-			try
-            { 
-				Response.Cookies.Delete("accessToken");
-				Response.Cookies.Delete("refreshToken");
+        [HttpPost("labourlink/logout")]
+        public IActionResult Logout()
+        {
+            try
+            {
+                Response.Cookies.Delete("accessToken");
+                Response.Cookies.Delete("refreshToken");
 
-				return Ok(new { message = "Logged out successfully" });
-			}
-			catch (Exception ex)
-			{
-				return StatusCode(StatusCodes.Status500InternalServerError, new { message = ex.Message });
-			}
-		}
+                return Ok(new { message = "Logged out successfully" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = ex.Message });
+            }
+        }
 
+        [HttpGet("isProfileCompleted")]
+        public async Task<IActionResult> IsProfileCompleted()
+        {
+            if (!HttpContext.Items.ContainsKey("UserId"))
+            {
+                return Unauthorized("User not authenticated.");
+            }
+
+            var userId = Guid.Parse(HttpContext.Items["UserId"].ToString());
+            var result =  await _authService.IsprofileCompleted(userId);
+            if(result == null)
+            {
+                return BadRequest("user not found");
+            }
+            return Ok(result);
+        }
 
 	}
 }
