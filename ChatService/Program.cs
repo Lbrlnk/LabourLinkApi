@@ -17,9 +17,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 
-
-
+if(Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
+{
 DotNetEnv.Env.Load();
+
+}
+
 builder.Configuration
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
     .AddEnvironmentVariables();
@@ -36,18 +39,39 @@ options.UseSqlServer(
     )
 );
 
-builder.Services.AddSingleton<IMongoClient>(new MongoClient(Environment.GetEnvironmentVariable("MongoDB")));
+var cosmosConnectionString = Environment.GetEnvironmentVariable("COSMOS-CONNECTIONSTRING") ?? throw new InvalidOperationException("cosmos db connection string  is not configured");
+string cosmos_database = Environment.GetEnvironmentVariable("COSMOS-DATABASE") ?? throw new InvalidOperationException("cosmos db Database  is not configured");
 
+Console.WriteLine(cosmosConnectionString);
+// Create a MongoClientSettings using the proper connection string format for Cosmos DB
+var mongoClientSettings = MongoClientSettings.FromConnectionString(cosmosConnectionString);
+
+// Cosmos DB specific settings
+mongoClientSettings.ServerApi = new ServerApi(ServerApiVersion.V1);
+mongoClientSettings.RetryWrites = false;
+mongoClientSettings.ReadPreference = ReadPreference.Nearest;
+mongoClientSettings.ConnectTimeout = TimeSpan.FromSeconds(30);
+mongoClientSettings.SocketTimeout = TimeSpan.FromSeconds(30);
+
+// Configure connection pooling
+mongoClientSettings.MaxConnectionPoolSize = 100;
+mongoClientSettings.MinConnectionPoolSize = 10;
+
+
+builder.Services.AddSingleton<IMongoClient>(new MongoClient(cosmosConnectionString));
 builder.Services.AddScoped<IMongoDatabase>(provider =>
 {
     IMongoClient client = provider.GetRequiredService<IMongoClient>();
-    return client.GetDatabase("NotificationDb");
+    return client.GetDatabase(cosmos_database);
 });
+
 builder.Services.AddAutoMapper(typeof(MapperProfile));
+
+var azure_signalR_Connectionstring= Environment.GetEnvironmentVariable("AZURE-SIGNALR-CONNECTIONSTRING") ?? throw new InvalidOperationException("Azure SignalR coonectonstring is not configured");
 
 builder.Services.AddSignalR().AddAzureSignalR(options =>
 {
-    options.ConnectionString = Environment.GetEnvironmentVariable("AZURE-SIGNALR-CONNECTIONSTRING");
+    options.ConnectionString = azure_signalR_Connectionstring;
     options.ServerStickyMode = Microsoft.Azure.SignalR.ServerStickyMode.Required;
 });
 // Add services to the container.
@@ -58,13 +82,13 @@ builder.Services.AddScoped<IChatRepository, ChatRepository>();
 builder.Services.AddScoped<IChatMessageService, ChatMessageService>();
 builder.Services.AddScoped<IConversationService, ConversationService>();
 
-
+var allow_origin = Environment.GetEnvironmentVariable("CORS-ORIGIN") ?? throw new InvalidOperationException("Cors orgin is not configured");
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigin",
         builder =>
         {
-            builder.WithOrigins("http://localhost:5173")
+            builder.WithOrigins(allow_origin)
                    .AllowCredentials()
                    .AllowAnyMethod()
                    .AllowAnyHeader();
@@ -77,7 +101,7 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen(options =>
 {
-    options.SwaggerDoc("v1", new OpenApiInfo { Title = "ChatLabrLink", Version = "v1" });
+    options.SwaggerDoc("v1", new OpenApiInfo { Title = "LabourLink-Chat", Version = "v1" });
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Name = "Authorization",
@@ -102,7 +126,10 @@ builder.Services.AddSwaggerGen(options =>
                     }
                 });
 });
-var secret = Encoding.UTF8.GetBytes("Laboulink21345665432@354*(45234567876543fgbfgnh");
+var jwt_secret = Environment.GetEnvironmentVariable("JWT-SECRET-KEY") ?? throw new InvalidOperationException("JWT-SECRET-KEY is not configured");
+string jwt_issuer = Environment.GetEnvironmentVariable("JWT-ISSUER") ?? throw new InvalidOperationException("JWT-ISSUER is not configured");
+string jwt_audience= Environment.GetEnvironmentVariable("JWT-AUDIENCE") ?? throw new InvalidOperationException("JWT-AUDIENCE is not configured");
+var secret = Encoding.UTF8.GetBytes(jwt_secret);
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -116,8 +143,8 @@ builder.Services.AddAuthentication(options =>
         ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        ValidIssuer = "Labourlink-Api",
-        ValidAudience = "Labourlink-Frontend",
+        ValidIssuer = jwt_issuer,
+        ValidAudience = jwt_audience,
         IssuerSigningKey = new SymmetricSecurityKey(secret),
         ClockSkew = TimeSpan.Zero // Optional: Removes the default 5-minute clock skew
     };

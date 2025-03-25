@@ -24,13 +24,24 @@ namespace AuthenticationService
     {
         public static void Main(string[] args)
         {
+
+            if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
+            {
+                Env.Load();
+            }
             var builder = WebApplication.CreateBuilder(args);
-            DotNetEnv.Env.Load();
+          
             builder.Configuration
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddEnvironmentVariables();
 
-            var ConnectionString = Environment.GetEnvironmentVariable("DB-CONNECTION-STRING");
+            string ConnectionString= Environment.GetEnvironmentVariable("DB-CONNECTION-STRING") ?? throw new InvalidOperationException("connection string is not configured");
+            string jwtSecretKey = Environment.GetEnvironmentVariable("JWT-SECRET-KEY") ?? throw new InvalidOperationException("jwt key is not configured") ;
+           
+
+          
+       
+        var secretKey = Encoding.UTF8.GetBytes(jwtSecretKey);
 
             builder.Services.AddDbContext<AuthenticationDbContext>(options =>
 
@@ -58,7 +69,7 @@ namespace AuthenticationService
 
             builder.Services.AddSwaggerGen(options =>
             {
-                options.SwaggerDoc("v1", new OpenApiInfo { Title = "Kaalcharakk", Version = "v1" });
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "LabourLink-Authentication", Version = "v1" });
                 options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Name = "Authorization",
@@ -83,9 +94,9 @@ namespace AuthenticationService
                     }
                 });
             });
-            var secretKey = Encoding.UTF8.GetBytes(builder.Configuration["JWT-SECRET-KEY"]);
-            var audience = builder.Configuration["JWT-AUDIENCE"];
-            var issuer = builder.Configuration["JWT-ISSUER"];
+
+            var audience = Environment.GetEnvironmentVariable("JWT-AUDIENCE") ?? throw new InvalidOperationException("JWT  audience is not configured"); 
+            var issuer = Environment.GetEnvironmentVariable("JWT-ISSUER") ?? throw new InvalidOperationException("JWT  issuer is not configured");
 
 
             // Configure JWT Authentication
@@ -109,16 +120,17 @@ namespace AuthenticationService
                 };
             });
 
+            var allowed_origin = Environment.GetEnvironmentVariable("CORS-ORIGIN") ?? throw new InvalidOperationException("cors origin is not configured");
 
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("AllowFrontend",
                     policy =>
                     {
-                        policy.WithOrigins("http://localhost:5173") // Allow frontend URL
+                        policy.WithOrigins(allowed_origin) 
                               .AllowAnyMethod()
                               .AllowAnyHeader()
-                              .AllowCredentials(); // Allow cookies/auth tokens
+                              .AllowCredentials(); 
                     });
             });
 

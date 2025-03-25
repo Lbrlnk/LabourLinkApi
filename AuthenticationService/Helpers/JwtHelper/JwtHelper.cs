@@ -24,7 +24,7 @@ namespace AuthenticationService.Helpers.JwtHelper
                 var secretKey = _configuration["JWT-SECRET-KEY"];
                 var issuer = _configuration["JWT-ISSUER"];
                 var audience = _configuration["JWT-AUDIENCE"];
-                var expiryInHours = int.TryParse(_configuration["JwtExpiryInHours"], out var hours) ? hours : 2;
+                var expiryInHours = int.TryParse(_configuration["JWT-EXPIRE-HOUR"], out var hours) ? hours : 2;
 
                
 

@@ -1,0 +1,251 @@
+{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/Muncipality/muncipalities",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5075
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/admin/muncipalities",
+      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Muncipality/addmuncipality",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5075
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/admin/addmuncipality",
+      "UpstreamHttpMethod": [ "POST", "OPTIONS" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Muncipality/mucipality{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5075
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/admin/mucipality{id}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Muncipality/deletemuncipality{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5075
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/admin/deletemuncipality{id}",
+      "UpstreamHttpMethod": [ "DELETE", "OPTIONS" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Muncipality/editmucipality",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5075
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/admin/editmucipality",
+      "UpstreamHttpMethod": [ "PATCH", "OPTIONS" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Muncipality/muncipalities{state}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5075
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/admin/muncipalities{state}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Muncipality/viewallmuncipalities",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5075
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/admin/viewallmuncipalities",
+      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Muncipality/activatemuncipality/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5075
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/admin/activatemuncipality/{id}",
+      "UpstreamHttpMethod": [ "PATCH", "OPTIONS"],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Muncipality/searchMunciplities",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5075
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/admin/searchMunciplities",
+      "UpstreamHttpMethod": [ "GET", "OPTIONS" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Skill/getAllSkill",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5075
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/admin/getAllSkill",
+      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Skill/getCompleteSkills",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5075
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/admin/getCompleteSkills",
+      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Skill/getSkillById/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5075
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/admin/getSkillById/{id}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Skill/createSkill",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5075
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/admin/createSkill",
+      "UpstreamHttpMethod": [ "POST", "OPTIONS" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Skill/updateSkill",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5075
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/admin/updateSkill",
+      "UpstreamHttpMethod": [ "PUT", "OPTIONS" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Skill/deleteSkill/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5075
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/admin/deleteSkill/{id}",
+      "UpstreamHttpMethod": [ "DELETE", "OPTIONS" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Skill/getDeletedSkills",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5075
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/admin/getDeletedSkills",
+      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Skill/reactivateSkill/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5075
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/admin/reactivateSkill/{id}",
+      "UpstreamHttpMethod": [ "PATCH" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Skill/getSkillsBySearchParams",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5075
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/admin/getSkillsBySearchParams",
+      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/outputcache/{region}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5075
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/admin/outputcache/{region}",
+      "UpstreamHttpMethod": [ "DELETE" ],
+      "UpstreamScheme": "http"
+    }
+  ]
+}

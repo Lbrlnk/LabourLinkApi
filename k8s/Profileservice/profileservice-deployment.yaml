@@ -14,55 +14,60 @@ spec:
         app: profile-service
     spec:
       containers:
+<<<<<<< HEAD
+        - name: profile-service
+          image: labourlinkcontainerregistry.azurecr.io/profileservice:latest
+          ports:
+=======
       - name: profile-service
         image: labourlinkcontainerregistry.azurecr.io/profileservice:latest
         ports:
+>>>>>>> upstream/development
             - containerPort: 8080
               name: http
             - containerPort: 8081
               name: https
-        env:
-        - name: ASPNETCORE_ENVIRONMENT
-          value: Production
-        - name: JWT-ISSUER
-          value: Labourlink-Api
-        - name: JWT-AUDIENCE
-          value: Labourlink-Frontend
-        - name: DB-CONNECTION-STRING
-          value: "Server=tcp:labourlinksqlserver.database.windows.net,1433;Initial Catalog=LabourLink_DB;Persist Security Info=False;User ID=labourlinksqladmin;Password=Labourlinkadmin@123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
-        - name: JWT-SECRET-KEY
-          valueFrom:
-            secretKeyRef:
-              name: profileservice-secrets
-              key: JWT-SECRET-KEY
-        - name: RABBITMQ-HOST
-          valueFrom:
-            secretKeyRef:
-              name: profileservice-secrets
-              key: RABBITMQ-HOST
-        - name: RABBITMQ-USERNAME
-          valueFrom:
-            secretKeyRef:
-              name: profileservice-secrets
-              key: RABBITMQ-USERNAME
-        - name: RABBITMQ-PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: profileservice-secrets
-              key: RABBITMQ-PASSWORD
-        - name: CLOUDINARY-CLOUDNAME
-          valueFrom:
-            secretKeyRef:
-              name: profileservice-secrets
-              key: CLOUDINARY-CLOUDNAME
-        - name: CLOUDINARY-APIKEY
-          valueFrom:
-            secretKeyRef:
-              name: profileservice-secrets
-              key: CLOUDINARY-APIKEY
-        - name: CLOUDINARY-API-SECRET
-          valueFrom:
-            secretKeyRef:
-              name: profileservice-secrets
-              key: CLOUDINARY-API-SECRET
-        
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: Production
+            - name: JWT-ISSUER
+              value: Labourlink-Api
+            - name: JWT-AUDIENCE
+              value: Labourlink-Frontend
+            - name: DB-CONNECTION-STRING
+              value: "Server=tcp:labourlinksqlserver.database.windows.net,1433;Initial Catalog=LabourLink_DB;Persist Security Info=False;User ID=labourlinksqladmin;Password=Labourlinkadmin@123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+            - name: JWT-SECRET-KEY
+              valueFrom:
+                secretKeyRef:
+                  name: profileservice-secrets
+                  key: JWT-SECRET-KEY
+            - name: RABBITMQ-HOST
+              valueFrom:
+                secretKeyRef:
+                  name: profileservice-secrets
+                  key: RABBITMQ-HOST
+            - name: RABBITMQ-USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: profileservice-secrets
+                  key: RABBITMQ-USERNAME
+            - name: RABBITMQ-PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: profileservice-secrets
+                  key: RABBITMQ-PASSWORD
+            - name: CLOUDINARY-CLOUDNAME
+              valueFrom:
+                secretKeyRef:
+                  name: profileservice-secrets
+                  key: CLOUDINARY-CLOUDNAME
+            - name: CLOUDINARY-APIKEY
+              valueFrom:
+                secretKeyRef:
+                  name: profileservice-secrets
+                  key: CLOUDINARY-APIKEY
+            - name: CLOUDINARY-API-SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: profileservice-secrets
+                  key: CLOUDINARY-API-SECRET
