@@ -25,7 +25,7 @@ namespace NotificationService.Services.IntrestRequestService
             _notificationService = notificationService;
             
         }
-        public async Task<string> AddInterestRequest(InterestRequestDto interestRequestDto)
+        public async Task<string> AddInterestRequest(InterestRequestDto interestRequestDto, Guid userId)
         {
             try
             {
@@ -35,8 +35,9 @@ namespace NotificationService.Services.IntrestRequestService
                     return "Error: Interest request already exist.";
                 }
                 var req = _mapper.Map<InterestRequest>(interestRequestDto);
+                req.LabourUserId = userId;
                 var result = await _interestRequestRepository.AddInterestRequest(req);
-               await _notificationService.SendNotificaitonToEmployer(interestRequestDto);
+               await _notificationService.SendNotificaitonToEmployer(interestRequestDto , userId);
                 
                 if (!result)
                 {
@@ -114,7 +115,7 @@ namespace NotificationService.Services.IntrestRequestService
                 throw;
             }
         }
-        public async Task<string> AcceptInterestRequest(AcceptInterestDto acceptInterestDto)
+        public async Task<string> AcceptInterestRequest(AcceptInterestDto acceptInterestDto , Guid userId )
         {
             try
             {
@@ -132,12 +133,16 @@ namespace NotificationService.Services.IntrestRequestService
                 {
                     return "Error: This request is already rejected.";
                 }
-
+                if(interestRequest.EmployerUserId == userId)
+                {
+                    return "Error : EmployerUserId mismatch.";
+                }
                 interestRequest.Status = Enums.InterestRequestStatus.Accepted;
                 interestRequest.UpdatedOn = DateTime.UtcNow;
+
                 var result = await _interestRequestRepository.UpdateInterestRequest(interestRequest);
                 
-                await _notificationService.SendNotificaitonToLabour(acceptInterestDto);
+                await _notificationService.SendNotificaitonToLabour(acceptInterestDto, userId );
 
                 if (!result)
                 {
@@ -189,5 +194,7 @@ namespace NotificationService.Services.IntrestRequestService
                 return new List<InterestRequest>();
             }
         }
+
+       
 }
 }

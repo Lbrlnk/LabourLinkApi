@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 
-using EventBus.Abstractions;
-using EventBus.Events;
+//using EventBus.Abstractions;
+//using EventBus.Events;
 using Microsoft.AspNetCore.Http.HttpResults;
 using ProfileService.Dtos;
 using ProfileService.Helper.CloudinaryHelper;
@@ -9,6 +9,7 @@ using ProfileService.Helpers.ApiResponse;
 using ProfileService.Models;
 using ProfileService.Repositories.EmployerRepository;
 using ProfileService.Repositories.LabourRepository;
+using ProfileService.Services.RabbitMQ;
 using Sprache;
 //using ProfileService.Services.RabbitMQ;
 
@@ -17,15 +18,17 @@ namespace ProfileService.Services.EmployerService
 {
     public class EmployerService : IEmployerService
     {
-        private readonly IEventPublisher _eventPublisher;
+        //private readonly IEventPublisher _eventPublisher;
+        private readonly IRabbitMqService _rabbitMqService;
         private readonly IEmployerRepository _employerRepository;
         private readonly IMapper _mapper;
         private readonly ICloudinaryHelper _cloudinary;
         
 
-        public EmployerService(IEmployerRepository employerRepository, IMapper mapper, IEventPublisher eventPublisher, ICloudinaryHelper cloudinary)
+        public EmployerService(IEmployerRepository employerRepository, IMapper mapper, IRabbitMqService rabbitMqService, ICloudinaryHelper cloudinary)
         {
-            _eventPublisher = eventPublisher;
+            //_eventPublisher = eventPublisher;
+            _rabbitMqService = rabbitMqService;
             _mapper = mapper;
             _employerRepository = employerRepository;
             _cloudinary = cloudinary;
@@ -37,38 +40,30 @@ namespace ProfileService.Services.EmployerService
             try
             {
                var alreadyEmpolyer = await _employerRepository.GetEmployerByIdAsync(userId);
-                if (alreadyEmpolyer == null)
+                if (alreadyEmpolyer != null)
                 {
                     throw new Exception("employer already completed profile ");
                 }
                 var employer = _mapper.Map<Employer>(employerProfileDto);
-
                 if(employerProfileDto.ProfileImage != null)
                 {
                     var ImageUrl = await _cloudinary.UploadImageAsync(employerProfileDto.ProfileImage, true);
                     employer.ProfileImageUrl = ImageUrl;
                 }
-
                  employer.UserId = userId;
                  await _employerRepository.AddEmployer(employer);
                 if (await _employerRepository.UpdateDatabase())
                 {
-                 
-
-                    _eventPublisher.Publish(new ProfileCompletedEvent { UserId = userId });
+                    //_eventPublisher.Publish(new ProfileCompletedEvent { UserId = userId });
+                    _rabbitMqService.PublishProfileCompleted(userId);
                     return "registration succesfull";
-
-
                 }
-
                 throw new Exception("internal server erro  : database updation failed");
-                
             }
             catch (Exception ex)
             {
                 throw;
             }
-
         }
 
        public async Task<string> UpdateEmployerProfile(Guid userId, EditEmployerProfileDto employerProfileDto)

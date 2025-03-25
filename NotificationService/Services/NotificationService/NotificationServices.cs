@@ -86,21 +86,21 @@ namespace NotificationService.Services.NotificationService
         //}
 
 
-        public async Task SendNotificaitonToEmployer(InterestRequestDto interestRequestDto)
+        public async Task SendNotificaitonToEmployer(InterestRequestDto interestRequestDto, Guid userId)
         {
             using var transaction = await _dbContext.Database.BeginTransactionAsync();
 
             try
             {
 
-                if (interestRequestDto.LabourUserId == interestRequestDto.EmployerUserId)
-                {
-                    throw new ValidationException("Cannot send notification to yourself");
-                }
+                //if (interestRequestDto.LabourUserId == interestRequestDto.EmployerUserId)
+                //{
+                //    throw new ValidationException("Cannot send notification to yourself");
+                //}
 
                 Notification notification = new Notification()
                 {
-                    SenderUserId = interestRequestDto.LabourUserId,
+                    SenderUserId = userId,
                     SenderName = interestRequestDto.LabourName,
                     SenderImageUrl = interestRequestDto.LabourImageUrl,
                     JobPostId = interestRequestDto.JobPostId,
@@ -151,9 +151,9 @@ namespace NotificationService.Services.NotificationService
 
 
 
-        public async Task SendNotificaitonToLabour(AcceptInterestDto acceptInterestDto)
+        public async Task SendNotificaitonToLabour(AcceptInterestDto acceptInterestDto, Guid userId)
         {
-            if (acceptInterestDto.LabourUserId == acceptInterestDto.EmployerUserId)
+            if (acceptInterestDto.LabourUserId == userId)
             {
                 throw new ValidationException("Cannot send notification to yourself");
             }
@@ -163,7 +163,7 @@ namespace NotificationService.Services.NotificationService
 
              Notification notification = new Notification()
             {
-                SenderUserId = acceptInterestDto.EmployerUserId,
+                SenderUserId = userId,
                 SenderName = acceptInterestDto.EmployerName,
                 SenderImageUrl = acceptInterestDto.EmployerImageUrl,
                 JobPostId = acceptInterestDto.JobPostId,

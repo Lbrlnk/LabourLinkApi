@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: profile-service
-        image: labourlinkcontainerregistry.azurecr.io/profileservice:updated 
+        image: labourlinkcontainerregistry.azurecr.io/profileservice:latest
         ports:
             - containerPort: 8080
               name: http

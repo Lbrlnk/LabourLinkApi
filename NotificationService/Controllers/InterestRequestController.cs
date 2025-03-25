@@ -24,7 +24,13 @@ namespace NotificationService.Controllers
                 {
                     return BadRequest(ModelState);
                 }
-                var result = await _interestRequestService.AddInterestRequest(intrst);
+                if (!HttpContext.Items.ContainsKey("UserId"))
+                {
+                    return Unauthorized("User not authenticated.");
+                }
+
+                var userId = Guid.Parse(HttpContext.Items["UserId"].ToString());
+                var result = await _interestRequestService.AddInterestRequest(intrst ,userId);
                 if (result.StartsWith("Error:"))
                 {
                     return BadRequest(result);
@@ -60,6 +66,7 @@ namespace NotificationService.Controllers
         {
             try
             {
+
                 var result = await _interestRequestService.RejectInterestRequest(id);
                 if (result.StartsWith("Error:"))
                 {
@@ -78,7 +85,17 @@ namespace NotificationService.Controllers
         {
             try
             {
-                var result = await _interestRequestService.AcceptInterestRequest(acceptInterestDto);
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                if (!HttpContext.Items.ContainsKey("UserId"))
+                {
+                    return Unauthorized("User not authenticated.");
+                }
+
+                var userId = Guid.Parse(HttpContext.Items["UserId"].ToString());
+                var result = await _interestRequestService.AcceptInterestRequest(acceptInterestDto ,userId);
                 if (result.StartsWith("Error:"))
                 {
                     return BadRequest(result);
@@ -98,7 +115,7 @@ namespace NotificationService.Controllers
             {
 
             if (!HttpContext.Items.ContainsKey("UserId"))
-            {
+            { 
                 return Unauthorized("User not authenticated.");
             }
             var userId = Guid.Parse(HttpContext.Items["UserId"].ToString());

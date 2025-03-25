@@ -53,7 +53,7 @@ namespace ProfileService.Repositories.LabourRepository
                 .Include(l => l.LabourPreferredMunicipalities)
                 .Include(l => l.Reviews)
                 .ThenInclude(r => r.Employer)
-                .FirstOrDefaultAsync(s => s.LabourId == Id);
+                .FirstOrDefaultAsync(s => s.UserId == Id);
         }
 
         public async Task<List<Review>> GetLabourReviews(Guid labourId)

@@ -88,7 +88,7 @@ namespace AuthenticationService.Controllers
                     return BadRequest(new { message = "Username and Password are required" });
                 }
 
-                var (accessToken, refreshToken , isProfileCompleted ,userType) = await _authService.LoginAsync(logindto);
+                var (accessToken, refreshToken, isProfileCompleted, userType) = await _authService.LoginAsync(logindto);
 
                 if (string.IsNullOrEmpty(accessToken) || string.IsNullOrEmpty(refreshToken))
                 {
@@ -108,7 +108,7 @@ namespace AuthenticationService.Controllers
 
                 Response.Cookies.Append("accessToken", accessToken, cookieOptions);
 
-                cookieOptions.Expires = DateTime.UtcNow.AddMonths(1); 
+                cookieOptions.Expires = DateTime.UtcNow.AddMonths(1);
                 Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);
 
 
@@ -149,22 +149,38 @@ namespace AuthenticationService.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, new { message = ex.Message });
             }
         }
-		[HttpPost("labourlink/logout")]
-		public IActionResult Logout()
-		{
-			try
-            { 
-				Response.Cookies.Delete("accessToken");
-				Response.Cookies.Delete("refreshToken");
+        [HttpPost("labourlink/logout")]
+        public IActionResult Logout()
+        {
+            try
+            {
+                Response.Cookies.Delete("accessToken");
+                Response.Cookies.Delete("refreshToken");
 
-				return Ok(new { message = "Logged out successfully" });
-			}
-			catch (Exception ex)
-			{
-				return StatusCode(StatusCodes.Status500InternalServerError, new { message = ex.Message });
-			}
-		}
+                return Ok(new { message = "Logged out successfully" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = ex.Message });
+            }
+        }
 
+        [HttpGet("isProfileCompleted")]
+        public async Task<IActionResult> IsProfileCompleted()
+        {
+            if (!HttpContext.Items.ContainsKey("UserId"))
+            {
+                return Unauthorized("User not authenticated.");
+            }
+
+            var userId = Guid.Parse(HttpContext.Items["UserId"].ToString());
+            var result =  await _authService.IsprofileCompleted(userId);
+            if(result == null)
+            {
+                return BadRequest("user not found");
+            }
+            return Ok(result);
+        }
 
 	}
 }

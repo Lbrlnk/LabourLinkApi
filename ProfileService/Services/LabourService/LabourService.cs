@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using EventBus.Abstractions;
-using EventBus.Events;
+//using EventBus.Abstractions;
+//using EventBus.Events;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using ProfileService.Dtos;
@@ -8,6 +8,8 @@ using ProfileService.Helper.CloudinaryHelper;
 using ProfileService.Helpers.ApiResponse;
 using ProfileService.Models;
 using ProfileService.Repositories.LabourRepository;
+using ProfileService.Services.RabbitMQ;
+
 //using ProfileService.Services.RabbitMQ;
 using System.ComponentModel.DataAnnotations;
 using static System.Net.Mime.MediaTypeNames;
@@ -20,17 +22,17 @@ namespace ProfileService.Services.LabourService
         private readonly ILabourRepository _labourRepositry;
         private readonly IMapper _mapper;
         private readonly ICloudinaryHelper _cloudinary;
-        private readonly IEventPublisher _eventPublisher;
+        //private readonly IEventPublisher _eventPublisher;
 
-        //private readonly IRabbitMqService _rabbitMqService;
-        public LabourService(ILabourRepository labourRepository, IMapper mapper, ICloudinaryHelper cloudinary , IEventPublisher eventPublisher)
+        private readonly IRabbitMqService _rabbitMqService;
+        public LabourService(ILabourRepository labourRepository, IMapper mapper, ICloudinaryHelper cloudinary , IRabbitMqService rabbitMqService)
         {
             
             _labourRepositry = labourRepository;
             _mapper = mapper;
             _cloudinary = cloudinary;
-            //_rabbitMqService = rabbitMqService;
-            _eventPublisher = eventPublisher;
+            _rabbitMqService = rabbitMqService;
+            //_eventPublisher = eventPublisher;
 
         }
 
@@ -122,8 +124,10 @@ namespace ProfileService.Services.LabourService
                 if (await _labourRepositry.UpdateDatabase())
                 {
 
+                    _rabbitMqService.PublishProfileCompleted(userId);
   
-                    _eventPublisher.Publish(new ProfileCompletedEvent { UserId = userId });
+                    //_eventPublisher.Publish(new ProfileCompletedEvent { UserId = userId });
+                    Console.WriteLine("#######################################");
                     return "profile Completion successfully completed";
 
                 }
@@ -409,6 +413,7 @@ namespace ProfileService.Services.LabourService
             existingLabour.FullName = editLabourProfileDto.FullName ?? existingLabour.FullName;
             //existingLabour.PreferedTime = editLabourProfileDto.LabourProfileCompletionDto.PreferedTime ?? existingLabour.PreferedTime;
             //existingLabour.ProfilePhotoUrl = editLabourProfileDto.ProfileImageDto.ImageFile
+            existingLabour.AboutYourSelf = editLabourProfileDto.AboutYourSelf ?? existingLabour.AboutYourSelf;
             if (editLabourProfileDto.PreferedTime != null)
             {
                 existingLabour.PreferedTime = (Enums.LabourPreferedTime)editLabourProfileDto.PreferedTime;

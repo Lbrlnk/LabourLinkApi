@@ -53,7 +53,6 @@
 using Microsoft.Extensions.Configuration;
 
 using RabbitMQ.Client;
-
 namespace EventBus.Implementations
 {
     public sealed class RabbitMQConnection : IDisposable

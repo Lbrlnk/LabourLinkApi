@@ -1,6 +1,6 @@
     using CloudinaryDotNet;
-using EventBus.Abstractions;
-using EventBus.Implementations;
+//using EventBus.Abstractions;
+//using EventBus.Implementations;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -25,6 +25,7 @@ using DotNetEnv;
 using ProfileService.Services.SkillAnalyticsServices;
 using ProfileService.Services.ConversationService;
 using ProfileService.Repositories.ChatConversationRepository;
+using ProfileService.Services.RabbitMQ;
 
 
 namespace ProfileService
@@ -83,15 +84,17 @@ namespace ProfileService
             builder.Services.AddScoped<ICloudinaryHelper, CloudinaryHelper>();
 			builder.Services.AddScoped<IConversationService, ConversationService>();
 			builder.Services.AddScoped<IChatConversationRepository, ChatConversationRepository>();
-            builder.Services.AddSingleton<RabbitMQConnection>(sp =>
-            {
-                var config = sp.GetRequiredService<IConfiguration>();
-                var connection = new RabbitMQConnection(config);
-                connection.DeclareExchange("labourlink.events", ExchangeType.Direct);
-                return connection;
-            });
+			//builder.Services.AddSingleton<RabbitMQConnection>(sp =>
+			//{
+			//    var config = sp.GetRequiredService<IConfiguration>();
+			//    var connection = new RabbitMQConnection(config);
+			//    connection.DeclareExchange("labourlink.events", ExchangeType.Direct);
+			//    return connection;
+			//});
+			//builder.Services.AddScoped<IEventPublisher, EventPublisher>();
 
-            builder.Services.AddScoped<IEventPublisher, EventPublisher>();
+			builder.Services.AddScoped<IRabbitMqService, RabbitMqService>();
+
 			builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 			builder.Services.AddScoped<IReviewService, ReviewService>();
 			builder.Services.AddControllers().AddJsonOptions(options =>

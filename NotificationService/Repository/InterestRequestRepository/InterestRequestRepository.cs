@@ -100,5 +100,10 @@ namespace NotificationService.Repository.InterestRequestRepository
             }
         }
 
+        //public async Task<Guid> GetUserIdFromLabourAndEmployerId(Guid id)
+        //{
+        //    return await _context.InterestRequests.FirstOrDefaultAsync(x => x.)
+        //}
+
     }
 }
