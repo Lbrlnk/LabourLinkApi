@@ -28,7 +28,7 @@ builder.Configuration["CLOUDINARY-CLOUDNAME"] = Environment.GetEnvironmentVariab
 builder.Configuration["CLOUDINARY-APIKEY"] = Environment.GetEnvironmentVariable("CLOUDINARY-APIKEY");
 builder.Configuration["CLOUDINARY-API-SECRET"] = Environment.GetEnvironmentVariable("CLOUDINARY-API-SECRET");
 
-// Get the connection string for AdminService
+
 //var connectionString = Environment.GetEnvironmentVariable("DB_ADMIN");
 var connectionString = Environment.GetEnvironmentVariable("DB-CONNECTION-STRING");
 if (string.IsNullOrEmpty(connectionString))

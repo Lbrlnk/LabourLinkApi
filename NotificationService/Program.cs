@@ -27,7 +27,7 @@ namespace NotificationService
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddEnvironmentVariables();
 
-            var ConnectionString = Environment.GetEnvironmentVariable("LABOURLINK_DB");
+            var ConnectionString = Environment.GetEnvironmentVariable("DB-CONNECTION-STRING");
             // Add services to the container.
             builder.Services.AddSignalR();
             
@@ -64,24 +64,24 @@ namespace NotificationService
                                .AllowCredentials(); // Allows credentials like cookies or auth tokens
                     });
             });
-            var jwtSecret = Environment.GetEnvironmentVariable("JWT-SECRET-KEY")
-             ?? throw new InvalidOperationException("JWT-SECRET-KEY is not configured");
+            //var jwtSecret = Environment.GetEnvironmentVariable("JWT-SECRET-KEY")
+            // ?? throw new InvalidOperationException("JWT-SECRET-KEY is not configured");
 
-            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
-                {
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuer = true,
-                        ValidateAudience = true,
-                        ValidateLifetime = true,
-                        ValidateIssuerSigningKey = true,
-                        ValidIssuer = Environment.GetEnvironmentVariable("JWT-ISSUER"),
-                        ValidAudience = Environment.GetEnvironmentVariable("JWT-AUDIENCE"),
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret)),
-                        ClockSkew = TimeSpan.Zero
-                    };
-                });
+            //builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            //    .AddJwtBearer(options =>
+            //    {
+            //        options.TokenValidationParameters = new TokenValidationParameters
+            //        {
+            //            ValidateIssuer = true,
+            //            ValidateAudience = true,
+            //            ValidateLifetime = true,
+            //            ValidateIssuerSigningKey = true,
+            //            ValidIssuer = Environment.GetEnvironmentVariable("JWT-ISSUER"),
+            //            ValidAudience = Environment.GetEnvironmentVariable("JWT-AUDIENCE"),
+            //            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret)),
+            //            ClockSkew = TimeSpan.Zero
+            //        };
+            //    });
 
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -116,24 +116,24 @@ namespace NotificationService
 
 
 
-            //var jwtSecret = Environment.GetEnvironmentVariable("JWT-SECRET-KEY")
-            //  ?? throw new InvalidOperationException("JWT-SECRET-KEY is not configured");
+            var jwtSecret = Environment.GetEnvironmentVariable("JWT-SECRET-KEY")
+              ?? throw new InvalidOperationException("JWT-SECRET-KEY is not configured");
 
-            //builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            //    .AddJwtBearer(options =>
-            //    {
-            //        options.TokenValidationParameters = new TokenValidationParameters
-            //        {
-            //            ValidateIssuer = true,
-            //            ValidateAudience = true,
-            //            ValidateLifetime = true,
-            //            ValidateIssuerSigningKey = true,
-            //            ValidIssuer = Environment.GetEnvironmentVariable("JWT-ISSUER"),
-            //            ValidAudience = Environment.GetEnvironmentVariable("JWT-AUDIENCE"),
-            //            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret)),
-            //            ClockSkew = TimeSpan.Zero
-            //        };
-            //    });
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = Environment.GetEnvironmentVariable("JWT-ISSUER"),
+                        ValidAudience = Environment.GetEnvironmentVariable("JWT-AUDIENCE"),
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret)),
+                        ClockSkew = TimeSpan.Zero
+                    };
+                });
 
             var app = builder.Build();
 
@@ -150,7 +150,7 @@ namespace NotificationService
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseMiddleware<UserIdentificationMiddleware>();
-            app.MapHub<NotificationHub>("/nothub").RequireAuthorization();
+            app.MapHub<NotificationHub>("/nothub").RequireAuthorization(); 
 
             app.MapControllers();
 

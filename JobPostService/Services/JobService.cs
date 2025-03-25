@@ -53,6 +53,7 @@ namespace JobPostService.Services
 					Image=imageurl
 				};
 				var res=await _repository.AddJobPost(jobPost);
+                Console.WriteLine(res.JobId);
 					return new ApiResponse<string>(200, "success", "Job post created Successfully");
 			}catch (Exception ex)
 			{
@@ -90,6 +91,8 @@ namespace JobPostService.Services
 
 				var jobPostDto = new JobPostDtoMinimal
 				{
+					JobId=job.JobId,
+					CleintId = job.CleintId,
 					Title = job.Title,
 					Description = job.Description,
 					Wage = job.Wage,

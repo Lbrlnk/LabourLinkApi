@@ -78,7 +78,16 @@ namespace AuthenticationService.Repositories
 
             user.IsProfileCompleted = true;
             await _context.SaveChangesAsync();
+            Console.WriteLine("updated=======================================");
             return true;
+        }
+
+        public async Task<bool?> IsProfileCompleted(Guid userId)
+        {
+            return await _context.Users
+                .Where(x => x.UserId == userId)
+                .Select(x => (bool?)x.IsProfileCompleted)
+                .FirstOrDefaultAsync(); 
         }
     }
 

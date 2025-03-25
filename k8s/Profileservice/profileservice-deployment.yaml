@@ -14,9 +14,15 @@ spec:
         app: profile-service
     spec:
       containers:
+<<<<<<< HEAD
         - name: profile-service
           image: labourlinkcontainerregistry.azurecr.io/profileservice:latest
           ports:
+=======
+      - name: profile-service
+        image: labourlinkcontainerregistry.azurecr.io/profileservice:latest
+        ports:
+>>>>>>> upstream/development
             - containerPort: 8080
               name: http
             - containerPort: 8081

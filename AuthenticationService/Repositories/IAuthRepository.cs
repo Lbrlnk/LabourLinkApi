@@ -12,6 +12,7 @@ namespace AuthenticationService.Repositories
         Task<User?> GetUserByIdAsync(Guid userId);
 
         Task<bool> MarkProfileAsCompleted(Guid userId);
+        Task<bool?> IsProfileCompleted(Guid userId);
 
 
 
