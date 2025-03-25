@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chatservice-deployment
+  namespace: labourlink
+  labels:
+    app: chatservice-microservice
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: chatservice-microservice
+  template:
+    metadata:
+      labels:
+        app: chatservice-microservice
+    spec:
+      containers:
+        - name: chatservice-microservice
+          image: labourlinkcontainerregistry.azurecr.io/chatservice:latest
+          ports:
+            - containerPort: 8080
+              name: http
+            - containerPort: 443
+              name: https
+          env:
+            # Application environment and JWT settings
+            - name: ASPNETCORE_ENVIRONMENT
+              value: Production
+            - name: COSMOS-DATABASE
+              value: SampleDB1
+            - name: JWT-ISSUER
+              value: Labourlink-Api
+            - name: JWT-AUDIENCE
+              value: Labourlink-Frontend
+            - name: ALLOW-ORIGIN
+              value: http://localhost:5173
+            - name: JWT-SECRET-KEY
+              valueFrom:
+                secretKeyRef:
+                  name: chat-secrets
+                  key: JWT-SECRET-KEY
+
+            # Database connection settings
+            - name: COSMOS-CONNECTIONSTRING
+              valueFrom:
+                secretKeyRef:
+                  name: chat-secrets
+                  key: COSMOS-CONNECTIONSTRING
+
+            # RabbitMQ connection settings
+            - name: AZURE-SIGNALR-CONNECTIONSTRING
+              valueFrom:
+                secretKeyRef:
+                  name: chat-secrets
+                  key: AZURE-SIGNALR-CONNECTIONSTRING
+            - name: CLOUDINARY-CLOUDNAME
+              valueFrom:
+                secretKeyRef:
+                  name: chat-secrets
+                  key: CLOUDINARY-CLOUDNAME
+            - name: CLOUDINARY-APIKEY
+              valueFrom:
+                secretKeyRef:
+                  name: chat-secrets
+                  key: CLOUDINARY-APIKEY
+            - name: CLOUDINARY-API-SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: chat-secrets
+                  key: CLOUDINARY-API-SECRET

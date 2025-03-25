@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: authentication-service
+  name: chatservice-service
   namespace: labourlink
   labels:
-    app: authentication-microservice
+    app: chatservice-microservice
 spec:
   selector:
-    app: authentication-microservice
+    app: chatservice-microservice
   ports:
     - name: http
       protocol: TCP
@@ -17,4 +17,4 @@ spec:
       protocol: TCP
       port: 443
       targetPort: 443 # Exposing HTTPS on port 443, ensure your app supports this
-  type: ClusterIP
+  type: LoadBalancer

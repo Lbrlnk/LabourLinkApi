@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: adminservice-deployment
+  namespace: labourlink
+  labels:
+    app: adminservice-microservice
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: adminservice-microservice
+  template:
+    metadata:
+      labels:
+        app: adminservice-microservice
+    spec:
+      containers:
+        - name: adminservice-microservice
+          image: labourlinkcontainerregistry.azurecr.io/adminservice:latest
+          ports:
+            - containerPort: 8080
+              name: http
+            - containerPort: 443
+              name: https
+          env:
+            # Application environment and JWT settings
+            - name: ASPNETCORE_ENVIRONMENT
+              value: Production
+            - name: JWT_ISSUER
+              value: Labourlink-Api
+            - name: JWT_AUDIENCE
+              value: Labourlink-Frontend
+            - name: ALLOW-ORIGIN
+              value: http://localhost:5173
+            - name: JWT-SECRET-KEY
+              valueFrom:
+                secretKeyRef:
+                  name: authentication-secrets
+                  key: JWT-SECRET-KEY
+
+            # Database connection settings
+            - name: DB-CONNECTION-STRING
+              valueFrom:
+                secretKeyRef:
+                  name: authentication-secrets
+                  key: DB-ConnectionString

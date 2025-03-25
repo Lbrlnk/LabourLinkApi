@@ -1,0 +1,68 @@
+{
+
+
+  "Routes": [
+
+    {
+      "DownstreamPathTemplate": "/api/Auth/labourlink/login",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5196
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/Auth/labourlink/login",
+      "UpstreamHttpMethod": [ "POST", "OPTIONS" ],
+      "UpstreamScheme": "http"
+      //"SwaggerKey": "auth"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Auth/labourlink/register",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5196
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/Auth/labourlink/register",
+      "UpstreamHttpMethod": [ "POST", "OPTIONS" ],
+      "UpstreamScheme": "http"
+      //"SwaggerKey": "auth"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Auth/refresh/token",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5196
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/Auth/refresh/token",
+      "UpstreamHttpMethod": [ "POST", "OPTIONS" ],
+      "UpstreamScheme": "http"
+      //"SwaggerKey": "auth"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Auth/labourlink/logout",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5196
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/Auth/labourlink/logout",
+      "UpstreamHttpMethod": [ "POST", "OPTIONS" ],
+      "UpstreamScheme": "http"
+      //"SwaggerKey": "auth"
+    }
+  ]
+
+  //"GlobalConfiguration": {
+  //  "BaseUrl": "http://localhost:5039"
+  //}
+
+}

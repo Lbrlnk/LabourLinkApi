@@ -24,9 +24,9 @@ builder.Configuration
 				.AddEnvironmentVariables();
 // Add services to the container.
 //DotNetEnv.Env.Load();
-//builder.Configuration["CLOUDINARY-CLOUDNAME"] = Environment.GetEnvironmentVariable("CLOUDINARY-CLOUDNAME");
-//builder.Configuration["CLOUDINARY-APIKEY"] = Environment.GetEnvironmentVariable("CLOUDINARY-APIKEY");
-//builder.Configuration["CLOUDINARY-API-SECRET"] = Environment.GetEnvironmentVariable("CLOUDINARY-API-SECRET");
+builder.Configuration["CLOUDINARY-CLOUDNAME"] = Environment.GetEnvironmentVariable("CLOUDINARY-CLOUDNAME");
+builder.Configuration["CLOUDINARY-APIKEY"] = Environment.GetEnvironmentVariable("CLOUDINARY-APIKEY");
+builder.Configuration["CLOUDINARY-API-SECRET"] = Environment.GetEnvironmentVariable("CLOUDINARY-API-SECRET");
 
 
 //var connectionString = Environment.GetEnvironmentVariable("DB_ADMIN");
@@ -53,12 +53,15 @@ builder.Services.AddControllers();
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll",
-        builder => builder
-            .WithOrigins("http://localhost:5173") // Update with your frontend URL
-            .AllowAnyHeader()
-            .AllowAnyMethod()
-            .AllowCredentials()); // Ensure credentials (cookies) are allowed
+    options.AddPolicy("AllowSpecificOrigin",
+        builder =>
+        {
+            builder.WithOrigins("ALLOW_ORIGIN")
+                   .AllowCredentials()
+                   .AllowAnyMethod()
+                   .AllowAnyHeader();
+
+        });
 });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -123,7 +126,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseCors("AllowAll");
+app.UseCors("AllowSpecificOrigin");
 
 
 app.UseMiddleware<TokenAccessingMiddleware>();
