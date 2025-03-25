@@ -25,7 +25,7 @@ builder.Configuration
     .AddEnvironmentVariables();
 
 var ConnectionString = Environment.GetEnvironmentVariable("DB-CONNECTION-STRING");
-// Add services to the container.
+
 
 builder.Services.AddDbContext<ChatDbContext>(options =>
 
@@ -45,7 +45,11 @@ builder.Services.AddScoped<IMongoDatabase>(provider =>
 });
 builder.Services.AddAutoMapper(typeof(MapperProfile));
 
-builder.Services.AddSignalR();
+builder.Services.AddSignalR().AddAzureSignalR(options =>
+{
+    options.ConnectionString = Environment.GetEnvironmentVariable("AZURE-SIGNALR-CONNECTIONSTRING");
+    options.ServerStickyMode = Microsoft.Azure.SignalR.ServerStickyMode.Required;
+});
 // Add services to the container.
 
 builder.Services.AddControllers();

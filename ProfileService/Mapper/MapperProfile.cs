@@ -41,7 +41,7 @@ namespace ProfileService.Mapper
 
             CreateMap<Employer, EmployerView>().ReverseMap();
             CreateMap<CompleteEmployerProfileDto, Employer>().ReverseMap();
-
+            CreateMap<Conversation,ConversationDto>().ReverseMap();
 
 
         }

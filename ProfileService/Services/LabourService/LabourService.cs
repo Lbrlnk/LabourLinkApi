@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using EventBus.Abstractions;
-using EventBus.Events;
+//using EventBus.Abstractions;
+//using EventBus.Events;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using ProfileService.Dtos;
@@ -8,6 +8,8 @@ using ProfileService.Helper.CloudinaryHelper;
 using ProfileService.Helpers.ApiResponse;
 using ProfileService.Models;
 using ProfileService.Repositories.LabourRepository;
+using ProfileService.Services.RabbitMQ;
+
 //using ProfileService.Services.RabbitMQ;
 using System.ComponentModel.DataAnnotations;
 using static System.Net.Mime.MediaTypeNames;
@@ -20,17 +22,17 @@ namespace ProfileService.Services.LabourService
         private readonly ILabourRepository _labourRepositry;
         private readonly IMapper _mapper;
         private readonly ICloudinaryHelper _cloudinary;
-        private readonly IEventPublisher _eventPublisher;
+        //private readonly IEventPublisher _eventPublisher;
 
-        //private readonly IRabbitMqService _rabbitMqService;
-        public LabourService(ILabourRepository labourRepository, IMapper mapper, ICloudinaryHelper cloudinary , IEventPublisher eventPublisher)
+        private readonly IRabbitMqService _rabbitMqService;
+        public LabourService(ILabourRepository labourRepository, IMapper mapper, ICloudinaryHelper cloudinary ,IRabbitMqService rabbitMqService)
         {
             
             _labourRepositry = labourRepository;
             _mapper = mapper;
             _cloudinary = cloudinary;
-            //_rabbitMqService = rabbitMqService;
-            _eventPublisher = eventPublisher;
+            _rabbitMqService = rabbitMqService;
+            //_eventPublisher = eventPublisher;
 
         }
 
@@ -122,8 +124,8 @@ namespace ProfileService.Services.LabourService
                 if (await _labourRepositry.UpdateDatabase())
                 {
 
-  
-                    _eventPublisher.Publish(new ProfileCompletedEvent { UserId = userId });
+                    _rabbitMqService.PublishProfileCompleted(userId);
+                    //_eventPublisher.Publish(new ProfileCompletedEvent { UserId = userId });
                     return "profile Completion successfully completed";
 
                 }
@@ -306,7 +308,7 @@ namespace ProfileService.Services.LabourService
             try
             {
 
-                var labour = await _labourRepositry.GetLabourByIdAsync(userId) ?? throw new Exception("Labour not found");
+                var labour = await _labourRepositry.GetLabourByLabourUserId(userId) ?? throw new Exception("Labour not found");
                 var LabourSkill = labour.LabourSkills.FirstOrDefault(skill => skill.SkillName == skillName) ?? throw new Exception("Skill not found");
                 labour.LabourSkills.Remove(LabourSkill);
                 return await _labourRepositry.UpdateLabour(labour);
@@ -316,8 +318,8 @@ namespace ProfileService.Services.LabourService
                 throw new Exception($"Error in DeleteLabourWorkImages: {ex.Message}", ex);
             }
         }
-         public async Task<bool> DeleteLabourMunicipality(Guid userId, string municipalityName)
-        {
+         public async Task<bool> DeleteLabourMunicipality(Guid userId, string municipalityName) { 
+        
             try
             {
 
@@ -337,7 +339,7 @@ namespace ProfileService.Services.LabourService
             try
             {
 
-                var labour = await _labourRepositry.GetLabourByIdAsync(userId) ?? throw new Exception("Labour not found");
+                var labour = await _labourRepositry.GetLabourByLabourUserId(userId) ?? throw new Exception("Labour not found");
                 var LabourWorkImage = labour.LabourWorkImages.FirstOrDefault(image => image.Id == ImageId) ?? throw new Exception("work image not  found");
                 labour.LabourWorkImages.Remove(LabourWorkImage);
                 return await _labourRepositry.UpdateLabour(labour);
@@ -353,7 +355,7 @@ namespace ProfileService.Services.LabourService
             try
             {
 
-                var labour = await _labourRepositry.GetLabourByIdAsync(userId) ?? throw new Exception("Labour not found");
+                var labour = await _labourRepositry.GetLabourByLabourUserId(userId) ?? throw new Exception("Labour not found");
                 labour.LabourPreferredMunicipalities.Add(new LabourPreferredMuncipality { MunicipalityName = municipalityName });
                 return await _labourRepositry.UpdateLabour(labour);
 
@@ -370,7 +372,7 @@ namespace ProfileService.Services.LabourService
             try
             {
 
-                var labour = await _labourRepositry.GetLabourByIdAsync(userId) ?? throw new Exception("Labour not found");
+                var labour = await _labourRepositry.GetLabourByLabourUserId(userId) ?? throw new Exception("Labour not found");
                 labour.LabourSkills.Add(new LabourSkills { SkillName = skillName });
                 return await _labourRepositry.UpdateLabour(labour);
 
@@ -387,7 +389,7 @@ namespace ProfileService.Services.LabourService
             try
             {
 
-                var labour = await _labourRepositry.GetLabourByIdAsync(userId) ?? throw new Exception("Labour not found");
+                var labour = await _labourRepositry.GetLabourByLabourUserId(userId) ?? throw new Exception("Labour not found");
                 if (labour.LabourWorkImages.Count > 3) throw new Exception("please delete one image to add one");
                 var imageUrl = await _cloudinary.UploadImageAsync(image, false);
                 labour.LabourWorkImages.Add(new LabourWorkImage {ImageUrl = imageUrl });
@@ -405,10 +407,11 @@ namespace ProfileService.Services.LabourService
 
         public async Task<bool> EditLabourProfile (Guid userId , EditLabourProfileDto editLabourProfileDto)
         {
-            var existingLabour = await _labourRepositry.GetLabourByIdAsync(userId) ?? throw new Exception("Labour not found");
+            var existingLabour = await _labourRepositry.GetLabourByLabourUserId(userId) ?? throw new Exception("Labour not found");
             existingLabour.FullName = editLabourProfileDto.FullName ?? existingLabour.FullName;
             //existingLabour.PreferedTime = editLabourProfileDto.LabourProfileCompletionDto.PreferedTime ?? existingLabour.PreferedTime;
             //existingLabour.ProfilePhotoUrl = editLabourProfileDto.ProfileImageDto.ImageFile
+            existingLabour.AboutYourSelf = editLabourProfileDto.AboutYourSelf ?? existingLabour.AboutYourSelf;
             if (editLabourProfileDto.PreferedTime != null)
             {
                 existingLabour.PreferedTime = (Enums.LabourPreferedTime)editLabourProfileDto.PreferedTime;

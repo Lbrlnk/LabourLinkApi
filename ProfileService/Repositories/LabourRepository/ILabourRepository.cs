@@ -14,7 +14,7 @@ namespace ProfileService.Repositories.LabourRepository
         Task<bool> UpdateDatabase();
 
         Task<Labour> GetLabourByIdAsync(Guid Id);
-
+        Task<Labour> GetLabourByLabourUserId(Guid Id);
         Task<List<Labour>> GetFilterdLabours(LabourFilterDto filterDto);
         Task<List<Labour>> GetAllLabours();
 

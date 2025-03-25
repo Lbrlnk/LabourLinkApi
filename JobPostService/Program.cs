@@ -12,21 +12,25 @@ using Microsoft.OpenApi.Models;
 using ProfileService.Middlewares;
 using System.Text;
 
+if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
+{
+    Env.Load();
+}
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-DotNetEnv.Env.Load();
-builder.Configuration["CloudinarySettings:CloudName"] = Environment.GetEnvironmentVariable("CLOUDINARY_CLOUDNAME");
-builder.Configuration["CloudinarySettings:ApiKey"] = Environment.GetEnvironmentVariable("CLOUDINARY_APIKEY");
-builder.Configuration["CloudinarySettings:ApiSecret"] = Environment.GetEnvironmentVariable("CLOUDINARY_API_SECRET");
 
 builder.Configuration
 				.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
 				.AddEnvironmentVariables();
+// Add services to the container.
+//DotNetEnv.Env.Load();
+//builder.Configuration["CLOUDINARY-CLOUDNAME"] = Environment.GetEnvironmentVariable("CLOUDINARY-CLOUDNAME");
+//builder.Configuration["CLOUDINARY-APIKEY"] = Environment.GetEnvironmentVariable("CLOUDINARY-APIKEY");
+//builder.Configuration["CLOUDINARY-API-SECRET"] = Environment.GetEnvironmentVariable("CLOUDINARY-API-SECRET");
 
 
 //var connectionString = Environment.GetEnvironmentVariable("DB_ADMIN");
-var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
+var connectionString = Environment.GetEnvironmentVariable("DB-CONNECTION-STRING");
 if (string.IsNullOrEmpty(connectionString))
 {
 	throw new Exception("Database connection string is missing.");
@@ -88,25 +92,26 @@ builder.Services.AddSwaggerGen(options =>
 
 
 
-var secret = Encoding.UTF8.GetBytes("Laboulink21345665432@354*(45234567876543fgbfgnh");
+var secret = Environment.GetEnvironmentVariable("JWT-SECRET-KEY") ?? throw new InvalidOperationException("jwt key not configured");
+//var secret  =  Encoding.UTF8.GetBytes("Laboulink21345665432@354*(45234567876543fgbfgnh");
 builder.Services.AddAuthentication(options =>
 {
-	options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-	options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 })
 .AddJwtBearer(options =>
 {
-	options.TokenValidationParameters = new TokenValidationParameters
-	{
-		ValidateIssuer = true,
-		ValidateAudience = true,
-		ValidateLifetime = true,
-		ValidateIssuerSigningKey = true,
-		ValidIssuer = "Labourlink-Api",
-		ValidAudience = "Labourlink-Frontend",
-		IssuerSigningKey = new SymmetricSecurityKey(secret),
-		ClockSkew = TimeSpan.Zero // Optional: Removes the default 5-minute clock skew
-	};
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = Environment.GetEnvironmentVariable("JWT-ISSUER"),
+        ValidAudience = Environment.GetEnvironmentVariable("JWT-AUDIENCE"),
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret)),
+        ClockSkew = TimeSpan.Zero // Optional: Removes the default 5-minute clock skew
+    };
 });
 var app = builder.Build();
 
@@ -121,10 +126,9 @@ app.UseHttpsRedirection();
 app.UseCors("AllowAll");
 
 
-app.UseAuthentication();
-
-app.UseAuthorization();
 app.UseMiddleware<TokenAccessingMiddleware>();
+app.UseAuthentication();
+app.UseAuthorization();
 app.UseMiddleware<UserIdentificationMiddleware>();
 
 app.MapControllers();

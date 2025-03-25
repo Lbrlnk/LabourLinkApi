@@ -108,8 +108,8 @@ namespace ProfileService.Controllers
 
         }
 
-        [HttpDelete("add/workimage")]
-        public async Task<IActionResult> DeleTeLabourWorkImage(Guid WorkImage)
+        [HttpDelete("delete/workimage")]
+        public async Task<IActionResult> DeleTeLabourWorkImage(string WorkImage)
         {
 
             try
@@ -121,9 +121,18 @@ namespace ProfileService.Controllers
                 }
 
                 var userId = Guid.Parse(HttpContext.Items["UserId"].ToString());
-                var result = await _labourService.DeleteLabourWorkImages(userId, WorkImage);
-                if (result) return Ok("Image Deleted Successfully");
-                return BadRequest(result);
+                if (Guid.TryParse(WorkImage, out Guid workImage))
+                {
+
+                    var result = await _labourService.DeleteLabourWorkImages(userId, workImage);
+                    return Ok(result);
+                }
+                else
+                {
+
+                    Console.WriteLine("The provided WorkImage is not a valid GUID.");
+                    return BadRequest("The provided WorkImage is not a valid GUID.");
+                }
             }
             catch (Exception ex)
             {
@@ -158,7 +167,7 @@ namespace ProfileService.Controllers
 
         }
 
-        [HttpDelete("add/municipality")]
+        [HttpDelete("delete/municipality")]
         public async Task<IActionResult> DeleteLabourMunicipality(string municipalityName)
         {
 
