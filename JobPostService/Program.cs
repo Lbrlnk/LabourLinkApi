@@ -24,9 +24,9 @@ builder.Configuration
 				.AddEnvironmentVariables();
 // Add services to the container.
 //DotNetEnv.Env.Load();
-//builder.Configuration["CLOUDINARY-CLOUDNAME"] = Environment.GetEnvironmentVariable("CLOUDINARY-CLOUDNAME");
-//builder.Configuration["CLOUDINARY-APIKEY"] = Environment.GetEnvironmentVariable("CLOUDINARY-APIKEY");
-//builder.Configuration["CLOUDINARY-API-SECRET"] = Environment.GetEnvironmentVariable("CLOUDINARY-API-SECRET");
+builder.Configuration["CLOUDINARY-CLOUDNAME"] = Environment.GetEnvironmentVariable("CLOUDINARY-CLOUDNAME");
+builder.Configuration["CLOUDINARY-APIKEY"] = Environment.GetEnvironmentVariable("CLOUDINARY-APIKEY");
+builder.Configuration["CLOUDINARY-API-SECRET"] = Environment.GetEnvironmentVariable("CLOUDINARY-API-SECRET");
 
 // Get the connection string for AdminService
 //var connectionString = Environment.GetEnvironmentVariable("DB_ADMIN");
@@ -56,7 +56,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowSpecificOrigin",
         builder =>
         {
-            builder.WithOrigins("http://localhost:5173")
+            builder.WithOrigins("ALLOW_ORIGIN")
                    .AllowCredentials()
                    .AllowAnyMethod()
                    .AllowAnyHeader();

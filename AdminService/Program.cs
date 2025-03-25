@@ -90,12 +90,13 @@ namespace AdminService
                 });
             });
 
+            var allow_origin = Environment.GetEnvironmentVariable("ALLOW-ORIGIN") ?? throw new InvalidOperationException("cors origin not configured");
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("AllowSpecificOrigin",
                     builder =>
                     {
-                        builder.WithOrigins("http://localhost:5173")
+                        builder.WithOrigins(allow_origin)
                                .AllowCredentials()
                                .AllowAnyMethod()
                                .AllowAnyHeader();

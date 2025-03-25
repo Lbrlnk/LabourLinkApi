@@ -1,0 +1,21 @@
+{
+  "Routes" [
+    {
+      "DownstreamPathTemplate": "/chatmessage/history",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5127
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/chatmessage/history",
+      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamScheme": "http"
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "http://localhost:5039"
+  }
+
+}

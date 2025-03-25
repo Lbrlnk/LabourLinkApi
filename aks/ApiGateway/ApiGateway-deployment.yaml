@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apigateway-deployment
+  namespace: labourlink
+  labels:
+    app: apigateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: apigateway
+  template:
+    metadata:
+      labels:
+        app: apigateway
+    spec:
+      containers:
+        - name: apigateway
+          image: labourlinkcontainerregistry.azurecr.io/apigateway:latest
+          ports:
+            - containerPort: 8080
+          env:
+            # Application environment and JWT settings
+            - name: ASPNETCORE_ENVIRONMENT
+              value: Production
+            - name: CORS_ALLOWED_ORIGIN
+              value: http://localhost:5173

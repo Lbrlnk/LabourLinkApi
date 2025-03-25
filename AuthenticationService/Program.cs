@@ -36,6 +36,7 @@ namespace AuthenticationService
             string rabbitMqHost;
             string rabbitMqUsername;
             string rabbitMqPassword;
+
             if (builder.Environment.IsProduction())
             {
                 try

@@ -37,7 +37,7 @@ namespace ProfileService.Services.EmployerService
             try
             {
                var alreadyEmpolyer = await _employerRepository.GetEmployerByIdAsync(userId);
-                if (alreadyEmpolyer == null)
+                if (alreadyEmpolyer != null)
                 {
                     throw new Exception("employer already completed profile ");
                 }
