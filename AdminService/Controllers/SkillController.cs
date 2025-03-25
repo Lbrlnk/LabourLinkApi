@@ -34,7 +34,7 @@ namespace AdminService.Controllers
 
         }
         [HttpGet("getCompleteSkills")]
-        [Authorize(Roles = "Admin")]
+     
 
         public async Task <IActionResult> GetAllCreatedSkills()
         {
@@ -44,7 +44,7 @@ namespace AdminService.Controllers
         }
 
         [HttpGet("getSkillById/{id}")]
-        [Authorize]
+   
         public async Task <IActionResult> GetSkillById(Guid id)
         {
             var response=await _skillService.GetSkillByIdAsync(id);
@@ -66,7 +66,7 @@ namespace AdminService.Controllers
         }
 
         [HttpPost("createSkill")]
-        [Authorize(Roles = "Admin")]
+       
 
         public async Task<IActionResult> CreateSkill([FromBody] AddSkillDto newSkill)
         {
@@ -85,7 +85,7 @@ namespace AdminService.Controllers
         }
 
         [HttpPut("updateSkill")]
-        [Authorize(Roles = "Admin")]
+   
         public async Task<IActionResult> UpdateSkill([FromBody]  SkillViewDto updateSkill)
         {
             var response=await _skillService.UpdateAsync(updateSkill);
@@ -103,7 +103,7 @@ namespace AdminService.Controllers
         }
 
         [HttpDelete("deleteSkill/{id}")]
-        [Authorize(Roles = "Admin")]
+    
 
         public async Task<IActionResult> DeleteSkill(Guid id)
         {
@@ -119,7 +119,7 @@ namespace AdminService.Controllers
         }
 
         [HttpGet("getDeletedSkills")]
-        [Authorize(Roles = "Admin")]
+   
         public async Task<IActionResult> GetAllDeletedSkills()
         {
 
@@ -134,7 +134,7 @@ namespace AdminService.Controllers
         }
 
         [HttpPatch("reactivateSkill/{id}")]
-        [Authorize(Roles = "Admin")]
+    
         public async Task<IActionResult> ActivateDeletedSkills(Guid id)
         {
 

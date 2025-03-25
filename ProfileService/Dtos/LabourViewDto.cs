@@ -6,6 +6,7 @@ namespace ProfileService.Dtos
     public class LabourViewDto
     {
         public Guid LabourId { get; set; }
+        public Guid UserId { get; set; }
         public string LabourName { get; set; }
         public string PhoneNumber { get; set; }    
         public LabourPreferedTime PreferedTime { get; set; }

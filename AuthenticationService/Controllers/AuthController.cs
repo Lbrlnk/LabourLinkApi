@@ -103,7 +103,7 @@ namespace AuthenticationService.Controllers
                     HttpOnly = true,
                     Secure = true, // Use Secure only in non-local environments
                     SameSite = SameSiteMode.None, // cross-origin cookies
-                    Expires = DateTime.UtcNow.AddMinutes(15)
+                    Expires = DateTime.UtcNow.AddMinutes(1000)
                 };
 
                 Response.Cookies.Append("accessToken", accessToken, cookieOptions);

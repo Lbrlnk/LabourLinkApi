@@ -24,8 +24,8 @@ builder.Configuration
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
     .AddEnvironmentVariables();
 
-var ConnectionString = Environment.GetEnvironmentVariable("LABOURLINK-DB");
-// Add services to the container.
+var ConnectionString = Environment.GetEnvironmentVariable("DB-CONNECTION-STRING");
+
 
 builder.Services.AddDbContext<ChatDbContext>(options =>
 

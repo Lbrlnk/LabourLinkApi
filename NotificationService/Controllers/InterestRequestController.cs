@@ -16,7 +16,7 @@ namespace NotificationService.Controllers
             _interestRequestService = interestRequestService;
         }
         [HttpPost("show-interest")]
-        public async Task<IActionResult> ShowInterest(InterestRequestDto intrst)
+        public async Task<IActionResult> ShowInterest( [FromForm]InterestRequestDto intrst)
         {
             try
             {
@@ -24,7 +24,17 @@ namespace NotificationService.Controllers
                 {
                     return BadRequest(ModelState);
                 }
-                var result = await _interestRequestService.AddInterestRequest(intrst);
+
+
+                if (!HttpContext.Items.ContainsKey("UserId"))
+                {
+                    return Unauthorized("User not authenticated.");
+                }
+
+                var userId = Guid.Parse(HttpContext.Items["UserId"].ToString());
+
+
+                var result = await _interestRequestService.AddInterestRequest(intrst,userId);
                 if (result.StartsWith("Error:"))
                 {
                     return BadRequest(result);
@@ -62,6 +72,7 @@ namespace NotificationService.Controllers
             {
                 var result = await _interestRequestService.RejectInterestRequest(id);
                 if (result.StartsWith("Error:"))
+                
                 {
                     return BadRequest(result);
                 }
@@ -74,11 +85,24 @@ namespace NotificationService.Controllers
             }
         }
         [HttpPost("accept-request")]
-        public async Task<IActionResult> AcceptRequest(AcceptInterestDto acceptInterestDto)
+        public async Task<IActionResult> AcceptRequest([FromForm] AcceptInterestDto acceptInterestDto)
         {
+            
+
+
             try
             {
-                var result = await _interestRequestService.AcceptInterestRequest(acceptInterestDto);
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                if (!HttpContext.Items.ContainsKey("UserId"))
+                {
+                    return Unauthorized("User not authenticated.");
+                }
+
+                var userId = Guid.Parse(HttpContext.Items["UserId"].ToString());
+                var result = await _interestRequestService.AcceptInterestRequest(acceptInterestDto, userId);
                 if (result.StartsWith("Error:"))
                 {
                     return BadRequest(result);
@@ -89,6 +113,7 @@ namespace NotificationService.Controllers
             {
                 throw new Exception($"{ex.InnerException?.Message ?? ex.Message}");
             }
+
         }
 
         [HttpGet("from-Labours")]

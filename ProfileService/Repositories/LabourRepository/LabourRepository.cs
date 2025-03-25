@@ -56,6 +56,19 @@ namespace ProfileService.Repositories.LabourRepository
                 .FirstOrDefaultAsync(s => s.LabourId == Id);
         }
 
+
+        public async Task<Labour> GetLabourByLabourUserId(Guid Id)
+        {
+            return await _context.Labours
+                .Include(l => l.LabourSkills)
+                .Include(l => l.LabourWorkImages)
+                .Include(l => l.LabourPreferredMunicipalities)
+                .Include(l => l.Reviews)
+                .ThenInclude(r => r.Employer)
+                .FirstOrDefaultAsync(s => s.UserId == Id);
+        }
+
+
         public async Task<List<Review>> GetLabourReviews(Guid labourId)
         {
             return await _context.Reviews.Where(l => l.LabourId == labourId).ToListAsync();
@@ -75,14 +88,16 @@ namespace ProfileService.Repositories.LabourRepository
             return await _context.LabourPreferedMuncipalities.Where(mun => mun.LabourId == Id).ToListAsync();
         }
 
-        public async Task<List<Labour>> GetAllLabours() 
+        public async Task<List<Labour>> GetAllLabours()
         {
             return await _context.Labours
-                 .Include(l => l.LabourSkills)
-                 .Include(l => l.LabourWorkImages)
-                 .Include(l => l.LabourPreferredMunicipalities) 
-                 .Where(l => l.IsActive == true)
-                 .ToListAsync();
+       .Include(l => l.LabourSkills)
+       .Include(l => l.LabourWorkImages)
+       .Include(l => l.LabourPreferredMunicipalities)
+     
+       .Where(l => l.IsActive == true)
+     
+       .ToListAsync();
         }
 
 

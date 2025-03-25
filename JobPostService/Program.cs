@@ -28,7 +28,7 @@ builder.Configuration
 //builder.Configuration["CLOUDINARY-APIKEY"] = Environment.GetEnvironmentVariable("CLOUDINARY-APIKEY");
 //builder.Configuration["CLOUDINARY-API-SECRET"] = Environment.GetEnvironmentVariable("CLOUDINARY-API-SECRET");
 
-// Get the connection string for AdminService
+
 //var connectionString = Environment.GetEnvironmentVariable("DB_ADMIN");
 var connectionString = Environment.GetEnvironmentVariable("DB-CONNECTION-STRING");
 if (string.IsNullOrEmpty(connectionString))
@@ -53,15 +53,12 @@ builder.Services.AddControllers();
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowSpecificOrigin",
-        builder =>
-        {
-            builder.WithOrigins("http://localhost:5173")
-                   .AllowCredentials()
-                   .AllowAnyMethod()
-                   .AllowAnyHeader();
-
-        });
+    options.AddPolicy("AllowAll",
+        builder => builder
+            .WithOrigins("http://localhost:5173") // Update with your frontend URL
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials()); // Ensure credentials (cookies) are allowed
 });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -126,7 +123,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseCors("AllowSpecificOrigin");
+app.UseCors("AllowAll");
 
 
 app.UseMiddleware<TokenAccessingMiddleware>();

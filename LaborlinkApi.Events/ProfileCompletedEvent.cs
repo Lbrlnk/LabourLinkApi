@@ -1,4 +1,4 @@
-﻿namespace LabourLinkApi.Event
+﻿namespace LaborlinkApi.Events
 {
     public class ProfileCompletedEvent
     {
