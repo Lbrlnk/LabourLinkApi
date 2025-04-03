@@ -1,72 +1,794 @@
+{
+
+
+  "Routes": [
+
+    {
+
+      "DownstreamPathTemplate": "/api/Auth/labourlink/login",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "authentication-service.labourlink.svc.cluster.local",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/Auth/labourlink/login",
+      "UpstreamHttpMethod": [ "POST", "OPTIONS" ],
+      "UpstreamScheme": "http"
+      //"SwaggerKey": "auth"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Auth/labourlink/register",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "authentication-service.labourlink.svc.cluster.local",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/Auth/labourlink/register",
+      "UpstreamHttpMethod": [ "POST", "OPTIONS" ],
+      "UpstreamScheme": "http"
+      //"SwaggerKey": "auth"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Auth/refresh/token",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "authentication-service.labourlink.svc.cluster.local",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/Auth/refresh/token",
+      "UpstreamHttpMethod": [ "POST", "OPTIONS" ],
+      "UpstreamScheme": "http"
+      //"SwaggerKey": "auth"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Auth/labourlink/logout",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "authentication-service.labourlink.svc.cluster.local",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/Auth/labourlink/logout",
+      "UpstreamHttpMethod": [ "POST", "OPTIONS" ],
+      "UpstreamScheme": "http"
+      //"SwaggerKey": "auth"
+    },
+
+
+
+
+
+
+
+
+    {
+      "DownstreamPathTemplate": "/api/Analytics/skillsAnalytics",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "profile-service.labourlink.svc.cluster.local",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/Analytics/skillsAnalytics",
+      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Analytics/municipalityanalytics",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "profile-service.labourlink.svc.cluster.local",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/Analytics/municipalityanalytics",
+      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Conversation/create/converasation",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "profile-service.labourlink.svc.cluster.local",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/Conversation/create/converasation",
+      "UpstreamHttpMethod": [ "POST", "OPTIONS" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Conversation/Getuserconversation",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "profile-service.labourlink.svc.cluster.local",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/Conversation/Getuserconversation",
+      "UpstreamHttpMethod": [ "GET", "OPTIONS" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Employer/Complte/Profile",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "profile-service.labourlink.svc.cluster.local",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/Employer/Complte/Profile",
+      "UpstreamHttpMethod": [ "POST", "OPTIONS" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Employer/edit/Profile",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "profile-service.labourlink.svc.cluster.local",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/Employer/edit/Profile",
+      "UpstreamHttpMethod": [ "PATCH", "OPTIONS" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Employer/my-details",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "profile-service.labourlink.svc.cluster.local",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/Employer/my-details",
+      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Employer/getallemployers",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "profile-service.labourlink.svc.cluster.local",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/Employer/getallemployers",
+      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Employer/getthecountofemployers",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "profile-service.labourlink.svc.cluster.local",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/Employer/getthecountofemployers",
+      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Employer/getemployerbyid",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "profile-service.labourlink.svc.cluster.local",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/Employer/getemployerbyid",
+      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Labour/labour-by-id",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "profile-service.labourlink.svc.cluster.local",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/Labour/labour-by-id",
+      "UpstreamHttpMethod": [ "POST", "OPTIONS" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Labour/my-details",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "profile-service.labourlink.svc.cluster.local",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/Labour/my-details",
+      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Labour/add/workimage",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "profile-service.labourlink.svc.cluster.local",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/Labour/add/workimage",
+      "UpstreamHttpMethod": [ "POST", "DELETE", "OPTIONS" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Labour/delete/skill",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "profile-service.labourlink.svc.cluster.local",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/Labour/delete/skill",
+      "UpstreamHttpMethod": [ "DELETE", "OPTIONS" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Labour/add/municipality",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "profile-service.labourlink.svc.cluster.local",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/Labour/add/municipality",
+      "UpstreamHttpMethod": [ "DELETE", "POST", "OPTIONS" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Labour/aad/skill",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "profile-service.labourlink.svc.cluster.local",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/Labour/aad/skill",
+      "UpstreamHttpMethod": [ "POST", "OPTIONS" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Labour/edit/profile",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "profile-service.labourlink.svc.cluster.local",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/Labour/edit/profile",
+      "UpstreamHttpMethod": [ "PATCH", "OPTIONS" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Labour/getthecountoflabours",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "profile-service.labourlink.svc.cluster.local",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/Labour/getthecountoflabours",
+      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Labour/complete/profile",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "profile-service.labourlink.svc.cluster.local",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/Labour/complete/profile",
+      "UpstreamHttpMethod": [ "POST", "OPTIONS" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Labour/all/labours",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "profile-service.labourlink.svc.cluster.local",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/Labour/all/labours",
+      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Labour/filter/labours",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "profile-service.labourlink.svc.cluster.local",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/Labour/filter/labours",
+      "UpstreamHttpMethod": [ "POST", "OPTIONS" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Preffered/getthejob",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "profile-service.labourlink.svc.cluster.local",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/Preffered/getthejob",
+      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Preffered/getthelabourbyemployer",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "profile-service.labourlink.svc.cluster.local",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/Preffered/getthelabourbyemployer",
+      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Review/postreview",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "profile-service.labourlink.svc.cluster.local",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/Review/postreview",
+      "UpstreamHttpMethod": [ "POST", "OPTIONS" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Review/getreviewsofspecificlabour",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "profile-service.labourlink.svc.cluster.local",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/Review/getreviewsofspecificlabour",
+      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Review/Updatereview",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "profile-service.labourlink.svc.cluster.local",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/Review/Updatereview",
+      "UpstreamHttpMethod": [ "PATCH", "OPTIONS" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Review/updatethestatus",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "profile-service.labourlink.svc.cluster.local",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/Review/updatethestatus",
+      "UpstreamHttpMethod": [ "PATCH", "OPTIONS" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Review/getreviewbyeachrating",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "profile-service.labourlink.svc.cluster.local",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/Review/getreviewbyeachrating",
+      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Review/getreviewsofspecificemployee",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "profile-service.labourlink.svc.cluster.local",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/Review/getreviewsofspecificemployee",
+      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Review/getreviewsofspecificlabourpostedbythisemployer",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "profile-service.labourlink.svc.cluster.local",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/Review/getreviewsofspecificlabourpostedbythisemployer",
+      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamScheme": "http"
+    },
+
+
+
+
+
+
+
+
+
+    {
+      "DownstreamPathTemplate": "/chatmessage/history",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "chatservice-service.labourlink.svc.cluster.local",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/chatmessage/history",
+      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamScheme": "http"
+    },
+
+    {
+      "DownstreamPathTemplate": "/chatHub/{everything}",
+      "DownstreamScheme": "ws",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "chatservice-service.labourlink.svc.cluster.local",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/chatHub/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "OPTIONS" ],
+      "UpstreamScheme": "ws"
+    },
+    {
+      "DownstreamPathTemplate": "/chatHub/negotiate",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "chatservice-service.labourlink.svc.cluster.local",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/chatHub/negotiate",
+      "UpstreamHttpMethod": [ "POST" ],
+      "UpstreamScheme": "http"
+    },
+
+
+
+
+
+
+
+
+    {
+      "DownstreamPathTemplate": "/api/Muncipality/muncipalities",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "adminservice-service.labourlink.svc.cluster.local",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/admin/muncipalities",
+      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Muncipality/addmuncipality",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "adminservice-service.labourlink.svc.cluster.local",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/admin/addmuncipality",
+      "UpstreamHttpMethod": [ "POST", "OPTIONS" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Muncipality/mucipality{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "adminservice-service.labourlink.svc.cluster.local",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/admin/mucipality{id}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Muncipality/deletemuncipality{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "adminservice-service.labourlink.svc.cluster.local",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/admin/deletemuncipality{id}",
+      "UpstreamHttpMethod": [ "DELETE", "OPTIONS" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Muncipality/editmucipality",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "adminservice-service.labourlink.svc.cluster.local",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/admin/editmucipality",
+      "UpstreamHttpMethod": [ "PATCH", "OPTIONS" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Muncipality/muncipalities{state}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "adminservice-service.labourlink.svc.cluster.local",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/admin/muncipalities{state}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Muncipality/viewallmuncipalities",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "adminservice-service.labourlink.svc.cluster.local",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/admin/viewallmuncipalities",
+      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Muncipality/activatemuncipality/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "adminservice-service.labourlink.svc.cluster.local",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/admin/activatemuncipality/{id}",
+      "UpstreamHttpMethod": [ "PATCH", "OPTIONS" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Muncipality/searchMunciplities",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "adminservice-service.labourlink.svc.cluster.local",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/admin/searchMunciplities",
+      "UpstreamHttpMethod": [ "GET", "OPTIONS" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Skill/getAllSkill",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "adminservice-service.labourlink.svc.cluster.local",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/admin/getAllSkill",
+      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Skill/getCompleteSkills",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "adminservice-service.labourlink.svc.cluster.local",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/admin/getCompleteSkills",
+      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Skill/getSkillById/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "adminservice-service.labourlink.svc.cluster.local",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/admin/getSkillById/{id}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Skill/createSkill",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "adminservice-service.labourlink.svc.cluster.local",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/admin/createSkill",
+      "UpstreamHttpMethod": [ "POST", "OPTIONS" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Skill/updateSkill",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "adminservice-service.labourlink.svc.cluster.local",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/admin/updateSkill",
+      "UpstreamHttpMethod": [ "PUT", "OPTIONS" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Skill/deleteSkill/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "adminservice-service.labourlink.svc.cluster.local",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/admin/deleteSkill/{id}",
+      "UpstreamHttpMethod": [ "DELETE", "OPTIONS" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Skill/getDeletedSkills",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "adminservice-service.labourlink.svc.cluster.local",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/admin/getDeletedSkills",
+      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Skill/reactivateSkill/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "adminservice-service.labourlink.svc.cluster.local",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/admin/reactivateSkill/{id}",
+      "UpstreamHttpMethod": [ "PATCH" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Skill/getSkillsBySearchParams",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "adminservice-service.labourlink.svc.cluster.local",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/admin/getSkillsBySearchParams",
+      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/outputcache/{region}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "adminservice-service.labourlink.svc.cluster.local",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/labourlinkgateway/admin/outputcache/{region}",
+      "UpstreamHttpMethod": [ "DELETE" ],
+      "UpstreamScheme": "http"
+    }
+
+
+  ],
+
+  "GlobalConfiguration": {
+    "BaseUrl": "http://localhost:5039",
+    "PreserveHostHeader": true,
+    "PreserveAuthorizationHeader": true,
+    "HttpHandlerOptions": {
+      "AllowAutoRedirect": false,
+      "UseCookieContainer": true,
+      "UseTracing": true
+    }
+  }
+
+
+
+
+
+
+}
+
+
+// ocelot.global.json
 //{
 //  "GlobalConfiguration": {
 //    "BaseUrl": "http://localhost:5039"
-
-//  },
-//  "Routes": [
-//    {
-//      "UpstreamPathTemplate": "/api/muncipalities",
-//      "UpstreamHttpMethod": [ "Get" ],
-//      "DownstreamPathTemplate": "/api/Muncipality/muncipalities",
-//      "DownstreamScheme": "https",
-//      "DownstreamHostAndPorts": [
-//        {
-//          "Host": "localhost",
-//          "Port": 5075
-//        }
-//      ],
-//      "RateLimitOptions": {
-//        "EnableRateLimiting": true,
-//        "Period": "10s",
-//        "Limit": 3,
-//        "PeriodTimespan": 5
-//      }
-//    },
-//    {
-//      "UpstreamPathTemplate": "/api/addmuncipality",
-//      "UpstreamHttpMethod": [ "Post" ],
-//      "DownstreamPathTemplate": "/api/Muncipality/addmuncipality",
-//      "DownstreamScheme": "https",
-//      "DownstreamHostAndPorts": [
-//        {
-//          "Host": "localhost",
-//          "Port": 5075
-//        }
-//      ]
-//    }
-//  ]
+//  }
 //}
-
-
-{
-  "GlobalConfiguration": {
-    "BaseUrl": "http://localhost:5039"
-  },
-  "Routes": [
-    {
-      "UpstreamPathTemplate": "/api/muncipality/{everything}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete","Patch" ],
-      "DownstreamPathTemplate": "/api/Muncipality/{everything}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 5075
-        }
-      ]
-    },
-    {
-      "UpstreamPathTemplate": "/api/skill/{everything}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete","Patch" ],
-      "DownstreamPathTemplate": "/api/Skill/{everything}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 5075
-        }
-      ]
-    }
-  ]
-}
 

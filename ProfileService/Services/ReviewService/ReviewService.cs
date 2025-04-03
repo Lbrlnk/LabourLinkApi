@@ -26,79 +26,7 @@ namespace ProfileService.Services.ReviewService
 			_employer = employer;
 			_labour = labour;
 		}
-        //public async Task<ApiResponse<ReviewShowDto>> AddReview(AddReview1 review,IFormFile image,Guid userid)
-        //{
-        //	try
-        //	{
-        //		string? pic = null;
-
-        //		if (image != null && image.Length > 0)
-        //		{
-        //			pic = await _cloudinary.UploadImageAsync(image, false);
-        //		}
-
-        //		var employer = await _employer.GetEmployerByIdAsync(userid);
-        //		Console.WriteLine(employer);
-        //		if (employer == null)
-        //		{
-        //			return new ApiResponse<ReviewShowDto>(404, "Employer not found");
-        //		}
-        //		var existingReview = await _repository.GetReviewByEmployerAndLabourAsync(employer.EmployerId, review.LabourId);
-        //		if (existingReview != null)
-        //		{
-        //			return new ApiResponse<ReviewShowDto>(400, "You have already reviewed this labourer.");
-        //		}
-
-        //		Review review1 = new Review
-        //		{
-        //			EmployerId=employer.EmployerId ,
-        //			LabourId=review.LabourId,
-        //			Rating=review.Rating,
-        //			Comment=review.Comment,
-        //			Image=pic
-        //		};
-        //		var res = await _repository.AddReviewAsync(review1);
-        //		var labour =await  _labour.GetLabourByIdAsync(review.LabourId);
-        //		if(labour == null)
-        //		{
-        //                  return new ApiResponse<ReviewShowDto>(400, "labour not found.");
-        //              }
-
-        //		var labourReviews = await _labour.GetLabourReviews(review.LabourId);
-        //		if (labourReviews.Any())
-        //		{
-        //                  labour.Rating = (decimal)labourReviews.Average(x => (double)x.Rating);
-        //              }
-        //		    await _labour.UpdateLabour(labour);
-        //			await _labour.UpdateDatabase();
-        //		if (res == null)
-        //		{
-        //			return new ApiResponse<ReviewShowDto>(400, "Something Went Wrong");
-        //		}
-
-
-        //		ReviewShowDto reviewShow = new ReviewShowDto
-        //		{
-        //			Rating=res.Rating,
-        //			Comment=res.Comment,
-        //			Image=res.Image,
-        //			FullName=employer.FullName,
-        //			UpdatedAt=res.UpdatedAt
-        //		};
-        //		if (res != null)
-        //		{
-        //			return new ApiResponse<ReviewShowDto>(200, "Success", reviewShow);
-        //		}
-        //		else
-        //		{
-        //			return new ApiResponse<ReviewShowDto>(400, "Something Went Wrong");
-        //		}
-        //	}catch(Exception ex)
-        //	{
-        //		return new ApiResponse<ReviewShowDto>(500, ex.Message);
-        //	}
-        //}
-
+        
 
         public async Task<ApiResponse<ReviewShowDto>> AddReview(AddReview1 review, IFormFile image, Guid userid)
         {
@@ -106,7 +34,7 @@ namespace ProfileService.Services.ReviewService
 
             return await strategy.ExecuteAsync(async () =>
             {
-                // Begin a transaction within the execution strategy
+                
                 using var transaction = await _context.Database.BeginTransactionAsync();
                 try
                 {
@@ -128,7 +56,7 @@ namespace ProfileService.Services.ReviewService
                         return new ApiResponse<ReviewShowDto>(400, "You have already reviewed this labourer.");
                     }
 
-                    // Create new review object
+                   
                     Review review1 = new Review
                     {
                         EmployerId = employer.EmployerId,
@@ -138,7 +66,7 @@ namespace ProfileService.Services.ReviewService
                         Image = pic
                     };
 
-                    // Add review and persist
+                   
                     var res = await _repository.AddReviewAsync(review1);
 
                     var labour = await _labour.GetLabourByIdAsync(review.LabourId);
@@ -156,7 +84,7 @@ namespace ProfileService.Services.ReviewService
                     await _labour.UpdateLabour(labour);
                     await _labour.UpdateDatabase();
 
-                    // Commit the transaction if all commands succeed
+                   
                     await transaction.CommitAsync();
 
                     if (res == null)
@@ -177,11 +105,10 @@ namespace ProfileService.Services.ReviewService
                 }
                 catch (Exception ex)
                 {
-                    // Rollback the transaction on error
                     await transaction.RollbackAsync();
                     return new ApiResponse<ReviewShowDto>(500, ex.Message);
                 }
-            });
+            }); 
         }
 
 
@@ -290,7 +217,6 @@ namespace ProfileService.Services.ReviewService
 				{
 					return new ApiResponse<string>(400, "Failed to update review status.");
 				}
-
 				return new ApiResponse<string>(200, $"Review status changed to {(review.IsActive ? "Active" : "Inactive")}.");
 			}
 			catch(Exception ex)
@@ -321,7 +247,6 @@ namespace ProfileService.Services.ReviewService
 				var res = await _repository.GetReviewsByEmployee(employer.EmployerId);
 				var reviewDtos = res.Select(r => new ReviewShowDto
 				{
-					
 					Rating = r.Rating,
 					Comment = r.Comment,
 					Image = r.Image,

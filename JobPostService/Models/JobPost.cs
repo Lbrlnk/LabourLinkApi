@@ -7,6 +7,7 @@ namespace JobPostService.Models
 		[Key]
 		public Guid JobId { get; set; }
 		[Required]
+	
 		public Guid CleintId { get; set; }
 		[Required]
 		[StringLength(40, ErrorMessage = "Skill name cannot exceed 40 characters")]

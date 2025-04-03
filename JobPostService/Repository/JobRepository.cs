@@ -50,5 +50,7 @@ namespace JobPostService.Repository
 					 (skills.Contains(job.SkillId1) || skills.Contains(job.SkillId2)))
 					.ToListAsync();
 		}
+
+		
 	}
 }

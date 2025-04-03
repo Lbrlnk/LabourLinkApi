@@ -14,5 +14,6 @@ namespace NotificationService.Repository.InterestRequestRepository
 
         Task<List<InterestRequest>> GetAllInterestRequestToEmployer(Guid eId);
         Task<List<InterestRequest>> GetAllInterestRequestOfLabour(Guid Lid);
+        //Task<Guid> GetUserIdFromLabourAndEmployerId(Guid id);
     }
 }

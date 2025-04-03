@@ -14,55 +14,59 @@ spec:
         app: profile-service
     spec:
       containers:
-      - name: profile-service
-        image: labourlinkcontainerregistry.azurecr.io/profileservice:updated 
-        ports:
+        - name: profile-service
+          image: labourlinkcontainerregistry.azurecr.io/profileservice:latest
+          ports:
             - containerPort: 8080
               name: http
             - containerPort: 8081
               name: https
-        env:
-        - name: ASPNETCORE_ENVIRONMENT
-          value: Production
-        - name: JWT-ISSUER
-          value: Labourlink-Api
-        - name: JWT-AUDIENCE
-          value: Labourlink-Frontend
-        - name: DB-CONNECTION-STRING
-          value: "Server=tcp:labourlinksqlserver.database.windows.net,1433;Initial Catalog=LabourLink_DB;Persist Security Info=False;User ID=labourlinksqladmin;Password=Labourlinkadmin@123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
-        - name: JWT-SECRET-KEY
-          valueFrom:
-            secretKeyRef:
-              name: profileservice-secrets
-              key: JWT-SECRET-KEY
-        - name: RABBITMQ-HOST
-          valueFrom:
-            secretKeyRef:
-              name: profileservice-secrets
-              key: RABBITMQ-HOST
-        - name: RABBITMQ-USERNAME
-          valueFrom:
-            secretKeyRef:
-              name: profileservice-secrets
-              key: RABBITMQ-USERNAME
-        - name: RABBITMQ-PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: profileservice-secrets
-              key: RABBITMQ-PASSWORD
-        - name: CLOUDINARY-CLOUDNAME
-          valueFrom:
-            secretKeyRef:
-              name: profileservice-secrets
-              key: CLOUDINARY-CLOUDNAME
-        - name: CLOUDINARY-APIKEY
-          valueFrom:
-            secretKeyRef:
-              name: profileservice-secrets
-              key: CLOUDINARY-APIKEY
-        - name: CLOUDINARY-API-SECRET
-          valueFrom:
-            secretKeyRef:
-              name: profileservice-secrets
-              key: CLOUDINARY-API-SECRET
-        
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: Production
+            - name: JWT-ISSUER
+              value: Labourlink-Api
+            - name: JWT-AUDIENCE
+              value: Labourlink-Frontend
+            - name: CORS-ORIGIN
+              value: http://localhost:5173
+            - name: JWT-SECRET-KEY
+              valueFrom:
+                secretKeyRef:
+                  name:  labourlink-secrets
+                  key: JWT-SECRET-KEY
+            - name: RABBITMQ-HOST
+              valueFrom:
+                secretKeyRef:
+                  name:  labourlink-secrets
+                  key: RABBITMQ-HOST
+            - name: RABBITMQ-USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name:  labourlink-secrets
+                  key: RABBITMQ-USERNAME
+            - name: RABBITMQ-PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name:  labourlink-secrets
+                  key: RABBITMQ-PASSWORD
+            - name: CLOUDINARY-CLOUDNAME
+              valueFrom:
+                secretKeyRef:
+                  name:  labourlink-secrets
+                  key: CLOUDINARY-CLOUDNAME
+            - name: CLOUDINARY-APIKEY
+              valueFrom:
+                secretKeyRef:
+                  name:  labourlink-secrets
+                  key: CLOUDINARY-APIKEY
+            - name: CLOUDINARY-API-SECRET
+              valueFrom:
+                secretKeyRef:
+                  name:  labourlink-secrets
+                  key: CLOUDINARY-API-SECRET
+            - name: DB-CONNECTION-STRING
+              valueFrom:
+                secretKeyRef:
+                   name: labourlink-secrets
+                   key : DB-CONNECTION-STRING

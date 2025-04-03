@@ -21,13 +21,14 @@ namespace ProfileService.Controllers
             try
             {
 
-            if (!HttpContext.Items.ContainsKey("UserId"))
-            {
-                return Unauthorized("User not authenticated.");
-            }
+                if (!HttpContext.Items.ContainsKey("UserId"))
+                {
+                    return Unauthorized("User not authenticated.");
+                }
+                var userId = Guid.Parse(HttpContext.Items["UserId"].ToString());
 
-            var userId = Guid.Parse(HttpContext.Items["UserId"].ToString());
-           var result  = await _employerService.CompleteEmployerProfile(userId, employerProfileDto);
+
+                var result  = await _employerService.CompleteEmployerProfile(userId, employerProfileDto);
             return Ok(result);
             }
             catch (Exception ex)

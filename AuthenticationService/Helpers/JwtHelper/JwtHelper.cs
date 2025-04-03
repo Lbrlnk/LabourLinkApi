@@ -21,10 +21,10 @@ namespace AuthenticationService.Helpers.JwtHelper
             try
             {
                 // retreving configuration settings
-                var secretKey = _configuration["JwtSettings:SecretKey"];
-                var issuer = _configuration["JwtSettings:Issuer"];
-                var audience = _configuration["JwtSettings:Audience"];
-                var expiryInHours = int.TryParse(_configuration["JwtExpiryInHours"], out var hours) ? hours : 2;
+                var secretKey = _configuration["JWT-SECRET-KEY"];
+                var issuer = _configuration["JWT-ISSUER"];
+                var audience = _configuration["JWT-AUDIENCE"];
+                var expiryInHours = int.TryParse(_configuration["JWT-EXPIRE-HOUR"], out var hours) ? hours : 2;
 
                
 
@@ -75,30 +75,7 @@ namespace AuthenticationService.Helpers.JwtHelper
             rng.GetBytes(randomBytes);
             return Convert.ToBase64String(randomBytes);
         }
-        //public ClaimsPrincipal? GetPrincipalFromExpiredToken(string token)
-        //{
-        //    var secretKey = _configuration["JWT_SECRET_KEY"];
-        //    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
-
-        //    var tokenHandler = new JwtSecurityTokenHandler();
-        //    try
-        //    {
-        //        var principal = tokenHandler.ValidateToken(token, new TokenValidationParameters
-        //        {
-        //            ValidateIssuerSigningKey = true,
-        //            IssuerSigningKey = key,
-        //            ValidateIssuer = false,
-        //            ValidateAudience = false,
-        //            ValidateLifetime = false // Allow expired tokens
-        //        }, out _);
-
-        //        return principal;
-        //    }
-        //    catch
-        //    {
-        //        return null;
-        //    }
-        //}
+        
 
     }
 }

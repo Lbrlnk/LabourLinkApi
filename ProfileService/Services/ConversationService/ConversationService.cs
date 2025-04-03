@@ -34,9 +34,7 @@ namespace ProfileService.Services.ConversationService
                     User1Id = user1Id,
                     User2Id = user2Id,
                     LastMessage = message
-
                 };
-
 
                 var conversation = _mapper.Map<Conversation>(data);
                 var res = await _chatConversationRepository.AddConversation(conversation);
@@ -47,14 +45,12 @@ namespace ProfileService.Services.ConversationService
                 }
 
                 var result = _mapper.Map<ConversationDto>(res);
-
                 return new ApiResponse<ConversationDto>(201, "Successfully Conversation ", result);
+
             }
             catch (Exception ex)
             {
-
                 return new ApiResponse<ConversationDto>(500, "Error ocure on creating conversation", error: ex.Message);
-
             }
         }
 
@@ -62,7 +58,6 @@ namespace ProfileService.Services.ConversationService
         {
             try
             {
-
                 var checkuserType = await _employerRepository.GetEmployerByIdAsync(userId);
                 var res = new List<ConversationViewDto>();
                 if (checkuserType != null)
@@ -71,14 +66,8 @@ namespace ProfileService.Services.ConversationService
 
                     if (userConversation == null)
                     {
-
-
                         return new ApiResponse<List<ConversationViewDto>>(200, "Successfully retrived conversation", res);
                     }
-
-
-
-                    //var result=_mapper.Map<List<ConversationDto>>(userConversation);
                     return new ApiResponse<List<ConversationViewDto>>(200, "Successfully retrived conversation", userConversation);
 
                 }
@@ -91,8 +80,6 @@ namespace ProfileService.Services.ConversationService
                     if (res == null)
                     {
                         {
-
-
                             return new ApiResponse<List<ConversationViewDto>>(200, "Successfully retrived conversation", res);
                         }
                     }
@@ -105,44 +92,33 @@ namespace ProfileService.Services.ConversationService
             }
             catch (Exception ex)
             {
-
                 return new ApiResponse<List<ConversationViewDto>>(500, "Error ocure on creating conversation", error: ex.Message);
-
             }
         }
 
-
         public async Task<ApiResponse<ConversationDto>> UpdateLastMessage(Guid user1Id, Guid user2Id, string message)
         {
-
             try
             {
                 var getConversation = await _chatConversationRepository.GetConversation(user1Id, user2Id);
-
                 if (getConversation == null)
                 {
                     var createConversation = await CreateChatConversation(user1Id, user2Id, message);
 
                 }
-
                 getConversation.LastMessage = message;
                 getConversation.LastUpdated = DateTime.Now;
-
                 var isUpdate = await _chatConversationRepository.UpdateConversation(getConversation);
                 var res = _mapper.Map<ConversationDto>(getConversation);
-
                 if (isUpdate)
                 {
 
                     return new ApiResponse<ConversationDto>(200, "Successfully Updated Last Message", res);
                 }
                 return new ApiResponse<ConversationDto>(400, "Updating last message failed", res);
-
-
             }
             catch (Exception ex)
             {
-
                 return new ApiResponse<ConversationDto>(500, "Error ocure on update last message conversation", error: ex.Message);
             }
         }

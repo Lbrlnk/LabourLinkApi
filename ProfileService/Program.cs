@@ -1,6 +1,4 @@
-    using CloudinaryDotNet;
-using EventBus.Abstractions;
-using EventBus.Implementations;
+using CloudinaryDotNet;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -23,14 +21,17 @@ using ProfileService.Services.JobPostServiceClientService;
 using ProfileService.Repositories.LabourWithinEmployer;
 using DotNetEnv;
 using ProfileService.Services.SkillAnalyticsServices;
+using ProfileService.Services.ConversationService;
+using ProfileService.Repositories.ChatConversationRepository;
+using ProfileService.Services.RabbitMQ;
 
 
 namespace ProfileService
 {
-	public class Program
-	{
-		public static void Main(string[] args)
-		{
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
 
             if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
             {
@@ -38,93 +39,98 @@ namespace ProfileService
             }
             var builder = WebApplication.CreateBuilder(args);
 
-			builder.Configuration
-				.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-				.AddEnvironmentVariables();
-            //if (builder.Environment.IsDevelopment())
-            //{
-            //    DotNetEnv.Env.Load();
-            //}
-
+            builder.Configuration
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddEnvironmentVariables();
+            
             var connectionString = Environment.GetEnvironmentVariable("DB-CONNECTION-STRING")
                 ?? throw new InvalidOperationException("DB-ConnectionString is not configured");
 
-			builder.Services.AddDbContext<LabourLinkProfileDbContext>(options =>
-				options.UseSqlServer(
-					connectionString,
-					sqlOptions => sqlOptions.EnableRetryOnFailure()
-				)
-			);
+            builder.Services.AddDbContext<LabourLinkProfileDbContext>(options =>
+                options.UseSqlServer(
+                    connectionString,
+                    sqlOptions => sqlOptions.EnableRetryOnFailure()
+                )
+            );
 
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("AllowAllOrigins",
                     builder =>
                     {
-                        builder.SetIsOriginAllowed(_ => true) // Allows all origins while keeping credentials
-                               .AllowAnyMethod()   // Allows any HTTP method (GET, POST, PUT, DELETE, etc.)
-                               .AllowAnyHeader()   // Allows any headers
-                               .AllowCredentials(); // Allows credentials like cookies or auth tokens
+                        builder.SetIsOriginAllowed(_ => true) 
+                               .AllowAnyMethod()   
+                               .AllowAnyHeader()   
+                               .AllowCredentials(); 
                     });
             });
 
-			builder.Services.AddHttpClient<JobPostServiceClient>();
-		
-			builder.Services.AddScoped<IEmployerLabour, EmployerLabour>();
+            builder.Services.AddHttpClient<JobPostServiceClient>();
+            builder.Services.AddScoped<IEmployerLabour, EmployerLabour>();
 
-			builder.Services.AddScoped<ISkillAnalyticsService, SkillAnalyticsService>();
             builder.Services.AddAutoMapper(typeof(MapperProfile));
-			builder.Services.AddScoped<ILabourRepository, LabourRepository>();
-			builder.Services.AddScoped<ILabourService, LabourService>();
-			builder.Services.AddScoped<IEmployerRepository, EmployerRepository>();
-            builder.Services.AddScoped<IEmployerService, EmployerService>();
             builder.Services.AddScoped<ICloudinaryHelper, CloudinaryHelper>();
-            builder.Services.AddSingleton<RabbitMQConnection>(sp =>
+
+
+            builder.Services.AddScoped<ISkillAnalyticsService, SkillAnalyticsService>();
+            builder.Services.AddScoped<ILabourService, LabourService>();
+            builder.Services.AddScoped<IEmployerService, EmployerService>();
+			builder.Services.AddScoped<IConversationService, ConversationService>();
+            builder.Services.AddScoped<IRabbitMqService, RabbitMqService>();
+            builder.Services.AddScoped<IReviewService, ReviewService>();
+
+
+            builder.Services.AddScoped<ILabourRepository, LabourRepository>();
+            builder.Services.AddScoped<IEmployerRepository, EmployerRepository>();
+			builder.Services.AddScoped<IChatConversationRepository, ChatConversationRepository>();
+            builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
+           
+            builder.Services.AddControllers().AddJsonOptions(options =>
+             {
+                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            });
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen(options =>
             {
-                var config = sp.GetRequiredService<IConfiguration>();
-                var connection = new RabbitMQConnection(config);
-                connection.DeclareExchange("labourlink.events", ExchangeType.Direct);
-                return connection;
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "ProfileService", Version = "v1" });
+                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "Enter 'Bearer' [space] and then your token"
+                });
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    new string[] {}
+                }
+            });
             });
 
-            builder.Services.AddScoped<IEventPublisher, EventPublisher>();
-			builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
-			builder.Services.AddScoped<IReviewService, ReviewService>();
-			builder.Services.AddControllers().AddJsonOptions(options =>
-			{
-				options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-			});
-			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-			builder.Services.AddEndpointsApiExplorer();
-			builder.Services.AddSwaggerGen(options =>
-			{
-				options.SwaggerDoc("v1", new OpenApiInfo { Title = "Kaalcharakk", Version = "v1" });
-				options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-				{
-					Name = "Authorization",
-					Type = SecuritySchemeType.ApiKey,
-					Scheme = "Bearer",
-					BearerFormat = "JWT",
-					In = ParameterLocation.Header,
-					Description = "Enter 'Bearer' [space] and then your token"
-				});
-				options.AddSecurityRequirement(new OpenApiSecurityRequirement
-				{
-					{
-						new OpenApiSecurityScheme
-						{
-							Reference = new OpenApiReference
-							{
-								Type = ReferenceType.SecurityScheme,
-								Id = "Bearer"
-							}
-						},
-						new string[] {}
-					}
-				});
-			});
-			
+            var allow_origin = Environment.GetEnvironmentVariable("CORS-ORIGIN") ?? throw new InvalidOperationException("cors origin not configured");
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowSpecificOrigin",
+                    builder =>
+                    {
+                        builder.WithOrigins(allow_origin)
+                               .AllowCredentials()
+                               .AllowAnyMethod()
+                               .AllowAnyHeader();
 
+                    });
+            });
 
             var jwtSecret = Environment.GetEnvironmentVariable("JWT-SECRET-KEY")
               ?? throw new InvalidOperationException("JWT-SECRET-KEY is not configured");
@@ -148,28 +154,28 @@ namespace ProfileService
 
             var app = builder.Build();
 
-			if (!app.Environment.IsDevelopment())
-			{
-				using var scope = app.Services.CreateScope();
-				var db = scope.ServiceProvider.GetRequiredService<LabourLinkProfileDbContext>();
-				db.Database.Migrate();
-			}
+            //if (!app.Environment.IsDevelopment())
+            //{
+            //    using var scope = app.Services.CreateScope();
+            //    var db = scope.ServiceProvider.GetRequiredService<LabourLinkProfileDbContext>();
+            //    db.Database.Migrate();
+            //}
 
 
 
-			if (app.Environment.IsDevelopment())
-			{
-				app.UseSwagger();
-				app.UseSwaggerUI();
-			app.UseDeveloperExceptionPage();
-			}
-			app.UseHttpsRedirection();
-			app.UseCors("AllowAllOrigins");
-			app.UseMiddleware<TokenAccessingMiddleware>();
-			app.UseAuthentication();
-			app.UseAuthorization();
-			app.UseMiddleware<UserIdentificationMiddleware>();
-			app.MapControllers();
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseSwagger();
+                app.UseSwaggerUI();
+                app.UseDeveloperExceptionPage();
+            }
+            app.UseHttpsRedirection();
+            app.UseCors("AllowSpecificOrigin");
+            app.UseMiddleware<TokenAccessingMiddleware>();
+            app.UseAuthentication();
+            app.UseAuthorization();
+            app.UseMiddleware<UserIdentificationMiddleware>();
+            app.MapControllers();
 
             app.Run();
         }
