@@ -239,6 +239,7 @@ namespace NotificationService.Services.IntrestRequestService
             }
         }
 
+
         public async Task<string> WithdrawInterstRequest(Guid id)
         {
             try
@@ -321,10 +322,6 @@ namespace NotificationService.Services.IntrestRequestService
                 {
                     return "Error: This request is already rejected.";
                 }
-                //if (interestRequest.EmployerUserId == userId)
-                //{
-                //    return "Error : EmployerUserId mismatch.";
-                //}
                 interestRequest.Status = Enums.InterestRequestStatus.Accepted;
                 interestRequest.UpdatedOn = DateTime.UtcNow;
 
@@ -336,9 +333,6 @@ namespace NotificationService.Services.IntrestRequestService
                 {
                     throw new Exception("error happend when updating the changes to database");
                 }
-
-
-
                 return "Request Accepted successfully";
             }
             catch (Exception ex)
@@ -347,21 +341,17 @@ namespace NotificationService.Services.IntrestRequestService
             }
         }
 
+
         public async Task<List<InterestRequest>> GetInterestRequestForEmployers(Guid eId)
         {
             try
             {
-
                 var interestRequestList = await _interestRequestRepository.GetAllInterestRequestToEmployer(eId);
-
-
                 return interestRequestList ?? new List<InterestRequest>();
             }
             catch (Exception ex)
             {
-
                 Console.WriteLine($"Error fetching interest requests: {ex.Message}");
-
                 return new List<InterestRequest>();
             }
         }
@@ -370,15 +360,12 @@ namespace NotificationService.Services.IntrestRequestService
         {
             try
             {
-
                 var acceptedInterestRequestList = await _interestRequestRepository.GetAllInterestRequestOfLabour(Lid);
                 return acceptedInterestRequestList ?? new List<InterestRequest>();
             }
             catch (Exception ex)
             {
-
                 Console.WriteLine($"Error fetching interest requests: {ex.Message}");
-
                 return new List<InterestRequest>();
             }
         }

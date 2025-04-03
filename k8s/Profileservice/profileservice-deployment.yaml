@@ -14,15 +14,9 @@ spec:
         app: profile-service
     spec:
       containers:
-<<<<<<< HEAD
         - name: profile-service
           image: labourlinkcontainerregistry.azurecr.io/profileservice:latest
           ports:
-=======
-      - name: profile-service
-        image: labourlinkcontainerregistry.azurecr.io/profileservice:latest
-        ports:
->>>>>>> upstream/development
             - containerPort: 8080
               name: http
             - containerPort: 8081
@@ -34,40 +28,45 @@ spec:
               value: Labourlink-Api
             - name: JWT-AUDIENCE
               value: Labourlink-Frontend
-            - name: DB-CONNECTION-STRING
-              value: "Server=tcp:labourlinksqlserver.database.windows.net,1433;Initial Catalog=LabourLink_DB;Persist Security Info=False;User ID=labourlinksqladmin;Password=Labourlinkadmin@123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+            - name: CORS-ORIGIN
+              value: http://localhost:5173
             - name: JWT-SECRET-KEY
               valueFrom:
                 secretKeyRef:
-                  name: profileservice-secrets
+                  name:  labourlink-secrets
                   key: JWT-SECRET-KEY
             - name: RABBITMQ-HOST
               valueFrom:
                 secretKeyRef:
-                  name: profileservice-secrets
+                  name:  labourlink-secrets
                   key: RABBITMQ-HOST
             - name: RABBITMQ-USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: profileservice-secrets
+                  name:  labourlink-secrets
                   key: RABBITMQ-USERNAME
             - name: RABBITMQ-PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: profileservice-secrets
+                  name:  labourlink-secrets
                   key: RABBITMQ-PASSWORD
             - name: CLOUDINARY-CLOUDNAME
               valueFrom:
                 secretKeyRef:
-                  name: profileservice-secrets
+                  name:  labourlink-secrets
                   key: CLOUDINARY-CLOUDNAME
             - name: CLOUDINARY-APIKEY
               valueFrom:
                 secretKeyRef:
-                  name: profileservice-secrets
+                  name:  labourlink-secrets
                   key: CLOUDINARY-APIKEY
             - name: CLOUDINARY-API-SECRET
               valueFrom:
                 secretKeyRef:
-                  name: profileservice-secrets
+                  name:  labourlink-secrets
                   key: CLOUDINARY-API-SECRET
+            - name: DB-CONNECTION-STRING
+              valueFrom:
+                secretKeyRef:
+                   name: labourlink-secrets
+                   key : DB-CONNECTION-STRING

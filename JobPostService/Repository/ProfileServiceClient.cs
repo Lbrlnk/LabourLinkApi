@@ -17,8 +17,11 @@ namespace JobPostService.Repository
 			try
 			{
 				Console.WriteLine(clientId);
-				string url = $"https://localhost:7202/api/Employer/getemployerbyid?userId={clientId}";
-				var response = await _httpClient.GetAsync(url);
+                string url = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development"
+            ? $"https://localhost:7202/api/Employer/getemployerbyid?userId={clientId}"
+            : $"http://apigateway.labourlink.svc.cluster.local/labourlinkgateway/Employer/getemployerbyid?userId={clientId}";
+
+                var response = await _httpClient.GetAsync(url);
 
 				if (response.IsSuccessStatusCode)
 				{

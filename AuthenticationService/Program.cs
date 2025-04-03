@@ -1,11 +1,9 @@
 
-
 using AuthenticationService.Data;
 using AuthenticationService.Helpers.JwtHelper;
 using AuthenticationService.Mapper;
 using AuthenticationService.Repositories;
 using AuthenticationService.Sevices.AuthSerrvice;
-
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -13,7 +11,6 @@ using Microsoft.OpenApi.Models;
 using RabbitMQ.Client;
 using System.Text;
 using System.Text.Json.Serialization;
-//using EventBus.Implementations;
 using DotNetEnv;
 
 using AuthenticationService.Middleware;

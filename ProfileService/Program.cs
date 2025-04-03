@@ -1,6 +1,4 @@
 using CloudinaryDotNet;
-//using EventBus.Abstractions;
-//using EventBus.Implementations;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -44,11 +42,7 @@ namespace ProfileService
             builder.Configuration
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddEnvironmentVariables();
-            //if (builder.Environment.IsDevelopment())
-            //{
-            //    DotNetEnv.Env.Load();
-            //}
-
+            
             var connectionString = Environment.GetEnvironmentVariable("DB-CONNECTION-STRING")
                 ?? throw new InvalidOperationException("DB-ConnectionString is not configured");
 
@@ -64,47 +58,41 @@ namespace ProfileService
                 options.AddPolicy("AllowAllOrigins",
                     builder =>
                     {
-                        builder.SetIsOriginAllowed(_ => true) // Allows all origins while keeping credentials
-                               .AllowAnyMethod()   // Allows any HTTP method (GET, POST, PUT, DELETE, etc.)
-                               .AllowAnyHeader()   // Allows any headers
-                               .AllowCredentials(); // Allows credentials like cookies or auth tokens
+                        builder.SetIsOriginAllowed(_ => true) 
+                               .AllowAnyMethod()   
+                               .AllowAnyHeader()   
+                               .AllowCredentials(); 
                     });
             });
 
             builder.Services.AddHttpClient<JobPostServiceClient>();
-
             builder.Services.AddScoped<IEmployerLabour, EmployerLabour>();
 
-            builder.Services.AddScoped<ISkillAnalyticsService, SkillAnalyticsService>();
             builder.Services.AddAutoMapper(typeof(MapperProfile));
-            builder.Services.AddScoped<ILabourRepository, LabourRepository>();
-            builder.Services.AddScoped<ILabourService, LabourService>();
-            builder.Services.AddScoped<IEmployerRepository, EmployerRepository>();
-            builder.Services.AddScoped<IEmployerService, EmployerService>();
             builder.Services.AddScoped<ICloudinaryHelper, CloudinaryHelper>();
-			builder.Services.AddScoped<IConversationService, ConversationService>();
-			builder.Services.AddScoped<IChatConversationRepository, ChatConversationRepository>();
-            //builder.Services.AddSingleton<RabbitMQConnection>(sp =>
-            //{
-            //    var config = sp.GetRequiredService<IConfiguration>();
-            //    var connection = new RabbitMQConnection(config);
-            //    connection.DeclareExchange("labourlink.events", ExchangeType.Direct);
-            //    return connection;
-            //});
 
-            //builder.Services.AddScoped<IEventPublisher, EventPublisher>();
+
+            builder.Services.AddScoped<ISkillAnalyticsService, SkillAnalyticsService>();
+            builder.Services.AddScoped<ILabourService, LabourService>();
+            builder.Services.AddScoped<IEmployerService, EmployerService>();
+			builder.Services.AddScoped<IConversationService, ConversationService>();
             builder.Services.AddScoped<IRabbitMqService, RabbitMqService>();
-            builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
             builder.Services.AddScoped<IReviewService, ReviewService>();
+
+
+            builder.Services.AddScoped<ILabourRepository, LabourRepository>();
+            builder.Services.AddScoped<IEmployerRepository, EmployerRepository>();
+			builder.Services.AddScoped<IChatConversationRepository, ChatConversationRepository>();
+            builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
+           
             builder.Services.AddControllers().AddJsonOptions(options =>
-            {
+             {
                 options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
             });
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(options =>
             {
-                options.SwaggerDoc("v1", new OpenApiInfo { Title = "Kaalcharakk", Version = "v1" });
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "ProfileService", Version = "v1" });
                 options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Name = "Authorization",
@@ -130,7 +118,19 @@ namespace ProfileService
             });
             });
 
+            var allow_origin = Environment.GetEnvironmentVariable("CORS-ORIGIN") ?? throw new InvalidOperationException("cors origin not configured");
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowSpecificOrigin",
+                    builder =>
+                    {
+                        builder.WithOrigins(allow_origin)
+                               .AllowCredentials()
+                               .AllowAnyMethod()
+                               .AllowAnyHeader();
 
+                    });
+            });
 
             var jwtSecret = Environment.GetEnvironmentVariable("JWT-SECRET-KEY")
               ?? throw new InvalidOperationException("JWT-SECRET-KEY is not configured");
@@ -154,12 +154,12 @@ namespace ProfileService
 
             var app = builder.Build();
 
-            if (!app.Environment.IsDevelopment())
-            {
-                using var scope = app.Services.CreateScope();
-                var db = scope.ServiceProvider.GetRequiredService<LabourLinkProfileDbContext>();
-                db.Database.Migrate();
-            }
+            //if (!app.Environment.IsDevelopment())
+            //{
+            //    using var scope = app.Services.CreateScope();
+            //    var db = scope.ServiceProvider.GetRequiredService<LabourLinkProfileDbContext>();
+            //    db.Database.Migrate();
+            //}
 
 
 
@@ -170,7 +170,7 @@ namespace ProfileService
                 app.UseDeveloperExceptionPage();
             }
             app.UseHttpsRedirection();
-            app.UseCors("AllowAllOrigins");
+            app.UseCors("AllowSpecificOrigin");
             app.UseMiddleware<TokenAccessingMiddleware>();
             app.UseAuthentication();
             app.UseAuthorization();

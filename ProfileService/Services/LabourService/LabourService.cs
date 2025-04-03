@@ -48,24 +48,15 @@ namespace ProfileService.Services.LabourService
                 {
                     throw new Exception("Labour already in use ");
                 }
-
                 var IsUsedPhone  = await _labourRepositry.GetLabourByPhone(labourProfileDto.PhoneNumber);
-
                 if(IsUsedPhone != null)
                 {
                     throw new Exception("Phone number already in use");
                 }
-
-
                 var labour = _mapper.Map<Labour>(labourProfileDto);
-
-
-
                 var ImageUrl = await _cloudinary.UploadImageAsync(labourProfileDto.ProfileImage, true);
-
                 labour.UserId = userId;
                 labour.ProfilePhotoUrl = ImageUrl;
-
                 var AddLabourResult = await _labourRepositry.AddLabour(labour);
                 if (!AddLabourResult)
                 {
@@ -125,7 +116,6 @@ namespace ProfileService.Services.LabourService
                 {
 
                     _rabbitMqService.PublishProfileCompleted(userId);
-                    //_eventPublisher.Publish(new ProfileCompletedEvent { UserId = userId });
                     return "profile Completion successfully completed";
 
                 }
@@ -150,22 +140,7 @@ namespace ProfileService.Services.LabourService
                 {
                     return  new List<LabourViewDto>();
                 }
-
-                //var labourViewDtos = allLabours.Select(result => new LabourViewDto
-                //{
-                //    LabourId = result.LabourId,
-                //    PhoneNumber = result.PhoneNumber,
-                //    AboutYourSelf = result.AboutYourSelf,
-                //    PreferedTime = result.PreferedTime,
-                //    LabourName = result.FullName,
-                //    ProfilePhotoUrl = result.ProfilePhotoUrl,
-                //    LabourWorkImages = result.LabourWorkImages?.Select(img => img.ImageUrl).ToList(),
-                //    LabourPreferredMuncipalities = result.LabourPreferedMuncipalities?.Select(m => m.MunicipalityName).ToList(),
-                //    LabourSkills = result.LabourSkills?.Select(s => s.SkillName).ToList()
-                //}).ToList();
                 return _mapper.Map<List<LabourViewDto>>(allLabours);
-
-                //return labourViewDtos;
             }
             catch
             {
@@ -176,61 +151,7 @@ namespace ProfileService.Services.LabourService
 
 
 
-        //public async Task<List<LabourViewDto>> GetFilteredLabour(LabourFilterDto LabourFilterDto)
-        //{
-
-
-        //    var allLabours = await _labourRepositry.GetFilterdLabours(LabourFilterDto);
-        //    if (allLabours == null)
-        //    {
-        //        return null;
-        //    }
-        //    var labourViewDtos = allLabours.Select(result => new LabourViewDto
-        //    {
-        //        LabourId = result.LabourId,
-        //        LabourProfileCompletion = _mapper.Map<LabourProfileCompletionDto>(result),
-        //        ProfilePhotoUrl = result.ProfilePhotoUrl,
-        //        LabourWorkImages = result.LabourWorkImages.Select(img => img.ImageUrl).ToList(),
-        //        LabourPreferredMuncipalities = result.LabourPreferedMuncipalities.Select(m => m.MunicipalityName).ToList(),
-        //        LabourSkills = result.LabourSkills.Select(s => s.SkillName).ToList()
-        //    }).ToList();
-
-        //    return labourViewDtos;
-
-
-
-        //}
-
-
-
-        //public async Task<LabourViewDto> GetLabourById(Guid Id)
-        //{
-        //    try
-        //    {
-        //        var result = await _labourRepositry.GetLabourByIdAsync(Id);
-        //        if (result == null)
-        //        {
-        //            return null;
-        //        }
-
-        //        var labourViewDto = new LabourViewDto
-        //        {
-        //            LabourId = result.LabourId,
-        //            LabourProfileCompletion = _mapper.Map<LabourProfileCompletionDto>(result),
-        //            ProfilePhotoUrl = result.ProfilePhotoUrl,
-        //            LabourWorkImages = result.LabourWorkImages.Select(img => img.ImageUrl).ToList(),
-        //            LabourPreferredMuncipalities = result.LabourPreferedMuncipalities.Select(m => m.MunicipalityName).ToList(),
-        //            LabourSkills = result.LabourSkills.Select(s => s.SkillName).ToList()
-        //        };
-
-        //        return labourViewDto;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw new Exception($"{ex.InnerException?.Message ?? ex.Message }", ex);
-        //    }
-        //}
-
+       
         public async Task<LabourViewDto> GetLabourById(Guid Id)
         {
             try
@@ -278,21 +199,7 @@ namespace ProfileService.Services.LabourService
                 {
                     return null; 
                 }
-                //var labourViewDtos = allLabours.Select(result => new LabourViewDto
-                //{
-                //    LabourId = result.LabourId,
-                //    PhoneNumber = result.PhoneNumber,
-                //    AboutYourSelf = result.AboutYourSelf,
-                //    PreferedTime = result.PreferedTime,
-                //    LabourName = result.FullName,
-                //    ProfilePhotoUrl = result.ProfilePhotoUrl,
-                //    LabourWorkImages = result.LabourWorkImages.Select(img => img.ImageUrl).ToList(),
-                //    LabourPreferredMuncipalities = result.LabourPreferedMuncipalities.Select(m => m.MunicipalityName).ToList(),
-                //    LabourSkills = result.LabourSkills.Select(s => s.SkillName).ToList()
-                //}).ToList();
-
-                //return labourViewDtos;
-
+                
                 return _mapper.Map<List<LabourViewDto>>(allLabours);
 
             }
@@ -409,8 +316,6 @@ namespace ProfileService.Services.LabourService
         {
             var existingLabour = await _labourRepositry.GetLabourByLabourUserId(userId) ?? throw new Exception("Labour not found");
             existingLabour.FullName = editLabourProfileDto.FullName ?? existingLabour.FullName;
-            //existingLabour.PreferedTime = editLabourProfileDto.LabourProfileCompletionDto.PreferedTime ?? existingLabour.PreferedTime;
-            //existingLabour.ProfilePhotoUrl = editLabourProfileDto.ProfileImageDto.ImageFile
             existingLabour.AboutYourSelf = editLabourProfileDto.AboutYourSelf ?? existingLabour.AboutYourSelf;
             if (editLabourProfileDto.PreferedTime != null)
             {

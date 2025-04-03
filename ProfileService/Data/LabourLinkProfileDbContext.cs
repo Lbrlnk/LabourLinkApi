@@ -8,8 +8,7 @@ namespace ProfileService.Data
         public LabourLinkProfileDbContext(DbContextOptions<LabourLinkProfileDbContext> options) : base(options) { }
 
         public DbSet<Labour> Labours {get; set;}
-        public DbSet<Employer> Employers {get; set;}
-
+        public DbSet<Employer> Employers { get; set; }
         public DbSet<LabourPreferredMuncipality> LabourPreferedMuncipalities {get; set;}
         public DbSet<LabourWorkImage> LabourWorkImages {get; set;}
         public DbSet<LabourSkills> LabourSkills {get; set;}

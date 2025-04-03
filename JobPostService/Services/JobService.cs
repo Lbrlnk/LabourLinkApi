@@ -61,6 +61,8 @@ namespace JobPostService.Services
 				return new  ApiResponse<string>(500, ex.Message);
 			}
 		}
+
+
 		public async Task<ApiResponse<List<LabourViewJobPostDto>>> GetJobPost()
 		{
 			var result=await _repository.GetJobPostsAsync();
@@ -71,6 +73,8 @@ namespace JobPostService.Services
 			var res=_mapper.Map<List<LabourViewJobPostDto>>(result);
 			return new ApiResponse<List<LabourViewJobPostDto>>(200,"success",res);
 		}
+
+
 		public async Task<ApiResponse<List<JobPostDtoMinimal>>> GetJobPostactive()
 		{
 			var jobPosts = await _repository.GetPostAsyncActiveAsync();
@@ -114,6 +118,8 @@ namespace JobPostService.Services
 
 			return new ApiResponse<List<JobPostDtoMinimal>>(200, "success", jobPostDtos);
 		}
+
+
 
 		public async Task<ApiResponse<JobPostDtoWithLabour>> GetJobPostById(Guid id)
 		{

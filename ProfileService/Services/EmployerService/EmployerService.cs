@@ -1,7 +1,4 @@
 ﻿using AutoMapper;
-
-//using EventBus.Abstractions;
-//using EventBus.Events;
 using Microsoft.AspNetCore.Http.HttpResults;
 using ProfileService.Dtos;
 using ProfileService.Helper.CloudinaryHelper;
@@ -18,7 +15,7 @@ namespace ProfileService.Services.EmployerService
 {
     public class EmployerService : IEmployerService
     {
-        //private readonly IEventPublisher _eventPublisher;
+      
         private readonly IEmployerRepository _employerRepository;
         private readonly IMapper _mapper;
         private readonly ICloudinaryHelper _cloudinary;
@@ -27,13 +24,10 @@ namespace ProfileService.Services.EmployerService
 
         public EmployerService(IEmployerRepository employerRepository, IMapper mapper,IRabbitMqService rabbitMqService , ICloudinaryHelper cloudinary )
         {
-            //_eventPublisher = eventPublisher;
             _mapper = mapper;
             _employerRepository = employerRepository;
             _cloudinary = cloudinary;
             _rabbitMqService = rabbitMqService;
-            
-
         }
         public async Task<string> CompleteEmployerProfile(Guid userId, CompleteEmployerProfileDto employerProfileDto)
         {
@@ -54,9 +48,6 @@ namespace ProfileService.Services.EmployerService
                  await _employerRepository.AddEmployer(employer);
                 if (await _employerRepository.UpdateDatabase())
                 {
-
-
-                    //_eventPublisher.Publish(new ProfileCompletedEvent { UserId = userId });
                     _rabbitMqService.PublishProfileCompleted(userId);
                     return "registration succesfull";
                 }
@@ -68,15 +59,12 @@ namespace ProfileService.Services.EmployerService
             }
         }
 
-       public async Task<string> UpdateEmployerProfile(Guid userId, EditEmployerProfileDto employerProfileDto)
+        public async Task<string> UpdateEmployerProfile(Guid userId, EditEmployerProfileDto employerProfileDto)
         {
             try
             {
                 var existingEmployer = await  _employerRepository.GetEmployerByIdAsync(userId) ?? throw new Exception("Labour not found");
-
-
                 existingEmployer.FullName = employerProfileDto.FullName??existingEmployer.FullName;
-
                 if (employerProfileDto.Image != null)
                 {
                     var existingImagePublicId = _cloudinary.ExtractPublicIdFromUrl(existingEmployer.ProfileImageUrl);
@@ -86,22 +74,16 @@ namespace ProfileService.Services.EmployerService
                 }
 
                 existingEmployer.PreferedMunicipality = employerProfileDto.PreferedMuncipality ?? existingEmployer.PreferedMunicipality;
-
-
-              
                await _employerRepository.UpdateEmployer(existingEmployer);
-                
-                
                 return "Updation successfull";
-
-
             }
             catch (Exception ex)
             {
                 throw;
             }
         }
-       public async  Task<EmployerView> GetEmployerDetails(Guid userId)
+
+        public async  Task<EmployerView> GetEmployerDetails(Guid userId)
         {
             try
             {
