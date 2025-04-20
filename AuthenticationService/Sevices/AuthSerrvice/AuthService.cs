@@ -15,7 +15,7 @@ namespace AuthenticationService.Sevices.AuthSerrvice
         private readonly IJwtHelper _jwtHelper;
         private readonly IMapper _mapper;
 
-        //private readonly ILogger<AuthService> _logger;
+     
 
 
         public AuthService(IAuthRepository authRepository, IJwtHelper jwtHelper, IMapper mapper)
@@ -25,7 +25,7 @@ namespace AuthenticationService.Sevices.AuthSerrvice
             _jwtHelper = jwtHelper;
             _mapper = mapper;
 
-            //_logger = logger;
+           
 
         }
 
@@ -75,7 +75,6 @@ namespace AuthenticationService.Sevices.AuthSerrvice
             {
 
 
-                // Generate tokens
                 var user = await _authRepository.GetUserByEmailAsync(loginDto.email);
                 if (user == null || !BCrypt.Net.BCrypt.Verify(loginDto.password, user.Password))
                 {
@@ -90,7 +89,7 @@ namespace AuthenticationService.Sevices.AuthSerrvice
                 var accessToken = _jwtHelper.GenerateToken(user);
                 var refreshToken = _jwtHelper.GenerateRefreshToken();
 
-                // Saving the refresh token in the database
+               
                 await _authRepository.SaveRefreshTokenAsync(user.UserId, refreshToken, DateTime.UtcNow.AddMonths(1));
 
                 return (accessToken, refreshToken, user.IsProfileCompleted, user.UserType);
@@ -104,26 +103,24 @@ namespace AuthenticationService.Sevices.AuthSerrvice
 
         public async Task<string?> RefreshTokenAsync(string refreshToken)
         {
-            // Retrieve the refresh token from the database
+            
             var storedToken = await _authRepository.GetRefreshTokenAsync(refreshToken);
             if (storedToken == null || storedToken.ExpiryDate < DateTime.UtcNow)
             {
                 throw new Exception("Invalid or expired refresh token. please login");
             }
 
-            // Retrieve user details associated with the refresh token
 
-            // check if this correct can we check user id from the refresh token will share an example refresh token 
             var user = await _authRepository.GetUserByIdAsync(storedToken.UserId);
             if (user == null)
             {
                 throw new Exception("User not found");
             }
 
-            // Generate new access token
+            
             string newAccessToken = _jwtHelper.GenerateToken(user);
 
-            return newAccessToken;  // Returning new access token
+            return newAccessToken;  
         }
 
         public async Task<bool?> IsprofileCompleted(Guid userId)

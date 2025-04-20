@@ -96,7 +96,6 @@ namespace AuthenticationService
             var issuer = Environment.GetEnvironmentVariable("JWT-ISSUER") ?? throw new InvalidOperationException("JWT  issuer is not configured");
 
 
-            // Configure JWT Authentication
             builder.Services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -134,7 +133,7 @@ namespace AuthenticationService
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
+
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
